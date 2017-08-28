@@ -1,0 +1,313 @@
+CATEGORY:
+	NAME		string, the name of this category
+	PARENT		category ID, the category this category is part of - defaults to no parent category
+
+
+Ensure all categories are BELOW their parent categories.
+
+{[CATEGORY:weapons]
+	[NAME:Weapons]
+}
+
+{[CATEGORY:polearms]
+	[NAME:Polearms]
+	[PARENT:weapons]
+}
+
+{[CATEGORY:glaives]
+	[NAME:Glaives]
+	[PARENT:polearms]
+}
+
+{[CATEGORY:spears]
+	[NAME:Spears]
+	[PARENT:polearms]
+}
+
+{[CATEGORY:swords]
+	[NAME:Swords]
+	[PARENT:weapons]
+}
+
+{[CATEGORY:axes]
+	[NAME:Axes]
+	[PARENT:weapons]
+}
+
+{[CATEGORY:blunt]
+	[NAME:Blunt]
+	[PARENT:weapons]
+}
+
+{[CATEGORY:components]
+	[NAME:Components]
+}
+
+{[CATEGORY:stringsRopes]
+	[NAME:Strings, cords and ropes]
+	[PARENT:components]
+}
+
+{[CATEGORY:cloth]
+	[NAME:Cloth]
+	[PARENT:components]
+}
+
+{[CATEGORY:apparel]
+	[NAME:Apparel]
+}
+
+{[CATEGORY:clothing]
+	[NAME:Clothing]
+	[PARENT:apparel]
+}
+
+{[CATEGORY:armour]
+	[NAME:Armour]
+	[PARENT:apparel]
+}
+-------------------------------
+CRAFT:
+	CATEGORY		category ID, the category this item is in - defaults to no category
+	COMPONENT		item ID (+ int), item required to craft this item (second argument gives number of item)
+	COUNT			int, number of the product item to produce - defaults to 1
+
+{[CRAFT:spearFlint]
+	[CATEGORY:spears]
+	[COMPONENT:flint]
+	[COMPONENT:stick]
+	[COMPONENT:stickyString]
+}
+
+{[CRAFT:spearFork]
+	[CATEGORY:spears]
+	[COMPONENT:fork]
+	[COMPONENT:stick]
+	[COMPONENT:stickyString]
+}
+
+{[CRAFT:spearRusted]
+	[CATEGORY:spears]
+	[COMPONENT:spearheadRusted]
+	[COMPONENT:stick]
+	[COMPONENT:stickyString]
+}
+
+{[CRAFT:spearCopper]
+	[CATEGORY:spears]
+	[COMPONENT:spearheadCopper]
+	[COMPONENT:stick]
+	[COMPONENT:stickyString]
+}
+
+{[CRAFT:spearBronze]
+	[CATEGORY:spears]
+	[COMPONENT:spearheadBronze]
+	[COMPONENT:stick]
+	[COMPONENT:stickyString]
+}
+
+{[CRAFT:spearIron]
+	[CATEGORY:spears]
+	[COMPONENT:spearheadIron]
+	[COMPONENT:stick]
+	[COMPONENT:stickyString]
+}
+
+{[CRAFT:spearSteel]
+	[CATEGORY:spears]
+	[COMPONENT:spearheadSteel]
+	[COMPONENT:stick]
+	[COMPONENT:stickyString]
+}
+
+{[CRAFT:glaiveCrude]
+	[CATEGORY:glaives]
+	[COMPONENT:butterKnife]
+	[COMPONENT:stick]
+	[COMPONENT:stickyString]
+}
+
+{[CRAFT:glaiveRusted]
+	[CATEGORY:glaives]
+	[COMPONENT:glaiveBladeRusted]
+	[COMPONENT:stick]
+	[COMPONENT:stickyString]
+}
+
+{[CRAFT:glaiveCopper]
+	[CATEGORY:glaives]
+	[COMPONENT:glaiveBladeCopper]
+	[COMPONENT:stick]
+	[COMPONENT:stickyString]
+}
+
+{[CRAFT:glaiveBronze]
+	[CATEGORY:glaives]
+	[COMPONENT:glaiveBladeBronze]
+	[COMPONENT:stick]
+	[COMPONENT:stickyString]
+}
+
+{[CRAFT:glaiveIron]
+	[CATEGORY:glaives]
+	[COMPONENT:glaiveBladeIron]
+	[COMPONENT:stick]
+	[COMPONENT:stickyString]
+}
+
+{[CRAFT:glaiveSteel]
+	[CATEGORY:glaives]
+	[COMPONENT:glaiveBladeSteel]
+	[COMPONENT:stick]
+	[COMPONENT:stickyString]
+}
+
+{[CRAFT:sswordRusted]
+	[CATEGORY:swords]
+	[COMPONENT:swordBladeRusted]
+	[COMPONENT:stick]
+	[COMPONENT:stickyString]
+}
+
+{[CRAFT:sswordCopper]
+	[CATEGORY:swords]
+	[COMPONENT:swordBladeCopper]
+	[COMPONENT:stick]
+	[COMPONENT:stickyString]
+}
+
+{[CRAFT:sswordBronze]
+	[CATEGORY:swords]
+	[COMPONENT:swordBladeBronze]
+	[COMPONENT:stick]
+	[COMPONENT:stickyString]
+}
+
+{[CRAFT:sswordIron]
+	[CATEGORY:swords]
+	[COMPONENT:swordBladeIron]
+	[COMPONENT:stick]
+	[COMPONENT:stickyString]
+}
+
+{[CRAFT:sswordSteel]
+	[CATEGORY:swords]
+	[COMPONENT:swordBladeSteel]
+	[COMPONENT:stick]
+	[COMPONENT:stickyString]
+}
+
+{[CRAFT:axeRusted]
+	[CATEGORY:axes]
+	[COMPONENT:axeHeadRusted]
+	[COMPONENT:stick]
+	[COMPONENT:stickyString]
+}
+
+{[CRAFT:axeCopper]
+	[CATEGORY:axes]
+	[COMPONENT:axeHeadCopper]
+	[COMPONENT:stick]
+	[COMPONENT:stickyString]
+}
+
+{[CRAFT:axeBronze]
+	[CATEGORY:axes]
+	[COMPONENT:axeHeadBronze]
+	[COMPONENT:stick]
+	[COMPONENT:stickyString]
+}
+
+{[CRAFT:axeIron]
+	[CATEGORY:axes]
+	[COMPONENT:axeHeadIron]
+	[COMPONENT:stick]
+	[COMPONENT:stickyString]
+}
+
+{[CRAFT:axeSteel]
+	[CATEGORY:axes]
+	[COMPONENT:axeHeadSteel]
+	[COMPONENT:stick]
+	[COMPONENT:stickyString]
+}
+
+{[CRAFT:club]
+	[CATEGORY:blunt]
+	[COMPONENT:stick]
+}
+
+{[CRAFT:clubFlint]
+	[CATEGORY:blunt]
+	[COMPONENT:club]
+	[COMPONENT:flint;3]
+	[COMPONENT:stickyString]
+}
+
+{[CRAFT:stickyString]
+	[CATEGORY:stringsRopes]
+	[COMPONENT:string]
+	[COMPONENT:slimeSticky]
+}
+
+{[CRAFT:stickyString]
+	[CATEGORY:stringsRopes]
+	[COMPONENT:silk]
+	[COMPONENT:slimeSticky]
+}
+
+{[CRAFT:clothCotton]
+	[CATEGORY:cloth]
+	[COMPONENT:cotton;4]
+}
+
+{[CRAFT:clothLinen]
+	[CATEGORY:cloth]
+	[COMPONENT:flax;4]
+}
+
+{[CRAFT:tunicCotton]
+	[CATEGORY:clothing]
+	[COMPONENT:clothCotton;3]
+}
+
+{[CRAFT:tunicLinen]
+	[CATEGORY:clothing]
+	[COMPONENT:clothLinen;3]
+}
+
+{[CRAFT:tunicWool]
+	[CATEGORY:clothing]
+	[COMPONENT:clothWool;3]
+}
+
+{[CRAFT:tunicSilk]
+	[CATEGORY:clothing]
+	[COMPONENT:silk;6]
+}
+
+{[CRAFT:tunicCottonPadded]
+	[CATEGORY:armour]
+	[COMPONENT:tunicCotton]
+	[COMPONENT:clothCotton;2]
+}
+
+{[CRAFT:tunicLinenPadded]
+	[CATEGORY:armour]
+	[COMPONENT:tunicLinen]
+	[COMPONENT:clothCotton;2]
+}
+
+{[CRAFT:tunicWoolPadded]
+	[CATEGORY:armour]
+	[COMPONENT:tunicWool]
+	[COMPONENT:clothCotton;2]
+}
+
+{[CRAFT:tunicSilkPadded]
+	[CATEGORY:armour]
+	[COMPONENT:tunicSilk]
+	[COMPONENT:clothCotton;2]
+}
+

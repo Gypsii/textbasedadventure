@@ -1,0 +1,489 @@
+RECIPE:
+	FORBID		string, no items with this string as a tag may be added when making this recipe
+	REQUIRE		string, an item with this string as a tag must be added to complete this recipe
+	LEVEL		int, the level required to gain knowledge of this recipe - defaults to 1	
+	XP			int, the cooking experience given when created - defaults to 0
+	
+{[RECIPE:bsPie]
+	[FORBID:meat]
+	[FORBID:toxic]
+	[REQUIRE:butterscotch]
+	[REQUIRE:cinnamon]
+	[REQUIRE:pastry]
+	[LEVEL:10]
+	[XP:500]
+}
+
+{[RECIPE:meatSpicy]
+	[FORBID:toxic]
+	[REQUIRE:meat]
+	[REQUIRE:spice]
+	[LEVEL:4]
+	[XP:150]
+}
+
+{[RECIPE:stroopwafel]
+	[FORBID:toxic]
+	[FORBID:meat]
+	[REQUIRE:dough]
+	[REQUIRE:cinnamon]
+	[REQUIRE:syrup]
+	[LEVEL:7]
+	[XP:200]
+}
+
+{[RECIPE:jamTart]
+	[FORBID:toxic]
+	[FORBID:meat]
+	[REQUIRE:pastry]
+	[REQUIRE:jam]
+	[LEVEL:6]
+	[XP:165]
+}
+
+{[RECIPE:cinnamonBun]
+	[FORBID:toxic]
+	[FORBID:meat]
+	[REQUIRE:dough]
+	[REQUIRE:cinnamon]
+	[LEVEL:6]
+	[XP:155]
+}
+
+{[RECIPE:sandwichFull]
+	[FORBID:toxic]
+	[REQUIRE:bread]
+	[REQUIRE:vegetable]
+	[REQUIRE:meat]
+	[LEVEL:5]
+	[XP:95]
+}
+
+{[RECIPE:sandwichFull]
+	[FORBID:toxic]
+	[REQUIRE:bread]
+	[REQUIRE:mushroom]
+	[REQUIRE:meat]
+	[LEVEL:5]
+	[XP:95]
+}
+
+{[RECIPE:sandwichSalad]
+	[FORBID:toxic]
+	[FORBID:meat]
+	[REQUIRE:bread]
+	[REQUIRE:vegetable]
+	[LEVEL:4]
+	[XP:70]
+}
+
+{[RECIPE:sandwichMeat]
+	[FORBID:toxic]
+	[REQUIRE:bread]
+	[REQUIRE:meat]
+	[LEVEL:3]
+	[XP:70]
+}
+
+{[RECIPE:sandwichEgg]
+	[FORBID:toxic]
+	[REQUIRE:bread]
+	[REQUIRE:egg]
+	[LEVEL:4]
+	[XP:70]
+}
+
+{[RECIPE:sandwichJam]
+	[FORBID:toxic]
+	[REQUIRE:bread]
+	[REQUIRE:jam]
+	[LEVEL:3]
+	[XP:70]
+}
+
+{[RECIPE:mealMeatMushroom]
+	[FORBID:toxic]
+	[REQUIRE:meat]
+	[REQUIRE:mushroom]
+	[LEVEL:3]
+	[XP:90]
+}
+
+{[RECIPE:meatRoast]
+	[FORBID:toxic]
+	[REQUIRE:meat]
+	[LEVEL:1]
+	[XP:50]
+}
+
+{[RECIPE:bread]
+	[FORBID:toxic]
+	[REQUIRE:dough]
+	[LEVEL:2]
+	[XP:70]
+}
+
+{[RECIPE:jam]
+	[FORBID:toxic]
+	[REQUIRE:sugar]
+	[REQUIRE:fruit]
+	[LEVEL:2]
+	[XP:50]
+}
+----------------------------------------------------------
+FOOD:
+	HEALTH		int, health healed when eaten
+	FOODTAG		string, adds this string as a tag
+	
+	All other tags are as with ITEM
+	
+	
+{[FOOD:bread]
+	[NAME:Bread]
+	[COST:8]
+	[PREFIX:some]
+	[HEALTH:8]
+	[FOODTAG:bread]
+}
+
+This food is the default food that comes up if no other recipes are valid.
+{[FOOD:failure]
+	[NAME:"Meal"]
+	[PREFIX:some]
+	[HEALTH:-20]
+	[FOODTAG:toxic]
+	[DESCRIPTION:I wouldn't eat that.]
+}
+
+{[FOOD:meatBird]
+	[NAME:Bird Meat]
+	[PREFIX:some]
+	[HEALTH:4]
+	[FOODTAG:meat]
+}
+
+{[FOOD:meatSpider]
+	[NAME:Spider Meat]
+	[PREFIX:some]
+	[HEALTH:5]
+	[FOODTAG:meat]
+}
+
+{[FOOD:meatSeal]
+	[NAME:Seal Meat]
+	[PREFIX:some]
+	[HEALTH:6]
+	[FOODTAG:meat]
+}
+
+{[FOOD:meatDingo]
+	[NAME:Dingo Meat]
+	[PREFIX:some]
+	[HEALTH:6]
+	[FOODTAG:meat]
+}
+
+{[FOOD:meatBear]
+	[NAME:Polar Bear Meat]
+	[PREFIX:some]
+	[HEALTH:6]
+	[FOODTAG:meat]
+}
+
+{[FOOD:meatTurtle]
+	[NAME:Turtle Meat]
+	[PREFIX:some]
+	[HEALTH:6]
+	[FOODTAG:meat]
+}
+
+{[FOOD:meatSnake]
+	[NAME:Snake Meat]
+	[PREFIX:some]
+	[HEALTH:6]
+	[FOODTAG:meat]
+	[DESCRIPTION:Drumstick, anyone?]
+}
+
+{[FOOD:meatTiger]
+	[NAME:Tiger Meat]
+	[PREFIX:some]
+	[HEALTH:6]
+	[FOODTAG:meat]
+}
+
+{[FOOD:meatRat]
+	[NAME:Rat Meat]
+	[PREFIX:some]
+	[HEALTH:4]
+	[FOODTAG:meat]
+}
+
+{[FOOD:meatWalrus]
+	[NAME:Walrus Meat]
+	[PREFIX:some]
+	[HEALTH:6]
+	[FOODTAG:meat]
+	[DESCRIPTION:Blubbery.]
+}
+
+{[FOOD:meatCow]
+	[NAME:Beef]
+	[PREFIX:some]
+	[HEALTH:6]
+	[FOODTAG:meat]
+}
+
+{[FOOD:meatRoast]
+	[NAME:Roast Meat]
+	[PREFIX:some]
+	[HEALTH:15]
+	[FOODTAG:meat]
+}
+
+{[FOOD:meatSpicy]
+	[NAME:Hot and Spicy Meat]
+	[PREFIX:some]
+	[HEALTH:40]
+	[FOODTAG:meat]
+}
+
+{[FOOD:leaf]
+	[NAME:Leaf]
+	[HEALTH:2]
+	[FOODTAG:vegetable]
+	[DESCRIPTION:Photosynthetic.]
+}
+
+{[FOOD:berries]
+	[NAME:Berries]
+	[COST:4]
+	[PREFIX:some]
+	[HEALTH:5]
+	[FOODTAG:fruit]
+	[DESCRIPTION:Edible.]
+}
+
+{[FOOD:plum]
+	[NAME:Plum]
+	[COST:10]
+	[HEALTH:8]
+	[FOODTAG:fruit]
+	[DESCRIPTION:Plums!]
+}
+
+{[FOOD:egg]
+	[NAME:Egg]
+	[PREFIX:an]
+	[HEALTH:3]
+	[FOODTAG:egg]
+	[DESCRIPTION:You monster.]
+}
+
+{[FOOD:mushroom]
+	[NAME:Brown Mushroom]
+	[COST:4]
+	[HEALTH:3]
+	[FOODTAG:mushroom]
+	[DESCRIPTION:Not a plant.]
+}
+
+{[FOOD:mushroomWhite]
+	[NAME:White Mushroom]
+	[COST:4]
+	[HEALTH:3]
+	[FOODTAG:mushroom]
+	[DESCRIPTION:Not a plant.]
+}
+
+{[FOOD:fungus]
+	[NAME:Mystical Fungus]
+	[HEALTH:-5]
+	[COST:20]
+	[FOODTAG:mushroom]
+	[FOODTAG:toxic]
+	[DESCRIPTION:Fungal.]
+}
+
+{[FOOD:sandwichEgg]
+	[NAME:Egg Sandwich]
+	[PREFIX:an]
+	[HEALTH:25]
+	[DESCRIPTION:Gamete in a bun]
+}
+
+{[FOOD:sandwichMeat]
+	[NAME:Meaty Sandwich]
+	[HEALTH:33]
+}
+
+{[FOOD:sandwichJam]
+	[NAME:Jam Sandwich]
+	[HEALTH:25]
+}
+
+{[FOOD:sandwichSalad]
+	[NAME:Salad Sandwich]
+	[HEALTH:25]
+	[DESCRIPTION:A vegetarian option.]
+}
+
+{[FOOD:sandwichFull]
+	[NAME:Majestic Sandwich]
+	[HEALTH:40]
+	[DESCRIPTION:Bask in its majesty.]
+}
+
+{[FOOD:cinnamonBun]
+	[NAME:Cinnamon Bun]
+	[HEALTH:25]
+}
+
+{[FOOD:mealMeatMushroom]
+	[NAME:Meat and Mushroom Stew]
+	[PREFIX:some]
+	[HEALTH:25]
+}
+
+{[FOOD:pepper]
+	[NAME:Black Pepper]
+	[COST:32]
+	[PREFIX:some]
+	[HEALTH:1]
+	[FOODTAG:spice]
+	[DESCRIPTION:Spicy.]
+}
+
+{[FOOD:cinnamon]
+	[NAME:Cinnamon]
+	[COST:29]
+	[PREFIX:some]
+	[HEALTH:1]
+	[FOODTAG:spice]
+	[FOODTAG:cinnamon]
+}
+
+{[FOOD:nutmeg]
+	[NAME:Nutmeg]
+	[COST:31]
+	[PREFIX:some]
+	[HEALTH:1]
+	[FOODTAG:spice]
+}
+
+{[FOOD:ginger]
+	[NAME:Ginger]
+	[COST:25]
+	[PREFIX:some]
+	[HEALTH:1]
+	[FOODTAG:spice]
+}
+
+{[FOOD:cumin]
+	[NAME:Cumin]
+	[COST:29]
+	[PREFIX:some]
+	[HEALTH:1]
+	[FOODTAG:spice]
+}
+
+{[FOOD:cake]
+	[NAME:Cake]
+	[PREFIX:some]
+	[HEALTH:28]
+	[DESCRIPTION:(overused portal joke)]
+}
+
+{[FOOD:stroopwafel]
+	[NAME:Stroopwafel]
+	[HEALTH:42]
+	[DESCRIPTION:Syrup waffle.]
+}
+
+{[FOOD:pastry]
+	[NAME:Pastry]
+	[HEALTH:5]
+	[PREFIX:some]
+	[FOODTAG:pastry]
+	[FOODTAG:bread]
+}
+
+{[FOOD:jam]
+	[NAME:Jam]
+	[HEALTH:8]
+	[PREFIX:some]
+	[FOODTAG:jam]
+	[FOODTAG:sweetener]
+	[DESCRIPTION:That's my jam.]
+}
+
+{[FOOD:dough]
+	[NAME:Dough]
+	[PREFIX:some]
+	[HEALTH:4]
+	[FOODTAG:dough]
+	[DESCRIPTION:Making dough.]
+}
+
+{[FOOD:syrup]
+	[NAME:Syrup]
+	[PREFIX:some]
+	[HEALTH:6]
+	[FOODTAG:syrup]
+	[FOODTAG:sweetener]
+	[DESCRIPTION:High fructose.]
+}
+
+{[FOOD:sugar]
+	[NAME:Sugar]
+	[PREFIX:some]
+	[HEALTH:2]
+	[FOODTAG:sugar]
+	[FOODTAG:sweetener]
+	[DESCRIPTION:Sweet.]
+}
+
+{[FOOD:butterscotch]
+	[NAME:Butterscotch]
+	[PREFIX:some]
+	[HEALTH:13]
+	[FOODTAG:sweetener]
+	[FOODTAG:butterscotch]
+}
+
+{[FOOD:jamTart]
+	[NAME:Jam Tart]
+	[HEALTH:37]
+}
+
+{[FOOD:potato]
+	[NAME:Potato]
+	[HEALTH:5]
+	[DESCRIPTION:Apple of the earth.]
+}
+
+{[FOOD:salt]
+	[NAME:Salt]
+	[HEALTH:1]
+	[DESCRIPTION:NaCl.]
+}
+
+{[FOOD:bsPie]
+	[NAME:Butterscotch Cinnamon Pie]
+	[PREFIX:some]
+	[HEALTH:10000]
+	[DESCRIPTION:You are filled with determination.]
+}
+
+{[FOOD:meatPie]
+	[NAME:Meat Pie]
+	[HEALTH:42]
+	[DESCRIPTION:You must always blow on the pie.]
+}
+
+{[FOOD:soupFish]
+	[NAME:Fish Soup]
+	[PREFIX:some]
+	[HEALTH:19]
+	[DESCRIPTION:Something's fishy...]
+}
