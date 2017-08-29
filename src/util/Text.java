@@ -125,7 +125,7 @@ public class Text {
 	public static void listInvFoods(){
 		for(int i = 0; i < Game.player.inv.size(); i++){
 			IO.print(i + ": ");
-			if(Game.player.inv.get(i).isFood){
+			if(Game.player.inv.get(i).hasTag("edible")){
 				IO.println("<green>" + Game.player.inv.get(i).getNameWithCount() + "<r>");
 			}else{
 				IO.println(Game.player.inv.get(i).getNameWithCount());
@@ -167,7 +167,7 @@ public class Text {
 	public static void listInvGems(){
 		for(int i = 0; i < Game.player.inv.size(); i++){
 			IO.print(i + ": ");
-			if(Game.player.inv.get(i).isGem){
+			if(Game.player.inv.get(i).hasTag("gem")){
 				IO.println("<green>" + Game.player.inv.get(i).getNameWithCount() + "<r>");	
 			}else{
 				IO.println(Game.player.inv.get(i).getNameWithCount());

@@ -80,8 +80,6 @@ public class Game{
 		money = STARTGOLD;
 		levels = new  HashMap<Integer, Level>();
 		
-		Item.doItems();
-		
 		IO.println("Who do you think you are?");
 		player.name = IO.read();
 		if(player.name.equals("nocolour")){
@@ -92,16 +90,6 @@ public class Game{
 		zone = new Zone();
 		IO.println("Before setting out on your adventure you decide to prepare yourself.");
 		player.addItem("bread", 2);
-		
-//		startingShop.addItem(startingShop.bread, 1, 1);
-//		startingShop.addItem(startingShop.mushroom, 1, 1);
-//		startingShop.addItem(startingShop.string, 1, 1);
-//		startingShop.addItem(startingShop.stickyString, 1, 1);
-//		startingShop.addItem(startingShop.tusk, 2, 1);
-//		startingShop.addItem(startingShop.butterKnife, 1, 1);
-//		startingShop.addItem(startingShop.gbladeRusted, 1, 1);
-//		startingShop.addItem(startingShop.spearheadCopper, 1, 1);
-//		startingShop.addItem(startingShop.sswordBronze, 1, 1);
 		
 		startingShop.addItem("bread");
 		startingShop.addItem("mushroom");

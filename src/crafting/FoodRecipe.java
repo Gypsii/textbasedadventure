@@ -1,11 +1,10 @@
 package crafting;
 
-import item.Food;
-import item.FoodTag;
 import item.Item;
 
 import java.util.ArrayList;
 
+import item.ItemTag;
 import main.Game;
 
 public class FoodRecipe {
@@ -45,7 +44,7 @@ public class FoodRecipe {
 		badComponents.add("toxic");
 	}
 	
-	public void removeForbiddenComponent(FoodTag tag){
+	public void removeForbiddenComponent(ItemTag tag){//uhhh this used to be FoodTag but the array is for strings so ????
 		badComponents.remove(tag);
 	}
 	
@@ -54,7 +53,7 @@ public class FoodRecipe {
 	 * @param foods
 	 * @return
 	 */
-	public boolean check(ArrayList<Food> foods){
+	public boolean check(ArrayList<Item> foods){
 		//System.out.println("Checking " + product.name);
 		for(int i = 0; i < badComponents.size(); i++){
 			//System.out.println("Checking for bad food " + i);

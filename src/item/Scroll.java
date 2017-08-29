@@ -15,7 +15,6 @@ public class Scroll extends Item{
 	public Scroll clone(){
 		Scroll i = new Scroll(this.name, this.prefix);
 		i.count = this.count;
-		i.effects = this.effects;
 		return i;
 	}
 	

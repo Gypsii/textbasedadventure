@@ -130,360 +130,409 @@ RECIPE:
 	[LEVEL:2]
 	[XP:50]
 }
+
 ----------------------------------------------------------
-FOOD:
-	HEALTH		int, health healed when eaten
-	FOODTAG		string, adds this string as a tag
-	
-	All other tags are as with ITEM
 	
 	
-{[FOOD:bread]
+{[ITEM:bread]
 	[NAME:Bread]
 	[COST:8]
 	[PREFIX:some]
 	[HEALTH:8]
-	[FOODTAG:bread]
+	[TAG:cookable]
+	[TAG:bread]
 }
 
 This food is the default food that comes up if no other recipes are valid.
-{[FOOD:failure]
+{[ITEM:failure]
 	[NAME:"Meal"]
 	[PREFIX:some]
 	[HEALTH:-20]
-	[FOODTAG:toxic]
+	[TAG:toxic]
 	[DESCRIPTION:I wouldn't eat that.]
+	[TAG:cookable]
 }
 
-{[FOOD:meatBird]
+{[ITEM:meatBird]
 	[NAME:Bird Meat]
 	[PREFIX:some]
 	[HEALTH:4]
-	[FOODTAG:meat]
+	[TAG:meat]
+	[TAG:cookable]
 }
 
-{[FOOD:meatSpider]
+{[ITEM:meatSpider]
 	[NAME:Spider Meat]
 	[PREFIX:some]
 	[HEALTH:5]
-	[FOODTAG:meat]
+	[TAG:meat]
+	[TAG:cookable]
 }
 
-{[FOOD:meatSeal]
+{[ITEM:meatSeal]
 	[NAME:Seal Meat]
 	[PREFIX:some]
 	[HEALTH:6]
-	[FOODTAG:meat]
+	[TAG:meat]
+	[TAG:cookable]
 }
 
-{[FOOD:meatDingo]
+{[ITEM:meatDingo]
 	[NAME:Dingo Meat]
 	[PREFIX:some]
 	[HEALTH:6]
-	[FOODTAG:meat]
+	[TAG:meat]
+	[TAG:cookable]
 }
 
-{[FOOD:meatBear]
+{[ITEM:meatBear]
 	[NAME:Polar Bear Meat]
 	[PREFIX:some]
 	[HEALTH:6]
-	[FOODTAG:meat]
+	[TAG:meat]
+	[TAG:cookable]
 }
 
-{[FOOD:meatTurtle]
+{[ITEM:meatTurtle]
 	[NAME:Turtle Meat]
 	[PREFIX:some]
 	[HEALTH:6]
-	[FOODTAG:meat]
+	[TAG:meat]
+	[TAG:cookable]
 }
 
-{[FOOD:meatSnake]
+{[ITEM:meatSnake]
 	[NAME:Snake Meat]
 	[PREFIX:some]
 	[HEALTH:6]
-	[FOODTAG:meat]
+	[TAG:meat]
 	[DESCRIPTION:Drumstick, anyone?]
+	[TAG:cookable]
 }
 
-{[FOOD:meatTiger]
+{[ITEM:meatTiger]
 	[NAME:Tiger Meat]
 	[PREFIX:some]
 	[HEALTH:6]
-	[FOODTAG:meat]
+	[TAG:meat]
+	[TAG:cookable]
 }
 
-{[FOOD:meatRat]
+{[ITEM:meatRat]
 	[NAME:Rat Meat]
 	[PREFIX:some]
 	[HEALTH:4]
-	[FOODTAG:meat]
+	[TAG:meat]
+	[TAG:cookable]
 }
 
-{[FOOD:meatWalrus]
+{[ITEM:meatWalrus]
 	[NAME:Walrus Meat]
 	[PREFIX:some]
 	[HEALTH:6]
-	[FOODTAG:meat]
+	[TAG:meat]
 	[DESCRIPTION:Blubbery.]
+	[TAG:cookable]
 }
 
-{[FOOD:meatCow]
+{[ITEM:meatCow]
 	[NAME:Beef]
 	[PREFIX:some]
 	[HEALTH:6]
-	[FOODTAG:meat]
+	[TAG:meat]
+	[TAG:cookable]
 }
 
-{[FOOD:meatRoast]
+{[ITEM:meatRoast]
 	[NAME:Roast Meat]
 	[PREFIX:some]
 	[HEALTH:15]
-	[FOODTAG:meat]
+	[TAG:meat]
+	[TAG:cookable]
 }
 
-{[FOOD:meatSpicy]
+{[ITEM:meatSpicy]
 	[NAME:Hot and Spicy Meat]
 	[PREFIX:some]
 	[HEALTH:40]
-	[FOODTAG:meat]
+	[TAG:meat]
+	[TAG:cookable]
 }
 
-{[FOOD:leaf]
+{[ITEM:leaf]
 	[NAME:Leaf]
 	[HEALTH:2]
-	[FOODTAG:vegetable]
+	[TAG:vegetable]
 	[DESCRIPTION:Photosynthetic.]
+	[TAG:cookable]
 }
 
-{[FOOD:berries]
+{[ITEM:berries]
 	[NAME:Berries]
 	[COST:4]
 	[PREFIX:some]
 	[HEALTH:5]
-	[FOODTAG:fruit]
+	[TAG:fruit]
 	[DESCRIPTION:Edible.]
+	[TAG:cookable]
 }
 
-{[FOOD:plum]
+{[ITEM:plum]
 	[NAME:Plum]
 	[COST:10]
 	[HEALTH:8]
-	[FOODTAG:fruit]
+	[TAG:fruit]
 	[DESCRIPTION:Plums!]
+	[TAG:cookable]
 }
 
-{[FOOD:egg]
+{[ITEM:egg]
 	[NAME:Egg]
 	[PREFIX:an]
 	[HEALTH:3]
-	[FOODTAG:egg]
+	[TAG:egg]
 	[DESCRIPTION:You monster.]
+	[TAG:cookable]
 }
 
-{[FOOD:mushroom]
+{[ITEM:mushroom]
 	[NAME:Brown Mushroom]
 	[COST:4]
 	[HEALTH:3]
-	[FOODTAG:mushroom]
+	[TAG:mushroom]
 	[DESCRIPTION:Not a plant.]
+	[TAG:cookable]
 }
 
-{[FOOD:mushroomWhite]
+{[ITEM:mushroomWhite]
 	[NAME:White Mushroom]
 	[COST:4]
 	[HEALTH:3]
-	[FOODTAG:mushroom]
-	[DESCRIPTION:Not a plant.]
+	[TAG:mushroom]
+	[DESCRIPTION:Probably not toxic?]
+	[TAG:cookable]
 }
 
-{[FOOD:fungus]
+{[ITEM:fungus]
 	[NAME:Mystical Fungus]
 	[HEALTH:-5]
 	[COST:20]
-	[FOODTAG:mushroom]
-	[FOODTAG:toxic]
+	[TAG:mushroom]
+	[TAG:toxic]
 	[DESCRIPTION:Fungal.]
+	[TAG:cookable]
 }
 
-{[FOOD:sandwichEgg]
+{[ITEM:sandwichEgg]
 	[NAME:Egg Sandwich]
 	[PREFIX:an]
 	[HEALTH:25]
+	[TAG:sandwich]
 	[DESCRIPTION:Gamete in a bun]
+	[TAG:cookable]
 }
 
-{[FOOD:sandwichMeat]
+{[ITEM:sandwichMeat]
 	[NAME:Meaty Sandwich]
 	[HEALTH:33]
+	[TAG:sandwich]
+	[TAG:cookable]
 }
 
-{[FOOD:sandwichJam]
+{[ITEM:sandwichJam]
 	[NAME:Jam Sandwich]
 	[HEALTH:25]
+	[TAG:sandwich]
+	[TAG:cookable]
 }
 
-{[FOOD:sandwichSalad]
+{[ITEM:sandwichSalad]
 	[NAME:Salad Sandwich]
 	[HEALTH:25]
+	[TAG:sandwich]
 	[DESCRIPTION:A vegetarian option.]
+	[TAG:cookable]
 }
 
-{[FOOD:sandwichFull]
+{[ITEM:sandwichFull]
 	[NAME:Majestic Sandwich]
 	[HEALTH:40]
+	[TAG:sandwich]
 	[DESCRIPTION:Bask in its majesty.]
+	[TAG:cookable]
 }
 
-{[FOOD:cinnamonBun]
+{[ITEM:cinnamonBun]
 	[NAME:Cinnamon Bun]
 	[HEALTH:25]
+	[TAG:cookable]
 }
 
-{[FOOD:mealMeatMushroom]
+{[ITEM:mealMeatMushroom]
 	[NAME:Meat and Mushroom Stew]
 	[PREFIX:some]
 	[HEALTH:25]
+	[TAG:cookable]
 }
 
-{[FOOD:pepper]
+{[ITEM:pepper]
 	[NAME:Black Pepper]
 	[COST:32]
 	[PREFIX:some]
 	[HEALTH:1]
-	[FOODTAG:spice]
+	[TAG:spice]
 	[DESCRIPTION:Spicy.]
+	[TAG:cookable]
 }
 
-{[FOOD:cinnamon]
+{[ITEM:cinnamon]
 	[NAME:Cinnamon]
 	[COST:29]
 	[PREFIX:some]
 	[HEALTH:1]
-	[FOODTAG:spice]
-	[FOODTAG:cinnamon]
+	[TAG:spice]
+	[TAG:cinnamon]
+	[TAG:cookable]
 }
 
-{[FOOD:nutmeg]
+{[ITEM:nutmeg]
 	[NAME:Nutmeg]
 	[COST:31]
 	[PREFIX:some]
 	[HEALTH:1]
-	[FOODTAG:spice]
+	[TAG:spice]
+	[TAG:cookable]
 }
 
-{[FOOD:ginger]
+{[ITEM:ginger]
 	[NAME:Ginger]
 	[COST:25]
 	[PREFIX:some]
 	[HEALTH:1]
-	[FOODTAG:spice]
+	[TAG:spice]
+	[TAG:cookable]
 }
 
-{[FOOD:cumin]
+{[ITEM:cumin]
 	[NAME:Cumin]
 	[COST:29]
 	[PREFIX:some]
 	[HEALTH:1]
-	[FOODTAG:spice]
+	[TAG:spice]
+	[TAG:cookable]
 }
 
-{[FOOD:cake]
+{[ITEM:cake]
 	[NAME:Cake]
 	[PREFIX:some]
 	[HEALTH:28]
 	[DESCRIPTION:(overused portal joke)]
+	[TAG:cookable]
 }
 
-{[FOOD:stroopwafel]
+{[ITEM:stroopwafel]
 	[NAME:Stroopwafel]
 	[HEALTH:42]
 	[DESCRIPTION:Syrup waffle.]
+	[TAG:cookable]
 }
 
-{[FOOD:pastry]
+{[ITEM:pastry]
 	[NAME:Pastry]
 	[HEALTH:5]
 	[PREFIX:some]
-	[FOODTAG:pastry]
-	[FOODTAG:bread]
+	[TAG:pastry]
+	[TAG:bread]
+	[TAG:cookable]
 }
 
-{[FOOD:jam]
+{[ITEM:jam]
 	[NAME:Jam]
 	[HEALTH:8]
 	[PREFIX:some]
-	[FOODTAG:jam]
-	[FOODTAG:sweetener]
+	[TAG:jam]
+	[TAG:sweetener]
 	[DESCRIPTION:That's my jam.]
+	[TAG:cookable]
 }
 
-{[FOOD:dough]
+{[ITEM:dough]
 	[NAME:Dough]
 	[PREFIX:some]
 	[HEALTH:4]
-	[FOODTAG:dough]
-	[DESCRIPTION:Making dough.]
+	[TAG:dough]
+	[DESCRIPTION:Bread larvae.]
+	[TAG:cookable]
 }
 
-{[FOOD:syrup]
+{[ITEM:syrup]
 	[NAME:Syrup]
 	[PREFIX:some]
 	[HEALTH:6]
-	[FOODTAG:syrup]
-	[FOODTAG:sweetener]
+	[TAG:syrup]
+	[TAG:sweetener]
 	[DESCRIPTION:High fructose.]
+	[TAG:cookable]
 }
 
-{[FOOD:sugar]
+{[ITEM:sugar]
 	[NAME:Sugar]
 	[PREFIX:some]
 	[HEALTH:2]
-	[FOODTAG:sugar]
-	[FOODTAG:sweetener]
+	[TAG:sugar]
+	[TAG:sweetener]
 	[DESCRIPTION:Sweet.]
+	[TAG:cookable]
 }
 
-{[FOOD:butterscotch]
+{[ITEM:butterscotch]
 	[NAME:Butterscotch]
 	[PREFIX:some]
 	[HEALTH:13]
-	[FOODTAG:sweetener]
-	[FOODTAG:butterscotch]
+	[TAG:sweetener]
+	[TAG:butterscotch]
+	[TAG:cookable]
 }
 
-{[FOOD:jamTart]
+{[ITEM:jamTart]
 	[NAME:Jam Tart]
 	[HEALTH:37]
+	[TAG:cookable]
 }
 
-{[FOOD:potato]
+{[ITEM:potato]
 	[NAME:Potato]
 	[HEALTH:5]
 	[DESCRIPTION:Apple of the earth.]
+	[TAG:cookable]
 }
 
-{[FOOD:salt]
+{[ITEM:salt]
 	[NAME:Salt]
 	[HEALTH:1]
 	[DESCRIPTION:NaCl.]
+	[TAG:cookable]
 }
 
-{[FOOD:bsPie]
+{[ITEM:bsPie]
 	[NAME:Butterscotch Cinnamon Pie]
 	[PREFIX:some]
 	[HEALTH:10000]
 	[DESCRIPTION:You are filled with determination.]
+	[TAG:cookable]
 }
 
-{[FOOD:meatPie]
+{[ITEM:meatPie]
 	[NAME:Meat Pie]
 	[HEALTH:42]
 	[DESCRIPTION:You must always blow on the pie.]
+	[TAG:cookable]
 }
 
-{[FOOD:soupFish]
+{[ITEM:soupFish]
 	[NAME:Fish Soup]
 	[PREFIX:some]
 	[HEALTH:19]
 	[DESCRIPTION:Something's fishy...]
+	[TAG:cookable]
 }

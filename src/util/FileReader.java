@@ -1,7 +1,6 @@
 package util;
 
 import creatures.Condition;
-import item.Food;
 import item.Item;
 
 import java.io.*;
@@ -62,8 +61,6 @@ public class FileReader {
 				creatureFromFile(obj);
 			}else if(tag.equals("ATTACK")){
 				attackFromFile(obj);
-			}else if(tag.equals("FOOD")){
-				foodFromFile(obj);
 			}else if(tag.equals("RECIPE")){
 				recipeFromFile(obj);
 			}else if(tag.equals("CRAFT")){
@@ -97,6 +94,9 @@ public class FileReader {
 				break;
 			case "DAMAGE":
 				i.dmg = Integer.parseInt(value);
+				break;
+			case "TAG":
+				i.addTag(value);
 				break;
 			case "DAMAGETYPE":
 				if(value.equals("blunt")){
@@ -144,20 +144,15 @@ public class FileReader {
 			case "MAGIC":
 				i.resists[Game.DMG_MAGIC] = Integer.parseInt(value);
 				break;
-			case "POLEARM":
-				i.isPolearm = stringToBoolean(value);
-				break;
-			case "SWORD":
-				i.isSword = stringToBoolean(value);
-				break;
 			case "SWINGSPEED":
 				i.swingTime = Double.parseDouble(value);
 				break;
 			case "COST":
 				i.cost = Double.parseDouble(value);
 				break;
-			case "GEM":
-				i.isGem = stringToBoolean(value);
+			case "HEALTH":
+				i.addTag("edible");
+				i.healthRestore = Integer.parseInt(value);
 				break;
 			case "DESCRIPTION":
 				i.description = value;
@@ -304,7 +299,7 @@ public class FileReader {
 			}
 		}
 		if(!verbSet){
-			p.verb = DamageHandler.getVerb(p.damageType);
+			p.verb = AttackHandler.getVerb(p.damageType);
 		}
 	}
 
@@ -417,72 +412,6 @@ public class FileReader {
 				break;
 			default:
 				IO.println("<red>Invalid tag \"" + tag + "\" for type creature (id " + id + ")<r>");
-				break;
-			}
-		}
-	}
-	
-	static void foodFromFile(String obj){
-		Matcher t = tagPattern.matcher(obj);
-		t.find();
-		String id = t.group(2);
-		Food i = new Food();
-		i.id = id;
-		Item.items.put(id, i);
-		while(t.find()){
-			String tag = t.group(1);
-			String value = t.group(2);
-			switch(tag){
-			case "NAME":
-				i.name = value;
-				break;
-			case "PREFIX":
-				i.prefix = value;
-				break;
-			case "BLUNT":
-				i.resists[Game.DMG_BLUNT] = Integer.parseInt(value);
-				break;
-			case "SLASH":
-				i.resists[Game.DMG_SLASH] = Integer.parseInt(value);
-				break;
-			case "PIERCE":
-				i.resists[Game.DMG_PIERCE] = Integer.parseInt(value);
-				break;
-			case "BURN":
-				i.resists[Game.DMG_BURN] = Integer.parseInt(value);
-				break;
-			case "COLD":
-				i.resists[Game.DMG_COLD] = Integer.parseInt(value);
-				break;
-			case "MAGIC":
-				i.resists[Game.DMG_MAGIC] = Integer.parseInt(value);
-				break;
-			case "POLEARM":
-				i.isPolearm = stringToBoolean(value);
-				break;
-			case "SWORD":
-				i.isSword = stringToBoolean(value);
-				break;
-			case "SWINGSPEED":
-				i.swingTime = Double.parseDouble(value);
-				break;
-			case "COST":
-				i.cost = Double.parseDouble(value);
-				break;
-			case "GEM":
-				i.isGem = stringToBoolean(value);
-				break;
-			case "HEALTH":
-				i.healthRestore = Integer.parseInt(value);
-				break;
-			case "FOODTAG":
-				i.tags.add(value);
-				break;
-			case "DESCRIPTION":
-				i.description = value;
-				break;
-			default:
-				IO.println("<red>Invalid tag \"" + tag + "\" for type food (id " + id + ")<r>");
 				break;
 			}
 		}

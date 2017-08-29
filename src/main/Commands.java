@@ -1,6 +1,5 @@
 package main;
 
-import item.Food;
 import item.Item;
 import item.MagicItem;
 import item.Scroll;
@@ -8,7 +7,7 @@ import item.Scroll;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import util.DamageHandler;
+import util.AttackHandler;
 import util.IO;
 import util.TestEnvironment;
 import util.Text;
@@ -138,7 +137,7 @@ public class Commands {
 			return 0;
 		}else if(Game.zone.creatures.size() > Game.targetIndex){
 			Creature c = Game.zone.creatures.get(Game.targetIndex);
-			DamageHandler.attack(Game.player, c);
+			AttackHandler.attack(Game.player, c);
 			return Game.player.equipped.swingTime;
 		}else{
 			IO.println("<red>There is no creature with that ID!<r>");
@@ -231,7 +230,7 @@ public class Commands {
 	}
 
 	private static double commandCook() throws IOException{
-		ArrayList<Food> foods = new ArrayList<Food>();
+		ArrayList<Item> foods = new ArrayList<Item>();
 		Boolean finishingRecipe;
 		for(;;){
 			Text.listInvFoods();
@@ -239,8 +238,8 @@ public class Commands {
 			try{
 				int n = Integer.parseInt(Game.br.readLine());
 				if(n < Game.player.inv.size() && n >= 0){
-					if(Game.player.inv.get(n).isFood){
-						foods.add((Food)Game.player.inv.get(n));
+					if(Game.player.inv.get(n).hasTag("cookable")){
+						foods.add(Game.player.inv.get(n));
 						Game.player.inv.remove(n);
 					}else{
 						IO.println("<red>This cannot be used as a food.<r>");
@@ -319,7 +318,6 @@ public class Commands {
 
 	private static double commandInfo(){
 		if(Game.zone.creatures.size() > Game.targetIndex){
-			Game.zone.creatures.get(Game.targetIndex).checkBuffs(Game.player.nextActionTime);
 			Game.zone.creatures.get(Game.targetIndex).printInfo();
 		}else{
 			IO.println("<red>There is no creature with that ID!<r>");
@@ -495,8 +493,8 @@ public class Commands {
 		try{
 			n = Integer.parseInt(Game.br.readLine());
 			if(n < Game.player.inv.size() && n >= 0){						
-				if(Game.player.inv.get(n).isFood){
-					Food f = (Food)Game.player.inv.get(n);
+				if(Game.player.inv.get(n).hasTag("edible")){
+					Item f = Game.player.inv.get(n);
 					IO.println("<blue>You ate the " + f.getNameWithCount() + ", restoring " + f.healthRestore + " health.<r>");
 					if(Game.player.equipped == f){//If there's ever edible armour that might need to go in here
 						Game.player.equipped = Item.unarmed;
@@ -554,7 +552,7 @@ public class Commands {
 				IO.println("<red>Invalid Format!<r>");
 			}
 		}
-		if(!exiting && !a.isEnchanted){
+		if(!exiting && !a.hasTag("enchanted")){
 			while(!exiting){
 				IO.println("Select a scroll:");
 				Text.listInvScrolls();
@@ -593,9 +591,9 @@ public class Commands {
 					break;
 				}
 				if(n < Game.player.inv.size() && n >= 0){						
-					if(Game.player.inv.get(n).isGem){
+					if(Game.player.inv.get(n).hasTag("gem")){
 						g = Game.player.inv.get(n);
-						if(a.isEnchanted){
+						if(a.hasTag("enchanted")){
 							Game.player.addItem(MagicItem.improveEnchant(a));
 						}else{
 							Game.player.addItem(MagicItem.playerEnchant(a, s, g));

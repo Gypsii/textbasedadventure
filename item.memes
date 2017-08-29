@@ -99,7 +99,8 @@ Weapons
 	[DAMAGE:16]
 	[SWINGSPEED:0.9]
 	[DAMAGETYPE:slash]
-	[POLEARM:true]
+	[TAG:polearm]
+	[TAG:glaive]
 	[DESCRIPTION:It's really just a butter knife tied to a stick.]
 }
 
@@ -109,7 +110,8 @@ Weapons
 	[SWINGSPEED:0.9]
 	[DAMAGETYPE:slash]
 	[COST:129]
-	[POLEARM:true]
+	[TAG:polearm]
+	[TAG:glaive]
 }
 
 {[ITEM:glaiveCopper]
@@ -118,7 +120,8 @@ Weapons
 	[SWINGSPEED:0.9]
 	[DAMAGETYPE:slash]
 	[COST:200]
-	[POLEARM:true]
+	[TAG:polearm]
+	[TAG:glaive]
 }
 
 {[ITEM:glaiveBronze]
@@ -127,7 +130,7 @@ Weapons
 	[SWINGSPEED:0.9]
 	[DAMAGETYPE:slash]
 	[COST:429]
-	[POLEARM:true]
+	[TAG:polearm]
 }
 
 {[ITEM:glaiveIron]
@@ -135,7 +138,8 @@ Weapons
 	[DAMAGE:36]
 	[SWINGSPEED:0.9]
 	[DAMAGETYPE:slash]
-	[POLEARM:true]
+	[TAG:polearm]
+	[TAG:glaive]
 	[COST:781]
 	[PREFIX:an]
 }
@@ -146,7 +150,8 @@ Weapons
 	[SWINGSPEED:0.9]
 	[DAMAGETYPE:slash]
 	[COST:1252]
-	[POLEARM:true]
+	[TAG:polearm]
+	[TAG:glaive]
 }
 
 {[ITEM:maceRusted]
@@ -155,6 +160,7 @@ Weapons
 	[SWINGSPEED:1.1]
 	[DAMAGETYPE:blunt]
 	[COST:100]
+	[TAG:mace]
 }
 
 {[ITEM:maceCopper]
@@ -163,6 +169,7 @@ Weapons
 	[SWINGSPEED:1.1]
 	[DAMAGETYPE:blunt]
 	[COST:179]
+	[TAG:mace]
 }
 
 {[ITEM:maceBronze]
@@ -171,6 +178,7 @@ Weapons
 	[SWINGSPEED:1.1]
 	[DAMAGETYPE:blunt]
 	[COST:398]
+	[TAG:mace]
 }
 
 {[ITEM:maceIron]
@@ -180,6 +188,7 @@ Weapons
 	[DAMAGETYPE:blunt]
 	[PREFIX:an]
 	[COST:666]
+	[TAG:mace]
 }
 
 {[ITEM:spearFlint]
@@ -187,7 +196,8 @@ Weapons
 	[DAMAGE:16]
 	[SWINGSPEED:1]
 	[DAMAGETYPE:pierce]
-	[POLEARM:true]
+	[TAG:polearm]
+	[TAG:spear]
 }
 
 {[ITEM:spearFork]
@@ -195,7 +205,8 @@ Weapons
 	[DAMAGE:16]
 	[SWINGSPEED:1]
 	[DAMAGETYPE:pierce]
-	[POLEARM:true]
+	[TAG:polearm]
+	[TAG:spear]
 	[DESCRIPTION:A fork tied to the end of a stick.]
 }
 
@@ -204,7 +215,8 @@ Weapons
 	[DAMAGE:21]
 	[SWINGSPEED:1]
 	[DAMAGETYPE:pierce]
-	[POLEARM:true]
+	[TAG:polearm]
+	[TAG:spear]
 	[COST:95]
 }
 
@@ -213,7 +225,8 @@ Weapons
 	[DAMAGE:25]
 	[SWINGSPEED:1]
 	[DAMAGETYPE:pierce]
-	[POLEARM:true]
+	[TAG:polearm]
+	[TAG:spear]
 	[COST:169]
 }
 
@@ -223,6 +236,8 @@ Weapons
 	[SWINGSPEED:1]
 	[DAMAGETYPE:pierce]
 	[COST:327]
+	[TAG:polearm]
+	[TAG:spear]
 }
 
 {[ITEM:spearIron]
@@ -232,7 +247,8 @@ Weapons
 	[DAMAGETYPE:pierce]
 	[COST:587]
 	[PREFIX:an]
-	[POLEARM:true]
+	[TAG:polearm]
+	[TAG:spear]
 }
 
 {[ITEM:spearSteel]
@@ -241,7 +257,8 @@ Weapons
 	[SWINGSPEED:1]
 	[DAMAGETYPE:pierce]
 	[COST:800]
-	[POLEARM:true]
+	[TAG:polearm]
+	[TAG:spear]
 }
 
 {[ITEM:pikeRusted]
@@ -250,7 +267,8 @@ Weapons
 	[SWINGSPEED:1.3]
 	[DAMAGETYPE:pierce]
 	[COST:109]
-	[POLEARM:true]
+	[TAG:polearm]
+	[TAG:pike]
 }
 
 {[ITEM:pikeCopper]
@@ -259,7 +277,8 @@ Weapons
 	[SWINGSPEED:1.3]
 	[DAMAGETYPE:pierce]
 	[COST:186]
-	[POLEARM:true]
+	[TAG:polearm]
+	[TAG:pike]
 }
 
 {[ITEM:pikeBronze]
@@ -268,7 +287,8 @@ Weapons
 	[SWINGSPEED:1.3]
 	[DAMAGETYPE:pierce]
 	[COST:400]
-	[POLEARM:true]
+	[TAG:polearm]
+	[TAG:pike]
 }
 
 {[ITEM:pikeIron]
@@ -278,7 +298,8 @@ Weapons
 	[DAMAGETYPE:pierce]
 	[COST:713]
 	[PREFIX:an]
-	[POLEARM:true]
+	[TAG:polearm]
+	[TAG:pike]
 }
 
 {[ITEM:pikeSteel]
@@ -287,7 +308,7 @@ Weapons
 	[SWINGSPEED:1.3]
 	[DAMAGETYPE:pierce]
 	[COST:1168]
-	[POLEARM:true]
+	[TAG:polearm]
 }
 
 {[ITEM:sswordRusted]
@@ -296,7 +317,8 @@ Weapons
 	[SWINGSPEED:0.7]
 	[DAMAGETYPE:slash]
 	[COST:145]
-	[SWORD:true]
+	[TAG:sword]
+	[TAG:shortsword]
 }
 
 {[ITEM:sswordCopper]
@@ -305,7 +327,8 @@ Weapons
 	[SWINGSPEED:0.7]
 	[DAMAGETYPE:slash]
 	[COST:243]
-	[SWORD:true]
+	[TAG:sword]
+	[TAG:shortsword]
 	[DESCRIPTION:Sword: short edition.]
 }
 
@@ -315,7 +338,8 @@ Weapons
 	[SWINGSPEED:0.7]
 	[DAMAGETYPE:slash]
 	[COST:535]
-	[SWORD:true]
+	[TAG:sword]
+	[TAG:shortsword]
 }
 
 {[ITEM:sswordIron]
@@ -325,7 +349,7 @@ Weapons
 	[DAMAGETYPE:slash]
 	[COST:940]
 	[PREFIX:an]
-	[SWORD:true]
+	[TAG:sword]
 }
 
 {[ITEM:sswordSteel]
@@ -334,7 +358,8 @@ Weapons
 	[SWINGSPEED:0.7]
 	[DAMAGETYPE:slash]
 	[COST:1560]
-	[SWORD:true]
+	[TAG:sword]
+	[TAG:shortsword]
 }
 
 {[ITEM:lswordRusted]
@@ -343,7 +368,8 @@ Weapons
 	[SWINGSPEED:1]
 	[DAMAGETYPE:slash]
 	[COST:176]
-	[SWORD:true]
+	[TAG:sword]
+	[TAG:longsword]
 }
 
 {[ITEM:lswordCopper]
@@ -352,7 +378,8 @@ Weapons
 	[SWINGSPEED:1]
 	[DAMAGETYPE:slash]
 	[COST:299]
-	[SWORD:true]
+	[TAG:sword]
+	[TAG:longsword]
 	[DESCRIPTION:Like a sword, but longer.]
 }
 
@@ -362,7 +389,8 @@ Weapons
 	[SWINGSPEED:1]
 	[DAMAGETYPE:slash]
 	[COST:649]
-	[SWORD:true]
+	[TAG:sword]
+	[TAG:longsword]
 	[DESCRIPTION:Sword: extended edition.]
 }
 
@@ -373,7 +401,8 @@ Weapons
 	[PREFIX:an]
 	[DAMAGETYPE:slash]
 	[COST:1095]
-	[SWORD:true]
+	[TAG:sword]
+	[TAG:longsword]
 }
 
 {[ITEM:lswordSteel]
@@ -382,7 +411,8 @@ Weapons
 	[SWINGSPEED:1]
 	[DAMAGETYPE:slash]
 	[COST:1740]
-	[SWORD:true]
+	[TAG:sword]
+	[TAG:longsword]
 }
 
 {[ITEM:axeRusted]
@@ -391,6 +421,7 @@ Weapons
 	[SWINGSPEED:1.3]
 	[DAMAGETYPE:slash]
 	[COST:139]
+	[TAG:axe]
 }
 
 {[ITEM:axeCopper]
@@ -399,6 +430,7 @@ Weapons
 	[SWINGSPEED:1.3]
 	[DAMAGETYPE:slash]
 	[COST:240]
+	[TAG:axe]
 }
 
 {[ITEM:axeBronze]
@@ -407,6 +439,7 @@ Weapons
 	[SWINGSPEED:1.3]
 	[DAMAGETYPE:slash]
 	[COST:515]
+	[TAG:axe]
 	[DESCRIPTION:Chop chop.]
 }
 
@@ -416,6 +449,7 @@ Weapons
 	[SWINGSPEED:1.3]
 	[DAMAGETYPE:slash]
 	[COST:915]
+	[TAG:axe]
 	[PREFIX:an]
 }
 
@@ -425,6 +459,7 @@ Weapons
 	[SWINGSPEED:1.3]
 	[DAMAGETYPE:slash]
 	[COST:1546]
+	[TAG:axe]
 }
 
 {[ITEM:spearheadRusted]
@@ -591,6 +626,8 @@ Weapons
 	[DAMAGE:60]
 	[SWINGSPEED:1]
 	[DAMAGETYPE:slash]
+	[TAG:longsword]
+	[TAG:sword]
 }
 
 {[ITEM:lswordDemonFlame]
@@ -598,6 +635,8 @@ Weapons
 	[DAMAGE:60]
 	[SWINGSPEED:1]
 	[DAMAGETYPE:slash]
+	[TAG:longsword]
+    [TAG:sword]
 	[DESCRIPTION:On fire.]
 }
 
@@ -606,6 +645,8 @@ Weapons
 	[DAMAGE:60]
 	[SWINGSPEED:1]
 	[DAMAGETYPE:slash]
+	[TAG:longsword]
+    [TAG:sword]
 	[DESCRIPTION:Bound to the wielder by dark magics.]
 }
 
@@ -621,6 +662,8 @@ Weapons
 	[DAMAGE:80]
 	[SWINGSPEED:0.9]
 	[DAMAGETYPE:slash]
+	[TAG:longsword]
+    [TAG:sword]
 	[DESCRIPTION:Like a sword, but better]
 }
 
@@ -629,6 +672,8 @@ Weapons
 	[DAMAGE:130]
 	[SWINGSPEED:0.8]
 	[DAMAGETYPE:slash]
+	[TAG:longsword]
+    [TAG:sword]
 }
 
 {[ITEM:lswordSlimeFire]
@@ -636,6 +681,8 @@ Weapons
 	[DAMAGE:28]
 	[SWINGSPEED:1]
 	[DAMAGETYPE:slash]
+	[TAG:longsword]
+    [TAG:sword]
 }
 
 {[ITEM:lswordSlimeIce]
@@ -643,6 +690,8 @@ Weapons
 	[DAMAGE:28]
 	[SWINGSPEED:1]
 	[DAMAGETYPE:slash]
+	[TAG:longsword]
+    [TAG:sword]
 }
 
 {[ITEM:lswordSlimeVolatile]
@@ -650,6 +699,8 @@ Weapons
 	[DAMAGE:28]
 	[SWINGSPEED:1]
 	[DAMAGETYPE:slash]
+	[TAG:longsword]
+    [TAG:sword]
 }
 
 {[ITEM:spiderbane]
@@ -712,6 +763,7 @@ Weapons
 	[DAMAGE:10]
 	[SWINGSPEED:0.8]
 	[DAMAGETYPE:slash]
+	[PREFIX:some]
 	[COST:3.5]
 	[DESCRIPTION:Sharp around the edges.]
 }
@@ -727,24 +779,28 @@ Weapons
 	[NAME:White Feather]
 	[COST:2]
 	[DESCRIPTION:Plumage from a snowy bird.]
+	[TAG:feather]
 }
 
 {[ITEM:feather]
 	[NAME:Brown Feather]
 	[COST:2]
 	[DESCRIPTION:Boring brown feather.]
+	[TAG:feather]
 }
 
 {[ITEM:featherCrow]
 	[NAME:Black Feather]
 	[COST:2]
 	[DESCRIPTION:As black as night.]
+	[TAG:feather]
 }
 
 {[ITEM:featherWarm]
 	[NAME:Colourful Feather]
 	[COST:3]
 	[DESCRIPTION:Full of colours.]
+	[TAG:feather]
 }
 
 {[ITEM:hideWalrus]
@@ -776,12 +832,14 @@ Weapons
 	[COST:7]
 	[PREFIX:some]
 	[DESCRIPTION:Stronger than steel by weight.]
+	[TAG:string]
 }
 
 {[ITEM:string]
 	[NAME:Twine]
 	[COST:4]
 	[PREFIX:some]
+	[TAG:string]
 }
 
 {[ITEM:flax]
@@ -816,48 +874,56 @@ Weapons
 	[PREFIX:some]
 	[DESCRIPTION:Sticks things together.]
 	[COST:6.5]
+	[TAG:adhesive]
+	[TAG:string]
 }
 
 {[ITEM:ruby]
 	[NAME:Ruby]
-	[GEM:true]
+	[TAG:gem]
 	[COST:200]
 	[DESCRIPTION:Sparkly and red.]
 }
 
 {[ITEM:emerald]
 	[NAME:Emerald]
-	[GEM:true]
+	[TAG:gem]
 	[COST:200]
 	[DESCRIPTION:Sparkly and green.]
 }
 
 {[ITEM:sapphire]
 	[NAME:Sapphire]
-	[GEM:true]
+	[TAG:gem]
 	[COST:200]
 	[DESCRIPTION:Sparkly and blue.]
 }
 
 {[ITEM:diamond]
 	[NAME:Diamond]
-	[GEM:true]
+	[TAG:gem]
 	[COST:200]
 	[DESCRIPTION:Sparkly.]
 }
 
 {[ITEM:amethyst]
 	[NAME:Amethyst]
-	[GEM:true]
+	[TAG:gem]
 	[COST:200]
 	[DESCRIPTION:Sparkly and purple.]
 }
 
 {[ITEM:citrine]
 	[NAME:Topaz]
-	[GEM:true]
+	[TAG:gem]
 	[COST:200]
 	[DESCRIPTION:Sparkly and yellow.]
+}
+
+{[ITEM:obsidian]
+	[NAME:Shard of Obsidian]
+	[COST:50]
+	[DESCRIPTION:Very sharp around the edges.]
 }
 
 {[ITEM:baby]
@@ -897,6 +963,7 @@ Weapons
 	[NAME:Adhesive Slime]
 	[COST:10]
 	[PREFIX:some]
+	[TAG:adhesive]
 	[DESCRIPTION:Sticks to your hands.]
 }
 

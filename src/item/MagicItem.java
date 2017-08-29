@@ -2,9 +2,7 @@ package item;
 
 import java.util.ArrayList;
 
-import main.ArmourPassive;
 import main.Game;
-import main.OnHit;
 
 public class MagicItem {
 	public static final int RES_BURN = 0;
@@ -46,8 +44,6 @@ public class MagicItem {
 		magicA.enchantLvl = level;
 		magicA.enchantType = effect;
 		magicA.name = Item.item(magicA.id).name;//Resets name, effects, and passives to those of the base item
-		magicA.effects = Item.item(magicA.id).effects;
-		magicA.passives = Item.item(magicA.id).passives;
 		if(level <= 0){
 			level = 0;
 			magicA.name = magicA.name + " of Literally Zero ";
@@ -101,52 +97,52 @@ public class MagicItem {
 			magicA.resists[Game.DMG_MAGIC] += level * 2;
 			magicA.name = magicA.name + "Magic Resist";
 			break;
-		case  CRIT:
-			magicA.passives.add(new ArmourPassive(ArmourPassive.CRIT, level * 5));
-			magicA.name = magicA.name + "Critical Chance";
-			break;
-		case  CRIT_DMG:
-			magicA.passives.add(new ArmourPassive(ArmourPassive.CRIT_DMG, level * 2));
-			magicA.name = magicA.name + "True Strikes";
-			break;
-		case  HIT_SHOCK:
-			magicA.effects.add(new OnHit(OnHit.LIGHTNING, level * 2));
-			magicA.name = magicA.name + "Arcing";
-			break;
-		case  HIT_BURN:
-			magicA.effects.add(new OnHit(OnHit.BURN, level * 2));
-			magicA.name = magicA.name + "Burning";
-			break;
-		case  HIT_COLD:
-			magicA.effects.add(new OnHit(OnHit.COLD, level * 2));
-			magicA.name = magicA.name + "Freezing";
-			break;
-		case  HIT_SHRED_BLUNT:
-			magicA.effects.add(new OnHit(OnHit.SHRED_BLUNT, level * 2, 2));
-			magicA.name = magicA.name + "Amplify Blunt";
-			break; 
-		case  HIT_SHRED_SLASH:							
-			magicA.effects.add(new OnHit(OnHit.SHRED_SLASH, level * 2, 2));	
-			magicA.name = magicA.name + "Amplify Slashing";				
-			break; 
-		case  HIT_SHRED_PIERCE:
-			magicA.effects.add(new OnHit(OnHit.SHRED_PIERCE, level * 2, 2));
-			magicA.name = magicA.name + "Amplify Piercing";
-			break;
-		case  HIT_SHRED_BURN:								
-			magicA.effects.add(new OnHit(OnHit.SHRED_BURN, level * 2, 2));
-			magicA.name = magicA.name + "Amplify Burns";				
-			break;
-		case  HIT_SHRED_COLD:
-			magicA.effects.add(new OnHit(OnHit.SHRED_COLD, level * 2, 2));
-			magicA.name = magicA.name + "Amplify Cold";
-			break;
-		case  HIT_SHRED_MAGIC:
-			magicA.effects.add(new OnHit(OnHit.SHRED_MAGIC, level * 2, 2));
-			magicA.name = magicA.name + "Amplify Magic";
-			break;
+//		case  CRIT:
+//			magicA.passives.add(new ArmourPassive(ArmourPassive.CRIT, level * 5));
+//			magicA.name = magicA.name + "Critical Chance";
+//			break;
+//		case  CRIT_DMG:
+//			magicA.passives.add(new ArmourPassive(ArmourPassive.CRIT_DMG, level * 2));
+//			magicA.name = magicA.name + "True Strikes";
+//			break;
+//		case  HIT_SHOCK:
+//			magicA.effects.add(new OnHit(OnHit.LIGHTNING, level * 2));
+//			magicA.name = magicA.name + "Arcing";
+//			break;
+//		case  HIT_BURN:
+//			magicA.effects.add(new OnHit(OnHit.BURN, level * 2));
+//			magicA.name = magicA.name + "Burning";
+//			break;
+//		case  HIT_COLD:
+//			magicA.effects.add(new OnHit(OnHit.COLD, level * 2));
+//			magicA.name = magicA.name + "Freezing";
+//			break;
+//		case  HIT_SHRED_BLUNT:
+//			magicA.effects.add(new OnHit(OnHit.SHRED_BLUNT, level * 2, 2));
+//			magicA.name = magicA.name + "Amplify Blunt";
+//			break;
+//		case  HIT_SHRED_SLASH:
+//			magicA.effects.add(new OnHit(OnHit.SHRED_SLASH, level * 2, 2));
+//			magicA.name = magicA.name + "Amplify Slashing";
+//			break;
+//		case  HIT_SHRED_PIERCE:
+//			magicA.effects.add(new OnHit(OnHit.SHRED_PIERCE, level * 2, 2));
+//			magicA.name = magicA.name + "Amplify Piercing";
+//			break;
+//		case  HIT_SHRED_BURN:
+//			magicA.effects.add(new OnHit(OnHit.SHRED_BURN, level * 2, 2));
+//			magicA.name = magicA.name + "Amplify Burns";
+//			break;
+//		case  HIT_SHRED_COLD:
+//			magicA.effects.add(new OnHit(OnHit.SHRED_COLD, level * 2, 2));
+//			magicA.name = magicA.name + "Amplify Cold";
+//			break;
+//		case  HIT_SHRED_MAGIC:
+//			magicA.effects.add(new OnHit(OnHit.SHRED_MAGIC, level * 2, 2));
+//			magicA.name = magicA.name + "Amplify Magic";
+//			break;
 		}
-		magicA.isEnchanted = true;
+		magicA.addTag("enchanted");
 		magicA.name = "<purple>" + magicA.name + "<r>";
 		return magicA;
 	}

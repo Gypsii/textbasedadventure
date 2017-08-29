@@ -23,12 +23,6 @@ public class Zone {
 	public boolean containsEgg = false;//TODO find a better way of doing this that would work for any item
 	public boolean isFinalZone = false;
 	
-	public static Zone generateZone2(int diff, int temp, ArrayList<Integer> slimeTypes){
-		Zone zone = new Zone();
-		
-		return zone;
-	}
-	
 	public static Zone generateZone(int diff, int temp, ArrayList<Integer> slimeTypes){
 		Random r = new Random();
 		temp += r.nextGaussian() * 2;
@@ -328,13 +322,13 @@ public class Zone {
 			zone.addCreature(new SpiceTrader());
 			break;
 		case 5:
-			if(Math.random() < 0.4){zone.addItem("slimeSticky");}
-			if(Math.random() < 0.3){zone.addItem("featherSnow");}
-			if(Math.random() < 0.3){zone.addItem("feather");}
-			if(Math.random() < 0.3){zone.addItem("featherWarm");}
-			if(Math.random() < 0.5){zone.addItem("flint");}
-			if(Math.random() < 0.5){zone.addItem("stick");}
-			if(Math.random() < 0.4){zone.addItem("string");}
+			if(Math.random() < 0.5){zone.addItem("slimeSticky");}
+			if(Math.random() < 0.4){zone.addItem("featherSnow");}
+			if(Math.random() < 0.4){zone.addItem("feather");}
+			if(Math.random() < 0.4){zone.addItem("featherWarm");}
+			if(Math.random() < 0.6){zone.addItem("flint");}
+			if(Math.random() < 0.6){zone.addItem("stick");}
+			if(Math.random() < 0.6){zone.addItem("string");}
 			if(Math.random() < 0.4){zone.addItem("flax");}
 			zone.addItem(Item.randomGem());
 			break;

@@ -1,12 +1,11 @@
 package util;
 
 import main.Game;
-import main.OnHit;
 import main.Skillset;
 import creatures.AttackPattern;
 import creatures.Creature;
 
-public class DamageHandler {
+public class AttackHandler {
 
 	public static String getVerb(int damageType){
 		switch(damageType){
@@ -26,7 +25,6 @@ public class DamageHandler {
 	}
 	
 	public static double attack(Creature attacker, Creature target, AttackPattern attackPattern){
-		target.checkBuffs(attacker.nextActionTime);
 		int damage = 0;
 		int damageType = 0;
 		double duration = 1;
@@ -75,31 +73,15 @@ public class DamageHandler {
 				attacker.skills.incrementSkill(Skillset.PIERCE, 8);
 				break;
 			}
-			if(attacker.equipped.isPolearm){
+			if(attacker.equipped.hasTag("polearm")){
 				attacker.skills.incrementSkill(Skillset.POLE, 8);
 			}
-			if(attacker.equipped.isSword){
+			if(attacker.equipped.hasTag("sword")){
 				attacker.skills.incrementSkill(Skillset.SWORD, 8);
 			}
 		}
 		target.aggravateTrigger(attacker);
-		
-		//Game.player.target = c;
-		for(OnHit o : attacker.equipped.effects){
-			attacker.applyOnHit(o);
-		}
-		for(OnHit o : attacker.armourChest.effects){
-			attacker.applyOnHit(o);
-		}
-		for(OnHit o : attacker.ring.effects){
-			attacker.applyOnHit(o);
-		}
-		for(OnHit o : attacker.hat.effects){
-			attacker.applyOnHit(o);
-		}
-		for(OnHit o : attacker.cloak.effects){
-			attacker.applyOnHit(o);
-		}
+
 		return duration;
 	}
 	

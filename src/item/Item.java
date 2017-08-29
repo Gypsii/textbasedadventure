@@ -1,12 +1,12 @@
 package item;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.TreeMap;
 
 import util.IO;
-import main.ArmourPassive;
 import main.Game;
-import main.OnHit;
 
 public class Item {
 	public static TreeMap<String, Item> items = new TreeMap<String, Item>();
@@ -21,24 +21,24 @@ public class Item {
 	public String prefix = "a"; 
 	public int armourType = 0;
 	public double cost = -1;
-	
-	public boolean isPotion = false;
-	public boolean isFood = false;
-	public boolean isGem = false;
-	public boolean isPolearm = false;
-	public boolean isSword = false;
-	public boolean isCurrency = false;
+
+	//TODO set of tags rather than a billion booleans
+	public Set<ItemTag> tags = new HashSet<>();
+
+//	public boolean isFood = false;
+//	public boolean isGem = false;
+//	public boolean isPolearm = false;
+//	public boolean isSword = false;
+//	public boolean isEnchanted = false;
+
 	public boolean isStackable = true;
-	public boolean isEnchanted = false;
+	public int healthRestore = 0;
 	public int enchantLvl = 0;
 	public int enchantType = 0;
 	public boolean isIngredient = false;
-	public ArrayList<OnHit> effects = new ArrayList<OnHit>();
 		
 	
 	public int resists[] = new int[Game.DMG_TYPE_COUNT];
-
-	public ArrayList<ArmourPassive> passives = new ArrayList<ArmourPassive>();
 	
 	
 	public Item(String n, int damage, int type, double speed, String pref){//"Weapon" with prefix
@@ -51,6 +51,34 @@ public class Item {
 	
 	public Item(){
 		
+	}
+
+	public boolean hasTag(String tag){
+		return hasTag(ItemTag.tag(tag));
+	}
+
+	public boolean hasTag(ItemTag tag){
+		return tags.contains(tag);
+	}
+
+	public void addTag(String tag){
+		addTag(ItemTag.tag(tag));
+	}
+
+	public void addTag(ItemTag tag){
+		tags.add(tag);
+	}
+
+	public boolean removeTag(String tag){
+		return removeTag(ItemTag.tag(tag));
+	}
+
+	public boolean removeTag(ItemTag tag){
+		if(hasTag(tag)) {
+			tags.remove(tag);
+			return true;
+		}
+		return false;
 	}
 	
 	public String getNameWithCount(){
@@ -67,13 +95,10 @@ public class Item {
 		i.isIngredient = this.isIngredient;
 		i.count = this.count;
 		i.cost = this.cost;
-		i.isGem = this.isGem;
-		i.isPolearm = this.isPolearm;
-		i.isEnchanted = this.isEnchanted;
+		i.healthRestore = this.healthRestore;
+		i.tags.addAll(this.tags);
 		i.enchantLvl = this.enchantLvl;
 		i.enchantType = this.enchantType;
-		i.effects.addAll(this.effects);
-		i.passives.addAll(this.passives);
 		i.resists = this.resists.clone();
 		i.description = this.description;
 		return i;
@@ -121,32 +146,7 @@ public class Item {
 		IO.printHorizontalLine();
 	}
 	
-	public static void doItems() {//TODO get this stuff in the file
-		
-		item("slimeFire").effects.add(new OnHit(OnHit.BURN, 2));
-		item("slimeIce").effects.add(new OnHit(OnHit.COLD, 2));
-		item("icicle").effects.add(new OnHit(OnHit.COLD, 2));
-		item("fungus").effects.add(new OnHit(OnHit.MAGIC, 4));
-		item("spiderbane").effects.add(new OnHit(OnHit.FEARSPIDERS, 2));
-
-		item("lswordSlimeFire").effects.add(new OnHit(OnHit.BURN, 8));
-		item("lswordSlimeIce").effects.add(new OnHit(OnHit.COLD, 8));
-		//lswordSlimeVolatile.effects.add(new OnHit(OnHit.BURN, 4));
-		
-		item("lswordDemonFlame").effects.add(new OnHit(OnHit.BURN, 8));
-		item("lswordDemonMagic").effects.add(new OnHit(OnHit.MAGIC, 16));
-		item("lswordDemonMagic").effects.add(new OnHit(OnHit.SELFDMG, 8));
-		item("lswordDemonTap").effects.add(new OnHit(OnHit.SELFHEAL, 4));
-		
-		item("elementalCoreFire").effects.add(new OnHit(OnHit.BURN, 16));
-		item("elementalCoreIce").effects.add(new OnHit(OnHit.COLD, 16));
-		item("elementalCoreAir").effects.add(new OnHit(OnHit.LIGHTNING, 8));
-		
-//		cloakCritDmg.passives.add(new ArmourPassive(ArmourPassive.CRIT_DMG, 25));
-//		cloakCritDmg.passives.add(new ArmourPassive(ArmourPassive.CRIT, 25));
-	}
-	
-	public static Item randomGem(){
+	public static Item randomGem(){//TODO do this from tags
 		double rand = Math.random();
 		if(rand < 0.166){
 			return item("emerald");

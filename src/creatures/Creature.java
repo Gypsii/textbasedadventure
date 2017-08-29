@@ -4,10 +4,7 @@ import item.Item;
 
 import java.util.*;
 
-import main.ArmourPassive;
-import main.Buff;
 import main.Game;
-import main.OnHit;
 import main.Skillset;
 import main.Zone;
 import util.*;
@@ -50,9 +47,6 @@ public class Creature {
 	static Comparator<TargetPair> targetComparator = new TargetComparator();
 	public PriorityQueue<TargetPair> targetQueue = new PriorityQueue<TargetPair>(targetComparator);
 	public HashMap<Creature, TargetPair> targetMap = new HashMap<Creature, TargetPair>();
-
-	static Comparator<Buff> buffComparator = new BuffComparator();
-	public HashMap<Integer, PriorityQueue<Buff>> buffs = new HashMap<Integer, PriorityQueue<Buff>>();
 
 	public ArrayList<Item> inv = new ArrayList<Item>();
 	public ArrayList<Item> butcherInv = new ArrayList<Item>();
@@ -263,7 +257,6 @@ public class Creature {
 
 	//Overwriting this one is not recommended
 	public double takeTurn() {
-		checkBuffs(nextActionTime);
 		if (conditions.contains(Condition.SLEEPING)) {
 			return 0.2;
 		}
@@ -278,7 +271,7 @@ public class Creature {
 				if (target.isAlive()) {
 					if (p.weight > 0) {
 						AttackPattern ap = decideAttackPattern();
-						return DamageHandler.attack(this, target, ap);
+						return AttackHandler.attack(this, target, ap);
 					} else {
 						break;
 					}
@@ -377,10 +370,10 @@ public class Creature {
 				weaponDmg += (skills.pierceLvl - 1) * (equipped.swingTime * dmgPerLvl);
 				break;
 		}
-		if (equipped.isPolearm) {
+		if (equipped.hasTag("polearm")) {
 			weaponDmg += (skills.poleLvl - 1) * (equipped.swingTime * dmgPerLvl);
 		}
-		if (equipped.isSword) {
+		if (equipped.hasTag("sword")) {
 			weaponDmg += (skills.swordLvl - 1) * (equipped.swingTime * dmgPerLvl);
 		}
 		weaponDmg = Math.min(weaponDmg, equipped.dmg * 2);
@@ -545,12 +538,12 @@ public class Creature {
 	}
 
 	/**
-	 * Removes the first occurence of the item at the specified index from the inventory of this
+	 * Removes the first occurrence of the item at the specified index from the inventory of this
 	 * creature. If this creature does not contain the item, it is unchanged.
 	 * If this creature has this item equipped, it will be unequipped.
 	 * <p>
 	 * Note that in ordinary circumstances, duplicates can but do not necessarily occur with
-	 * stackable items that are identical. In this case, the first occurence will be removed,
+	 * stackable items that are identical. In this case, the first occurrence will be removed,
 	 * regardless of whether it is at the specified index.
 	 *
 	 * @param i
@@ -560,12 +553,12 @@ public class Creature {
 	}
 
 	/**
-	 * Removes the first occurence of the specified {@code Item} from the inventory of this
+	 * Removes the first occurrence of the specified {@code Item} from the inventory of this
 	 * creature. If this creature does not contain the item, it is unchanged.
 	 * If this creature has this item equipped, it will be unequipped.
 	 * <p>
 	 * Note that in ordinary circumstances, duplicates can but do not necessarily occur with
-	 * stackable items that are identical. In this case, the first occurence will be removed.
+	 * stackable items that are identical. In this case, the first occurrence will be removed.
 	 *
 	 * @param i
 	 */
@@ -627,7 +620,7 @@ public class Creature {
 	 * specified chance of success.
 	 *
 	 * @param i           the id of the item to add
-	 * @param successRate the chance of succes
+	 * @param successRate the chance of success
 	 */
 	public void addBodyPart(String i, double successRate) {
 		addBodyPart(Item.item(i), successRate);
@@ -638,7 +631,7 @@ public class Creature {
 	 * specified chance of success.
 	 *
 	 * @param i           the item to add
-	 * @param successRate the chance of succes
+	 * @param successRate the chance of success
 	 */
 	public void addBodyPart(Item i, double successRate) {
 		Item item = i.clone();
@@ -809,80 +802,6 @@ public class Creature {
 
 	}
 
-	public void applyOnHit(OnHit onHits) {
-		IO.println("(onhits disabled)");
-//		DamageHandler;
-//		if(onHits.type == OnHit.BURN){
-//			target.takeBurnDamage(onHits.potency);
-//			if(target == Game.player){
-//				IO.println("You were burnt for " + Math.max(0, onHits.potency - target.burnArmour) + " damage, leaving you on " + Math.max(0, target.hp) + " hp");
-//			}
-//		}else if(onHits.type == OnHit.COLD){
-//			target.takeColdDamage(onHits.potency);
-//			if(target == Game.player){
-//				IO.println("You took " + Math.max(0, onHits.potency - target.coldArmour) + " damage from the cold, leaving you on " + Math.max(0, target.hp) + " hp");
-//			}
-//		}else if(onHits.type == OnHit.MAGIC){
-//			target.takeMagicDamage(onHits.potency);
-//			if(target == Game.player){
-//				IO.println("You took " + Math.max(0, onHits.potency - target.magicArmour) + " magic damage, leaving you on " + Math.max(0, target.hp) + " hp");
-//			}
-//		}else if(onHits.type == OnHit.LIGHTNING){
-//			target.takeMagicDamage(onHits.potency);
-//			if(target == Game.player){
-//				IO.println("You took " + Math.max(0, onHits.potency - target.magicArmour) + " magic damage from the lightning, leaving you on " + Math.max(0, target.hp) + " hp");
-//			}
-//		}else if(onHits.type == OnHit.SELFHEAL){
-//			if(true){//TODO check for if it was dead before you hit it
-//				hp += onHits.potency;
-//				hp = Math.min(hp, maxHp);
-//				if(this == Game.player){
-//					IO.println("You were healed for " + onHits.potency + " damage, healing you to " + hp + " hp");
-//				}else{
-//					IO.println("The " + name + " healed for " + onHits.potency + " damage, healing it to " + Math.min(maxHp, hp) + " hp");
-//				}
-//			}
-//		}else if(onHits.type == OnHit.SELFDMG){
-//			takeMagicDamage(onHits.potency);
-//			if(this == Game.player){
-//				IO.println("The weapon drained your health by " + onHits.potency + ", leaving you on " + Math.max(hp, 0) + " hp");
-//			}else{
-//				IO.println("The " + name + " took " + onHits.potency + " damage from its weapon, leaving it on " + Math.min(maxHp, hp) + " hp");
-//			}
-//		}else if(onHits.type == OnHit.FEARSPIDERS){
-//			Creature c;
-//			boolean foundSpider = false;
-//			for(int j = 0; j < Game.zone.creatures.size(); j++){
-//				c = Game.zone.creatures.get(j);
-//				if(c.tags.contains(CreatureTag.spider)){
-//					c.courage -= onHits.potency * 2;
-//					foundSpider = true;
-//				}
-//			}
-//			if(foundSpider){
-//				IO.println("All spiders lose courage!");
-//			}
-//		}else if(onHits.type == OnHit.SHRED_BLUNT){
-//			target.addBuff(new Buff(Buff.SHRED_BLUNT, onHits.potency, nextActionTime + onHits.duration));
-//			
-//		}else if(onHits.type == OnHit.SHRED_PIERCE){
-//			target.addBuff(new Buff(Buff.SHRED_PIERCE, onHits.potency, nextActionTime + onHits.duration));
-//			
-//		}else if(onHits.type == OnHit.SHRED_SLASH){
-//			target.addBuff(new Buff(Buff.SHRED_SLASH, onHits.potency, nextActionTime + onHits.duration));
-//			IO.println("<green>Reducing slash resist<r>");
-//			
-//		}else if(onHits.type == OnHit.SHRED_BURN){
-//			target.addBuff(new Buff(Buff.SHRED_BURN, onHits.potency, nextActionTime + onHits.duration));
-//			
-//		}else if(onHits.type == OnHit.SHRED_COLD){
-//			target.addBuff(new Buff(Buff.SHRED_COLD, onHits.potency, nextActionTime + onHits.duration));
-//			
-//		}else if(onHits.type == OnHit.SHRED_MAGIC){
-//			target.addBuff(new Buff(Buff.SHRED_MAGIC, onHits.potency, nextActionTime + onHits.duration));
-//		}
-	}
-
 	public void refreshArmour() {
 		critChance = baseCritChance;
 		critDmg = baseCritDmg;
@@ -893,178 +812,6 @@ public class Creature {
 			resists[i] += cloak.resists[i];
 			resists[i] += hat.resists[i];
 		}
-
-		applyArmourPassive(armourChest);
-		applyArmourPassive(ring);
-		applyArmourPassive(cloak);
-		applyArmourPassive(hat);
 	}
 
-	public void applyArmourPassive(Item a) {
-		for (int i = 0; i < a.passives.size(); i++) {
-			ArmourPassive p = a.passives.get(i);
-			if (p.type == ArmourPassive.CRIT) {
-				critChance += (double) p.potency / 100;
-			} else if (p.type == ArmourPassive.CRIT_DMG) {
-				critDmg += (double) p.potency / 100;
-			}
-		}
-	}
-
-	public void addBuff(Buff b) {
-		if (buffs.containsKey(b.type)) {
-			PriorityQueue<Buff> pq = buffs.get(b.type);
-			Buff oldBuff = pq.peek();
-
-			if (b.potency >= oldBuff.potency && b.endTime > oldBuff.endTime) {    //If b is a newer version of oldBuff
-				removeBuffEffects(pq.peek());                        //Remove current effects
-				pq.remove();                                        //Replace oldBuff with the reapplied b
-				pq.add(b);
-				applyBuffEffects(b);                                //Add new effects
-
-			} else if (b.potency < oldBuff.potency && b.endTime > oldBuff.endTime) {    //if b is useful later
-				pq.add(b);                                                //current effects stay
-
-			} else if (b.potency > oldBuff.potency) {    //if b is useful now (note that longer duration buffs are already covered above)
-				removeBuffEffects(pq.peek());    //Remove current effects
-				pq.add(b);                        //Add new buff but keep old one
-				applyBuffEffects(b);            //Add new effects
-			}
-			//Otherwise b is useless and is discarded
-		} else {
-			PriorityQueue<Buff> pq = new PriorityQueue<Buff>(buffComparator);
-			pq.add(b);
-			buffs.put(b.type, pq);
-			applyBuffEffects(b);
-		}
-	}
-
-	public void checkBuffs(double timeNow) {
-		for (int i = 0; i < Buff.MAX_BUFF_ID; i++) {
-			if (buffs.containsKey(i)) {
-				PriorityQueue<Buff> pq = buffs.get(i);
-				if (pq.peek().endTime < timeNow) {        //Top buff is expiring
-					removeBuffEffects(pq.peek());        //Top is the only one with effects to remove
-					pq.remove();
-					while (!pq.isEmpty() && pq.peek().endTime < timeNow) {//Remove all expired buffs
-						pq.remove();                    //Other buffs get add and remove skipped
-					}
-					if (!pq.isEmpty()) {//If there is a new buff that has not expired
-						applyBuffEffects(pq.peek());
-					}
-				}
-				if (pq.isEmpty()) {
-					buffs.remove(i);//Get rid of the pq of that effect if no buffs of that type exist
-				}
-			}
-		}
-	}
-
-	private void applyBuffEffects(Buff b) {
-//		switch (b.type) {
-//		case Buff.RES_BLUNT:  
-//			baseBluntArmour += b.potency;//Base armours are changed so refreshArmour operates correctly
-//			bluntArmour += b.potency;//Current armour is changed so refreshArmour does not need to be called
-//			break;
-//		case Buff.RES_SLASH:  
-//			baseSlashArmour += b.potency;
-//			slashArmour += b.potency; 
-//			break;
-//		case Buff.RES_PIERCE:  
-//			basePierceArmour += b.potency;
-//			pierceArmour += b.potency; 
-//			break;
-//		case Buff.RES_BURN:  
-//			baseBurnArmour += b.potency;
-//			burnArmour += b.potency; 
-//			break;
-//		case Buff.RES_COLD:  
-//			baseColdArmour += b.potency;
-//			coldArmour += b.potency; 
-//			break;
-//		case Buff.RES_MAGIC:  
-//			baseMagicArmour += b.potency;
-//			magicArmour += b.potency; 
-//			break;
-//		case Buff.SHRED_BLUNT:  
-//			baseBluntArmour -= b.potency;
-//			bluntArmour -= b.potency; 
-//			break;
-//		case Buff.SHRED_SLASH:  
-//			baseSlashArmour -= b.potency;
-//			slashArmour -= b.potency; 
-//			break;
-//		case Buff.SHRED_PIERCE:  
-//			basePierceArmour -= b.potency;
-//			pierceArmour -= b.potency; 
-//			break;
-//		case Buff.SHRED_BURN:  
-//			baseBurnArmour -= b.potency;
-//			burnArmour -= b.potency; 
-//			break;
-//		case Buff.SHRED_COLD:  
-//			baseColdArmour -= b.potency;
-//			coldArmour -= b.potency; 
-//			break;
-//		case Buff.SHRED_MAGIC:  
-//			baseMagicArmour -= b.potency;
-//			magicArmour -= b.potency; 
-//			break;
-//		default: break;
-//		}
-	}
-
-	private void removeBuffEffects(Buff b) {
-//		switch (b.type) {
-//		case Buff.RES_BLUNT:  
-//			baseBluntArmour -= b.potency;//Base armours are changed so refreshArmour operates correctly
-//			bluntArmour -= b.potency;//Current armour is changed so refreshArmour does not need to be called
-//			break;
-//		case Buff.RES_SLASH:  
-//			baseSlashArmour -= b.potency;
-//			slashArmour -= b.potency; 
-//			break;
-//		case Buff.RES_PIERCE:  
-//			basePierceArmour -= b.potency;
-//			pierceArmour -= b.potency; 
-//			break;
-//		case Buff.RES_BURN:  
-//			baseBurnArmour -= b.potency;
-//			burnArmour -= b.potency; 
-//			break;
-//		case Buff.RES_COLD:
-//			baseColdArmour -= b.potency;
-//			coldArmour -= b.potency; 
-//			break;
-//		case Buff.RES_MAGIC:
-//			baseMagicArmour -= b.potency;
-//			magicArmour -= b.potency; 
-//			break;
-//		case Buff.SHRED_BLUNT:  
-//			baseBluntArmour += b.potency;
-//			bluntArmour += b.potency; 
-//			break;
-//		case Buff.SHRED_SLASH:  
-//			baseSlashArmour += b.potency;
-//			slashArmour += b.potency; 
-//			break;
-//		case Buff.SHRED_PIERCE:  
-//			basePierceArmour += b.potency;
-//			pierceArmour += b.potency; 
-//			break;
-//		case Buff.SHRED_BURN:  
-//			baseBurnArmour += b.potency;
-//			burnArmour += b.potency; 
-//			break;
-//		case Buff.SHRED_COLD:  
-//			baseColdArmour += b.potency;
-//			coldArmour += b.potency; 
-//			break;
-//		case Buff.SHRED_MAGIC:  
-//			baseMagicArmour += b.potency;
-//			magicArmour += b.potency; 
-//			break;
-//		default: break;
-//		}
-	}
 }

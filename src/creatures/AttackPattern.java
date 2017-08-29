@@ -2,7 +2,7 @@ package creatures;
 
 import java.util.TreeMap;
 
-import util.DamageHandler;
+import util.AttackHandler;
 import util.IO;
 import main.Game;
 
@@ -48,14 +48,14 @@ public class AttackPattern {
 	public AttackPattern(int damage, int damageType){
 		this.baseDamage = damage;
 		this.damageType = damageType;
-		this.verb = DamageHandler.getVerb(damageType);
+		this.verb = AttackHandler.getVerb(damageType);
 		this.duration = 1;
 	}
 	
 	public AttackPattern(int damage, int damageType, double duration){
 		this.baseDamage = damage;
 		this.damageType = damageType;
-		this.verb = DamageHandler.getVerb(damageType);
+		this.verb = AttackHandler.getVerb(damageType);
 		this.duration = duration;
 	}
 	

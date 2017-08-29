@@ -5,7 +5,6 @@ import item.Item;
 import java.util.Random;
 
 import main.Game;
-import main.OnHit;
 import util.IO;
 import util.Text;
 
@@ -51,7 +50,6 @@ public class Slime extends Creature{
 			name = "Fiery Slime";
 			baseResists[Game.DMG_BURN] = 20 * size;
 			xp = 10;
-			equipped.effects.add(new OnHit(OnHit.BURN, size * 4));
 		}else if(type == ICY){
 			addItem("slimeIce", dropCount);
 			if(Math.random() < 0.5){
@@ -63,7 +61,6 @@ public class Slime extends Creature{
 			baseResists[Game.DMG_PIERCE] = 15 * size;
 			baseResists[Game.DMG_BURN] = -10 * size;
 			baseResists[Game.DMG_COLD] = 20 * size;
-			equipped.effects.add(new OnHit(OnHit.COLD, size));
 		}else if(type == WATERY){
 			addItem("slimeWater", dropCount);
 			name = "Watery Slime";
@@ -126,7 +123,6 @@ public class Slime extends Creature{
 			baseResists[Game.DMG_BLUNT] = 10 * size;
 			baseResists[Game.DMG_SLASH] = 5 * size;
 			xp = 12;
-			equipped.effects.add(new OnHit(OnHit.BURN, size * 5));
 		}
 		if(size == 2){
 			maxHp = 84;
@@ -206,13 +202,6 @@ public class Slime extends Creature{
 			damageTrigger(d);
 		}
 	}
-	
-//	public void iceAttack(){
-//		int oldDmg = dmg;
-//		dmg *= 1.5;
-//		attack(1, "pierced", "an ice shard");
-//		dmg = oldDmg;
-//	}
 	
 	public String getDescription(){
 		String desc = "A blob of liquid and enzymes.";

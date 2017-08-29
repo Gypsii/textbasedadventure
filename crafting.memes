@@ -245,6 +245,13 @@ CRAFT:
 	[COMPONENT:stickyString]
 }
 
+{[CRAFT:clubObsidian]
+	[CATEGORY:blunt]
+	[COMPONENT:club]
+	[COMPONENT:obsidian;2]
+	[COMPONENT:stickyString]
+}
+
 {[CRAFT:stickyString]
 	[CATEGORY:stringsRopes]
 	[COMPONENT:string]
@@ -309,5 +316,12 @@ CRAFT:
 	[CATEGORY:armour]
 	[COMPONENT:tunicSilk]
 	[COMPONENT:clothCotton;2]
+}
+
+{[CRAFT:armourHideWalrus]
+	[CATEGORY:armour]
+	[COMPONENT:silk;3]
+	[COMPONENT:clothCotton]
+	[COMPONENT:hideWalrus;2]
 }
 
