@@ -11,8 +11,8 @@ public class FoodRecipe {
 	
 	public static ArrayList<FoodRecipe> recipes = new ArrayList<FoodRecipe>();
 	
-	public ArrayList<String> components = new ArrayList<String>();
-	public ArrayList<String> badComponents = new ArrayList<String>();
+	public ArrayList<ItemTag> components = new ArrayList<ItemTag>();
+	public ArrayList<ItemTag> badComponents = new ArrayList<ItemTag>();
 	public String product;
 
 	public int level;
@@ -24,24 +24,32 @@ public class FoodRecipe {
 	}
 	
 	public void addComponent(String tag){
+		addComponent(ItemTag.tag(tag));
+	}
+
+	public void addComponent(ItemTag tag){
 		components.add(tag);
 		badComponents.remove(tag);
 	}
-	
+
 	public void forbidComponent(String tag){
+		forbidComponent(ItemTag.tag(tag));
+	}
+
+	public void forbidComponent(ItemTag tag){
 		badComponents.add(tag);
 	}
 	
 	public void forbidAll(){
-		badComponents.add("mushroom");
-		badComponents.add("slime");
-		badComponents.add("meat");
-		badComponents.add("vegetable");
-		badComponents.add("fruit");
-		badComponents.add("spice");
-		badComponents.add("bread");
-		badComponents.add("egg");
-		badComponents.add("toxic");
+		badComponents.add(ItemTag.tag("mushroom"));
+		badComponents.add(ItemTag.tag("slime"));
+		badComponents.add(ItemTag.tag("meat"));
+		badComponents.add(ItemTag.tag("vegetable"));
+		badComponents.add(ItemTag.tag("fruit"));
+		badComponents.add(ItemTag.tag("spice"));
+		badComponents.add(ItemTag.tag("bread"));
+		badComponents.add(ItemTag.tag("egg"));
+		badComponents.add(ItemTag.tag("toxic"));
 	}
 	
 	public void removeForbiddenComponent(ItemTag tag){//uhhh this used to be FoodTag but the array is for strings so ????
@@ -58,7 +66,7 @@ public class FoodRecipe {
 		for(int i = 0; i < badComponents.size(); i++){
 			//System.out.println("Checking for bad food " + i);
 			for(int j = 0; j < foods.size(); j++){
-				if(foods.get(j).tags.contains(badComponents.get(i))){
+				if(foods.get(j).hasTag(badComponents.get(i))){
 					return false;
 				}
 			}
@@ -68,7 +76,7 @@ public class FoodRecipe {
 			//System.out.println("Checking for food " + i);
 			boolean satisfied = false;
 			for(int j = 0; j < foods.size(); j++){
-				if(foods.get(j).tags.contains(components.get(i))){
+				if(foods.get(j).hasTag(components.get(i))){
 					//System.out.println("Found " + i);
 					satisfied = true;
 					break;

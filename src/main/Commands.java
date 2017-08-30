@@ -233,7 +233,7 @@ public class Commands {
 		ArrayList<Item> foods = new ArrayList<Item>();
 		Boolean finishingRecipe;
 		for(;;){
-			Text.listInvFoods();
+			Text.listInvCookable();
 			IO.println(Game.player.inv.size() + ": Finish");
 			try{
 				int n = Integer.parseInt(Game.br.readLine());
@@ -265,7 +265,7 @@ public class Commands {
 			}
 		}
 		if(finishingRecipe){
-			String result = "faliure";
+			String result = "failure";
 			int xp = 0;
 			for(int i = 0; i < FoodRecipe.recipes.size(); i++){
 				if(FoodRecipe.recipes.get(i).check(foods)){
@@ -488,7 +488,7 @@ public class Commands {
 	}
 
 	private static double commandEat() throws IOException{
-		Text.listInvFoods();
+		Text.listInvEdible();
 		int n = 0;
 		try{
 			n = Integer.parseInt(Game.br.readLine());

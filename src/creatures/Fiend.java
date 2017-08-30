@@ -7,7 +7,7 @@ import item.MagicItem;
 public class Fiend extends Creature{
 	
 	public Fiend(){
-		name = "Demonic Fiend";
+		name = "tDemonic Fiend";
 		tags.add(CreatureTag.fiend);
 		maxHp = 132;
 		hp = maxHp;

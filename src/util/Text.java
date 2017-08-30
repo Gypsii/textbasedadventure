@@ -120,12 +120,26 @@ public class Text {
 	}
 
 	/**
-	 * Prints the player's inventory, highlighting foods in green
+	 * Prints the player's inventory, highlighting food in green
 	 */
-	public static void listInvFoods(){
+	public static void listInvEdible(){
 		for(int i = 0; i < Game.player.inv.size(); i++){
 			IO.print(i + ": ");
 			if(Game.player.inv.get(i).hasTag("edible")){
+				IO.println("<green>" + Game.player.inv.get(i).getNameWithCount() + "<r>");
+			}else{
+				IO.println(Game.player.inv.get(i).getNameWithCount());
+			}
+		}
+	}
+
+	/**
+	 * Prints the player's inventory, highlighting food ingredients in green
+	 */
+	public static void listInvCookable(){
+		for(int i = 0; i < Game.player.inv.size(); i++){
+			IO.print(i + ": ");
+			if(Game.player.inv.get(i).hasTag("cookable")){
 				IO.println("<green>" + Game.player.inv.get(i).getNameWithCount() + "<r>");
 			}else{
 				IO.println(Game.player.inv.get(i).getNameWithCount());

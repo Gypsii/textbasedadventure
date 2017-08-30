@@ -626,7 +626,7 @@ Weapons
 	[DAMAGE:60]
 	[SWINGSPEED:1]
 	[DAMAGETYPE:slash]
-	[TAG:longsword]
+	 [TAG:longsword]
 	[TAG:sword]
 }
 
@@ -812,7 +812,7 @@ Weapons
 {[ITEM:leather]
 	[NAME:Leather]
 	[PREFIX:some]
-	[DESCRIPTION:Leathery]
+	[DESCRIPTION:Leathery.]
 }
 
 {[ITEM:hideDingo]
