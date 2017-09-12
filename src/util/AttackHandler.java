@@ -120,6 +120,13 @@ public class AttackHandler {
 		}
 	}
 
+	public static void selfHeal(Creature c, int damage){
+		Text.selfHealMessage(c, damage);
+		c.hp += damage;
+		c.hp = Math.min(c.maxHp, c.hp);
+		Text.healthRemainingMessage(null, c, false);
+	}
+
 	public static void attack(Creature attacker, Creature target){
 		attack(attacker, target, AttackPattern.weaponAttack);
 	}
