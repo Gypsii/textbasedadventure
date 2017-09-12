@@ -23,7 +23,7 @@ public class Creature {
 	public int xp = 0;//xp to be dropped not xp accumulated
 	public int resists[] = new int[Game.DMG_TYPE_COUNT];
 	public int baseResists[] = new int[Game.DMG_TYPE_COUNT];
-	public int baseDmg;
+	public int baseDmg;//Should this exist?
 	public double nextActionTime = 0;
 	public Skillset skills = new Skillset(this);
 
@@ -354,7 +354,7 @@ public class Creature {
 	/**
 	 * Calculates the damage of this {@code Creature} based off its weapons and {@code SkillSet}
 	 *
-	 * @return Damage calculation results
+	 * @return DamageType calculation results
 	 */
 	public int calculateDamage() {
 		int dmgPerLvl = 2;
@@ -685,9 +685,9 @@ public class Creature {
 		IO.println("");
 		if (!equipped.name.equals("unarmed")) {
 			IO.println("Weapon: " + equipped.getNameWithCount());
-			IO.println("Damage: " + dmg + " " + Game.DAMAGE_TYPE_STRINGS[equipped.dmgType]);
+			IO.println("DamageType: " + dmg + " " + Game.DAMAGE_TYPE_STRINGS[equipped.dmgType]);
 		} else {
-			IO.println("Damage: " + defaultAttackPattern.baseDamage + " " + Game.DAMAGE_TYPE_STRINGS[defaultAttackPattern.damageType]);
+			IO.println("DamageType: " + defaultAttackPattern.baseDamage + " " + Game.DAMAGE_TYPE_STRINGS[defaultAttackPattern.damageType]);
 		}
 		IO.println("");
 		IO.println(getDescription());

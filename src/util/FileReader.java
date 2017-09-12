@@ -30,13 +30,18 @@ public class FileReader {
 //				new FileOutputStream("filename.txt"), "utf-8"))) {
 //			writer.write("something");
 //		}
+		readMainGameFile("game.memes");
 		readFile("item.memes");
 		readFile("food.memes");
 		readFile("creature.memes");
 		readFile("crafting.memes");
 
 	}
-	
+
+	static void readMainGameFile(String fileName) {
+
+	}
+
 	static void readFile(String fileName) throws IOException{
 		List<String> lines = Files.readAllLines(Paths.get(fileName), Charset.defaultCharset());
 
@@ -115,17 +120,17 @@ public class FileReader {
 					IO.println("<red>Invalid value \"" + value + "\" for tag \"DAMAGETYPE\" of type item (id " + id + ")<r>");
 				}
 				break;
-			case "ARMOURTYPE":
-				if(value.equals("chest")){
-					i.armourType = 1;
-				}else if(value.equals("hat")){
-					i.armourType = 4;
-				}else if(value.equals("cloak")){
-					i.armourType = 3;
-				}else if(value.equals("ring")){
-					i.armourType = 2;
-				}
-				break;
+//			case "ARMOURTYPE":
+//				if(value.equals("chest")){
+//					i.armourType = 1;
+//				}else if(value.equals("hat")){
+//					i.armourType = 4;
+//				}else if(value.equals("cloak")){
+//					i.armourType = 3;
+//				}else if(value.equals("ring")){
+//					i.armourType = 2;
+//				}
+//				break;
 			case "BLUNT":
 				i.resists[Game.DMG_BLUNT] = Integer.parseInt(value);
 				break;

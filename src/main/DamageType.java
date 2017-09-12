@@ -1,8 +1,17 @@
 package main;
 
-public class Words {
+import java.util.HashMap;
 
-	public String getDamageVerb(int damageType){
+public class DamageType {
+
+	//TODO move damage to file for dynamic damage types
+	public static HashMap<String, DamageType> damageVerbs= new HashMap<>();
+
+	public DamageType(String key, String defaultVerb) {
+
+	}
+
+	public static String getDamageVerb(int damageType){
 		switch(damageType){
 		case Game.DMG_BLUNT:
 			return "hit";
@@ -19,5 +28,4 @@ public class Words {
 		}
 		return "damaged";
 	}
-	
 }

@@ -1,10 +1,8 @@
 package item;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 
+import main.OnHit;
 import util.IO;
 import main.Game;
 
@@ -22,14 +20,8 @@ public class Item {
 	public int armourType = 0;
 	public double cost = -1;
 
-	//TODO set of tags rather than a billion booleans
 	public Set<ItemTag> tags = new HashSet<>();
-
-//	public boolean isFood = false;
-//	public boolean isGem = false;
-//	public boolean isPolearm = false;
-//	public boolean isSword = false;
-//	public boolean isEnchanted = false;
+	public List<OnHit> onHits = new ArrayList<>();
 
 	public boolean isStackable = true;
 	public int healthRestore = 0;
@@ -133,7 +125,7 @@ public class Item {
 				IO.print(" bludgeoning");
 			}else if(dmgType == 1){
 				IO.print(" piercing");
-			}else{
+			}else if(dmgType == 2){
 				IO.print(" slashing");
 			}
 			IO.println(" damage.");

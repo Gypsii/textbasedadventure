@@ -1,9 +1,14 @@
 package util;
 
+import main.DamageOnHit;
 import main.Game;
+import main.OnHit;
 import main.Skillset;
 import creatures.AttackPattern;
 import creatures.Creature;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AttackHandler {
 
@@ -49,18 +54,11 @@ public class AttackHandler {
 		}
 		damage -= target.resists[damageType];
 		
-		Text.attackMessage(attacker, target, damage, damageType, verb);
-		boolean wasAlive = target.isAlive();
-		target.hp -= Math.min(target.hp, Math.max(damage, 0));	
-		Text.healthRemainingMessage(attacker, target, !wasAlive);
+		applyDamage(attacker, target, damage, damageType, verb);
 		if(crit){IO.println("<cyan>Critical hit!<r>");}
 		
-		if(target.hp <= 0){
-			target.kill();
-		}else{
-			target.damageTrigger(damage);
-		}
-		
+		applyOnHits(attacker, target, attackPattern);
+
 		if(attacker == Game.player){
 			switch(attacker.equipped.dmgType){
 			case Game.DMG_BLUNT:
@@ -84,9 +82,47 @@ public class AttackHandler {
 
 		return duration;
 	}
-	
+
+	public static void applyOnHits(Creature attacker, Creature target, AttackPattern attackPattern){
+		List<OnHit> onhits = new ArrayList<>();
+		onhits.addAll(attackPattern.onHits);
+		if(attackPattern == AttackPattern.weaponAttack){
+			onhits.addAll(attacker.equipped.onHits);
+		}
+		for (OnHit oh : onhits) {
+			oh.apply(attacker, target);
+		}
+	}
+
+	public static void applyDamage(Creature attacker, Creature target, int damage, int damageType, String verb){
+		Text.attackMessage(attacker, target, damage, damageType, verb);
+		boolean wasAlive = target.isAlive();
+		target.hp -= Math.min(target.hp, Math.max(damage, 0));
+		Text.healthRemainingMessage(attacker, target, !wasAlive);
+
+		if(target.hp <= 0){
+			target.kill();
+		}else{
+			target.damageTrigger(damage);
+		}
+	}
+
+	public static void applyDamagePassively(Creature attacker, Creature target, int damage, int damageType, String verb){
+		Text.attackMessage(target, damage, damageType, verb);
+		boolean wasAlive = target.isAlive();
+		target.hp -= Math.min(target.hp, Math.max(damage, 0));
+		Text.healthRemainingMessage(null, target, !wasAlive);
+
+		if(target.hp <= 0){
+			target.kill();
+		}else{
+			target.damageTrigger(damage);
+		}
+	}
+
 	public static void attack(Creature attacker, Creature target){
 		attack(attacker, target, AttackPattern.weaponAttack);
 	}
-	
+
+
 }

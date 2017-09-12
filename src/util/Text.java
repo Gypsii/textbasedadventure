@@ -56,6 +56,21 @@ public class Text {
 		s += " for " + damage + " damage";
 		IO.print(s);
 	}
+
+	public static void attackMessage(Creature attackee, int damage, int resist_id, String verb){//TODO better name? Also damage names
+		attackMessage(attackee, damage, resist_id, verb, "");
+	}
+
+	public static void attackMessage(Creature attackee, int damage, int resist_id, String verb, String weaponName){//TODO better name? Also damage names
+		String s = "";
+		if(attackee == Game.player){
+			s += "You were";
+		}else{
+			s += capitalised(getDefName(attackee) + " was");
+		}
+		s += " " + verb + " for " + damage + " damage";
+		IO.print(s);
+	}
 	
 	public static void healthRemainingMessage(Creature attacker, Creature attackee, boolean prekilled){//TODO better name? Also damage names
 		String s = "";
@@ -63,7 +78,7 @@ public class Text {
 		if(attackee == Game.player){
 			attackeePronoun = "you";
 		}else{
-			attackeePronoun = "it";
+			attackeePronoun = "it";// Is 'it' even a pronoun? I don't think it is.
 		}
 		if(attackee.hp > 0){
 			s += ", leaving " + attackeePronoun + " on " + attackee.hp + " hp";
@@ -94,7 +109,7 @@ public class Text {
 	 * @return String representation of {@code Creature} name with definite article
 	 */
 	public static String getDefName(Creature c){
-		return (c.articleDef == "" ? "" : c.articleDef + " ") + c.name;
+		return (c.articleDef == "" ? "" : c.articleDef + " ") + c.getName();
 	}
 
 	public static void listTargets(){

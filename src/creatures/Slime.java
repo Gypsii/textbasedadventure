@@ -4,6 +4,8 @@ import item.Item;
 
 import java.util.Random;
 
+import main.DamageOnHit;
+import main.DamageType;
 import main.Game;
 import util.IO;
 import util.Text;
@@ -22,7 +24,8 @@ public class Slime extends Creature{
 	public static final int GEM = 8;
 	public static final int FUNGAL = 9;
 	public static final int MOLTEN = 10;
-	public static final int[] diffConstants = {1, 1, 0, 0, 0, 2, 2, 0, 0, 0, 1}; 
+	public static final int ELECTRIC = 11;
+	public static final int[] diffConstants = {1, 1, 0, 0, 0, 2, 1, 0, 0, 0, 2, 1};
 	
 	
 	public Slime(int t, int s){//Size should be a power of 2
@@ -34,7 +37,8 @@ public class Slime extends Creature{
 		baseResists[Game.DMG_BLUNT] = -4 * size;
 		baseResists[Game.DMG_SLASH] = 7 * size;
 		baseResists[Game.DMG_PIERCE] = 20 * size;
-		
+
+		defaultAttackPattern = new AttackPattern(-1, Game.DMG_BLUNT, "hit", 1.2);
 		
 		name = "ERR UNTYPED SLIME";
 		type = t;
@@ -50,6 +54,7 @@ public class Slime extends Creature{
 			name = "Fiery Slime";
 			baseResists[Game.DMG_BURN] = 20 * size;
 			xp = 10;
+			defaultAttackPattern.onHits.add(new DamageOnHit(size * 2, Game.DMG_BURN));
 		}else if(type == ICY){
 			addItem("slimeIce", dropCount);
 			if(Math.random() < 0.5){
@@ -61,6 +66,7 @@ public class Slime extends Creature{
 			baseResists[Game.DMG_PIERCE] = 15 * size;
 			baseResists[Game.DMG_BURN] = -10 * size;
 			baseResists[Game.DMG_COLD] = 20 * size;
+			defaultAttackPattern.onHits.add(new DamageOnHit(size * 2, Game.DMG_COLD));
 		}else if(type == WATERY){
 			addItem("slimeWater", dropCount);
 			name = "Watery Slime";
@@ -123,6 +129,13 @@ public class Slime extends Creature{
 			baseResists[Game.DMG_BLUNT] = 10 * size;
 			baseResists[Game.DMG_SLASH] = 5 * size;
 			xp = 12;
+			defaultAttackPattern.onHits.add(new DamageOnHit(size, Game.DMG_BURN));
+		}else if(type == ELECTRIC){
+			addItem("slimeElectric", dropCount);
+			name = "Electric Slime";
+			baseResists[Game.DMG_MAGIC] = 20 * size;
+			xp = 12;
+			defaultAttackPattern.onHits.add(new DamageOnHit(size*2, Game.DMG_MAGIC));
 		}
 		if(size == 2){
 			maxHp = 84;
@@ -144,8 +157,8 @@ public class Slime extends Creature{
 		dmg *= size;
 		hp = maxHp;
 		baseDmg = dmg;
-		
-		defaultAttackPattern = new AttackPattern(baseDmg, Game.DMG_BLUNT, "hit", 1.2);
+
+		defaultAttackPattern.baseDamage = baseDmg;
 		
 		postInitialisation();
 	}
@@ -153,7 +166,7 @@ public class Slime extends Creature{
 	public void passiveAction(){
 		if(type == PLANT){
 			if(hp != maxHp){
-				IO.print("The " + name + " regenerated " + Math.min(size * 20, maxHp - hp) + " hp, leaving it on ");
+				IO.print(Text.getDefName(this) + " regenerated " + Math.min(size * 4, maxHp - hp) + " hp, leaving it on ");
 				hp += size * 4;
 				hp = Math.min(hp, maxHp);
 				IO.println(hp + " hp");
@@ -163,7 +176,7 @@ public class Slime extends Creature{
 	
 	
 	public void deathTrigger(){
-		if(type == 0){
+		if(type == VOLATILE){
 			explode();
 		}
 	}
@@ -221,6 +234,8 @@ public class Slime extends Creature{
 			desc += " Glittering gems float inside it.";//Transparent with shiny rainbow bits like an oily bubble
 		}else if(type == Slime.FUNGAL){
 			desc += " It is held together with a dense network of fungal strands.";//Brownish??
+		}else if(type == Slime.ELECTRIC){
+			desc += " It crackles with lightning.";//Electric blue
 		}
 		return desc;
 	}

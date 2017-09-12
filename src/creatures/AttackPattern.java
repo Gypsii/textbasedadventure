@@ -1,7 +1,11 @@
 package creatures;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeMap;
 
+import main.DamageOnHit;
+import main.OnHit;
 import util.AttackHandler;
 import util.IO;
 import main.Game;
@@ -15,6 +19,7 @@ public class AttackPattern {
 	public double duration = 1;
 	public String verb = "damaged";
 	public boolean canCrit = true;
+	public List<OnHit> onHits = new ArrayList<>();
 	
 	public static AttackPattern weaponAttack = new AttackPattern(-1, 0, "", 1);
 	{

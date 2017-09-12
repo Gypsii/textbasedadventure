@@ -969,7 +969,7 @@ Weapons
 
 {[ITEM:slimeEarth]
 	[NAME:Muddy Slime]
-	[COST:5]
+	[COST:3]
 	[PREFIX:some]
 	[DESCRIPTION:Pretty much mud.]
 }
@@ -1009,6 +1009,13 @@ Weapons
 	[DESCRIPTION:It has forgotten how to solidify.]
 }
 
+{[ITEM:slimeElectric]
+	[NAME:Shocking Slime]
+	[PREFIX:some]
+	[COST:10]
+	[DESCRIPTION:Potentially different from other slime.]
+}
+
 {[ITEM:money]
 	[NAME:Gold Coin]
 	[DESCRIPTION:Big money big prizes.]
@@ -1018,22 +1025,22 @@ Weapons
 
 {[ITEM:unarmoured]
 	[NAME:Unarmoured]
-	[ARMOURTYPE:chest]
+	[TAG:wear_chest]
 }
 
 {[ITEM:unarmouredCloak]
 	[NAME:Unarmoured]
-	[ARMOURTYPE:cloak]
+	[TAG:wear_cloak]
 }
 
 {[ITEM:unarmouredRing]
 	[NAME:Unarmoured]
-	[ARMOURTYPE:ring]
+	[TAG:wear_ring]
 }
 
 {[ITEM:unarmouredHat]
 	[NAME:Unarmoured]
-	[ARMOURTYPE:hat]
+	[TAG:wear_hat]
 }
 
 
@@ -1043,7 +1050,7 @@ Weapons
 	[BLUNT:16]
 	[SLASH:20]
 	[PIERCE:12]
-	[ARMOURTYPE:chest]
+	[TAG:wear_chest]
 }
 
 {[ITEM:plateIron]
@@ -1052,7 +1059,7 @@ Weapons
 	[SLASH:15]
 	[PIERCE:8]
 	[PREFIX:an]
-	[ARMOURTYPE:chest]
+	[TAG:wear_chest]
 }
 
 {[ITEM:plateCopper]
@@ -1060,7 +1067,7 @@ Weapons
 	[BLUNT:6]
 	[SLASH:10]
 	[PIERCE:5]
-	[ARMOURTYPE:chest]
+	[TAG:wear_chest]
 }
 
 {[ITEM:mailSteel]
@@ -1068,7 +1075,7 @@ Weapons
 	[BLUNT:5]
 	[SLASH:20]
 	[PIERCE:7]
-	[ARMOURTYPE:chest]
+	[TAG:wear_chest]
 }
 
 {[ITEM:mailIron]
@@ -1077,7 +1084,7 @@ Weapons
 	[SLASH:15]
 	[PIERCE:5]
 	[PREFIX:an]
-	[ARMOURTYPE:chest]
+	[TAG:wear_chest]
 }
 
 {[ITEM:mailCopper]
@@ -1085,7 +1092,7 @@ Weapons
 	[BLUNT:4]
 	[SLASH:10]
 	[PIERCE:3]
-	[ARMOURTYPE:chest]
+	[TAG:wear_chest]
 }
 
 {[ITEM:armourHideWalrus]
@@ -1093,7 +1100,7 @@ Weapons
 	[BLUNT:4]
 	[SLASH:6]
 	[PIERCE:4]
-	[ARMOURTYPE:chest]
+	[TAG:wear_chest]
 }
 
 {[ITEM:armourLeather]
@@ -1101,41 +1108,41 @@ Weapons
 	[BLUNT:6]
 	[SLASH:6]
 	[PIERCE:5]
-	[ARMOURTYPE:chest]
+	[TAG:wear_chest]
 }
 
 {[ITEM:tunicCotton]
 	[NAME:Cotton Tunic]
 	[SLASH:2]
 	[PIERCE:1]
-	[ARMOURTYPE:chest]
+	[TAG:wear_chest]
 }
 
 {[ITEM:tunicLinen]
 	[NAME:Linen Tunic]
 	[SLASH:2]
 	[PIERCE:1]
-	[ARMOURTYPE:chest]
+	[TAG:wear_chest]
 }
 
 {[ITEM:tunicWool]
 	[NAME:Woollen Tunic]
 	[SLASH:2]
 	[PIERCE:1]
-	[ARMOURTYPE:chest]
+	[TAG:wear_chest]
 }
 
 {[ITEM:tunicSilk]
 	[NAME:Silk Tunic]
 	[SLASH:2]
 	[PIERCE:1]
-	[ARMOURTYPE:chest]
+	[TAG:wear_chest]
 }
 
 {[ITEM:tunicRagged]
 	[NAME:Ragged Tunic]
 	[PIERCE:1]
-	[ARMOURTYPE:chest]
+	[TAG:wear_chest]
 }
 
 {[ITEM:tunicCottonPadded]
@@ -1143,7 +1150,7 @@ Weapons
 	[BLUNT:2]
 	[SLASH:5]
 	[PIERCE:3]
-	[ARMOURTYPE:chest]
+	[TAG:wear_chest]
 }
 
 {[ITEM:tunicSilkPadded]
@@ -1151,7 +1158,7 @@ Weapons
 	[BLUNT:2]
 	[SLASH:5]
 	[PIERCE:3]
-	[ARMOURTYPE:chest]
+	[TAG:wear_chest]
 }
 
 {[ITEM:tunicLinenPadded]
@@ -1159,7 +1166,7 @@ Weapons
 	[BLUNT:2]
 	[SLASH:5]
 	[PIERCE:3]
-	[ARMOURTYPE:chest]
+	[TAG:wear_chest]
 }
 
 {[ITEM:tunicWoolPadded]
@@ -1167,7 +1174,7 @@ Weapons
 	[BLUNT:2]
 	[SLASH:5]
 	[PIERCE:3]
-	[ARMOURTYPE:chest]
+	[TAG:wear_chest]
 }
 
 {[ITEM:vestFurDingo]
@@ -1175,7 +1182,7 @@ Weapons
 	[PIERCE:2]
 	[SLASH:2]
 	[COLD:3]
-	[ARMOURTYPE:chest]
+	[TAG:wear_chest]
 }
 
 {[ITEM:vestFurBear]
@@ -1183,71 +1190,71 @@ Weapons
 	[PIERCE:2]
 	[SLASH:2]
 	[COLD:5]
-	[ARMOURTYPE:chest]
+	[TAG:wear_chest]
 }
 
 {[ITEM:ringCopper]
 	[NAME:Copper Ring]
-	[ARMOURTYPE:ring]
+	[TAG:wear_ring]
 }
 
 {[ITEM:ringSilver]
 	[NAME:Silver Ring]
-	[ARMOURTYPE:ring]
+	[TAG:wear_ring]
 }
 
 {[ITEM:ringGold]
 	[NAME:Gold Ring]
-	[ARMOURTYPE:ring]
+	[TAG:wear_ring]
 }
 
 {[ITEM:ringDemon]
 	[NAME:Demonic Ring]
-	[ARMOURTYPE:ring]
+	[TAG:wear_ring]
 }
 
 {[ITEM:cloakCotton]
 	[NAME:Cotton Cloak]
-	[ARMOURTYPE:cloak]
+	[TAG:wear_cloak]
 }
 
 {[ITEM:cloakWool]
 	[NAME:Woollen Cloak]
-	[ARMOURTYPE:cloak]
+	[TAG:wear_cloak]
 }
 
 {[ITEM:cloakSilk]
 	[NAME:Cotton Cloak]
-	[ARMOURTYPE:cloak]
+	[TAG:wear_cloak]
 }
 
 {[ITEM:cloakLinen]
 	[NAME:Linen Cloak]
-	[ARMOURTYPE:cloak]
+	[TAG:wear_cloak]
 }
 
 {[ITEM:featherHat]
 	[NAME:Feather Hat]
-	[ARMOURTYPE:hat]
+	[TAG:wear_hat]
 }
 
 {[ITEM:beret]
 	[NAME:Beret]
-	[ARMOURTYPE:hat]
+	[TAG:wear_hat]
 }
 
 {[ITEM:fedora]
 	[NAME:Fedora]
-	[ARMOURTYPE:hat]
+	[TAG:wear_hat]
 	[DESCRIPTION:M'lady.]
 }
 
 {[ITEM:topHat]
 	[NAME:Top Hat]
-	[ARMOURTYPE:hat]
+	[TAG:wear_hat]
 }
 
 {[ITEM:hatPirate]
 	[NAME:Pirate Hat]
-	[ARMOURTYPE:hat]
+	[TAG:wear_hat]
 }

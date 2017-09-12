@@ -56,7 +56,7 @@ public class Commands {
 			Game.zone.addItem(Item.item("shanker"));
 			return 0;
 		}
-		if(command.equals("a") || command.equals("attack")){
+		if(command.equals("a") || command.equals("attack")){//TODO maybe lambdas in a map would be cleaner?
 			return Commands.commandAttack();
 		}
 		if(command.equals("n") || command.equals("north")){
@@ -441,7 +441,7 @@ public class Commands {
 							Game.money -= c.prices.get(c.shopInv.get(n).name);
 							for(int j = 0; j < c.inv.size(); j++){
 								if(c.inv.get(j).name.equals(Item.item("money").name)){
-									c.inv.get(j).count += c.prices.get(c.shopInv.get(n).name);
+									c.inv.get(j).count += c.prices.get(c.shopInv.get(n).name);// Possibly the most indented line yet
 									break;
 								}
 							}
@@ -474,7 +474,7 @@ public class Commands {
 	private static double commandButcher() throws IOException{
 		if(Game.zone.creatures.size() > Game.targetIndex){
 			if(!Game.zone.creatures.get(Game.targetIndex).isAlive()){
-				IO.println("<blue>You butcher the " + Game.zone.creatures.get(Game.targetIndex).name + "<r>");
+				IO.println("<blue>You butchered the " + Game.zone.creatures.get(Game.targetIndex).name + "<r>");
 				Game.zone.creatures.get(Game.targetIndex).dropButcherItems();
 				return 3;
 			}else{
