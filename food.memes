@@ -364,6 +364,7 @@ This food is the default food that comes up if no other recipes are valid.
 
 {[ITEM:cinnamonBun]
 	[NAME:Cinnamon Bun]
+	[COST:40]
 	[HEALTH:25]
 	[TAG:cookable]
 }
@@ -432,6 +433,7 @@ This food is the default food that comes up if no other recipes are valid.
 
 {[ITEM:stroopwafel]
 	[NAME:Stroopwafel]
+	[COST:25]
 	[HEALTH:42]
 	[DESCRIPTION:Syrup waffle.]
 	[TAG:cookable]
@@ -439,6 +441,7 @@ This food is the default food that comes up if no other recipes are valid.
 
 {[ITEM:pastry]
 	[NAME:Pastry]
+	[COST:12]
 	[HEALTH:5]
 	[PREFIX:some]
 	[TAG:pastry]
@@ -458,6 +461,7 @@ This food is the default food that comes up if no other recipes are valid.
 
 {[ITEM:dough]
 	[NAME:Dough]
+	[COST:6]
 	[PREFIX:some]
 	[HEALTH:4]
 	[TAG:dough]
@@ -467,6 +471,7 @@ This food is the default food that comes up if no other recipes are valid.
 
 {[ITEM:syrup]
 	[NAME:Syrup]
+	[COST:20]
 	[PREFIX:some]
 	[HEALTH:6]
 	[TAG:syrup]
@@ -477,6 +482,7 @@ This food is the default food that comes up if no other recipes are valid.
 
 {[ITEM:sugar]
 	[NAME:Sugar]
+	[COST:8]
 	[PREFIX:some]
 	[HEALTH:2]
 	[TAG:sugar]
@@ -487,6 +493,7 @@ This food is the default food that comes up if no other recipes are valid.
 
 {[ITEM:butterscotch]
 	[NAME:Butterscotch]
+	[COST:30]
 	[PREFIX:some]
 	[HEALTH:13]
 	[TAG:sweetener]
@@ -496,12 +503,14 @@ This food is the default food that comes up if no other recipes are valid.
 
 {[ITEM:jamTart]
 	[NAME:Jam Tart]
+	[COST:25]
 	[HEALTH:37]
 	[TAG:cookable]
 }
 
 {[ITEM:potato]
 	[NAME:Potato]
+	[COST:2]
 	[HEALTH:5]
 	[DESCRIPTION:Apple of the earth.]
 	[TAG:cookable]
@@ -509,6 +518,7 @@ This food is the default food that comes up if no other recipes are valid.
 
 {[ITEM:salt]
 	[NAME:Salt]
+	[COST:10]
 	[HEALTH:1]
 	[DESCRIPTION:NaCl.]
 	[TAG:cookable]
@@ -524,6 +534,7 @@ This food is the default food that comes up if no other recipes are valid.
 
 {[ITEM:meatPie]
 	[NAME:Meat Pie]
+	[COST:15]
 	[HEALTH:42]
 	[DESCRIPTION:You must always blow on the pie.]
 	[TAG:cookable]

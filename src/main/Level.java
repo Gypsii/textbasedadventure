@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 import creatures.Slime;
+import item.Item;
 
 public class Level {
 	public HashMap<Integer, Zone> zones = new  HashMap<Integer, Zone>();
@@ -117,63 +118,79 @@ public class Level {
 		level.generate(d);
 		Game.levels.put(Game.levelNum, level);
 	}
-	
+
 	public static Shop generateShop(){
 		Shop s = new Shop();
-		s.addItem(s.string, 1, 1);
-		s.addItem(s.stickyString, 1, 1);
-		s.addItem(s.bread, 1, 1);
-		if(Math.random() < 0.4){s.addItem("mushroom");}
-		if(Math.random() < 0.4){s.addItem("mushroomWhite");}
-		if(Math.random() < 0.1){s.addItem("fungus");}
-		
-		if(Math.random() < 0.4){s.addItem("walrusTusk");}
+		s.addItem("string", 6);
+		s.addItem("stickyString", 3);
+		s.addItem("clothCotton", 3);
+		s.addItem("bread", 4);
+		s.randomItem("mushroom", 0.4, 1, 6);
+		s.randomItem("mushroomWhite", 0.4, 1, 6);
+		s.randomItem("fungus", 0.1, 1, 2);
+		s.randomItem("walrusTusk", 0.1, 1, 3);
+
 		int cheapWeapons = 0;
-		while(cheapWeapons < 3){
-			if(Math.random() < 0.2 && !s.items.contains("sswordCopper")){
-				s.addItem("sswordCopper");
-				cheapWeapons ++;
-			}
-			if(Math.random() < 0.2 && !s.items.contains("glaiveBladeRusted")){
-				s.addItem("glaiveBladeRusted");
-				cheapWeapons ++;
-			}
-			if(Math.random() < 0.2 && !s.items.contains("maceRusted")){
-				s.addItem("maceRusted");
-				cheapWeapons ++;		
-			}	
-			if(Math.random() < 0.2 && !s.items.contains("spearheadRusted")){
-				s.addItem("spearheadRusted");
-				cheapWeapons ++;		
-			}
-			if(Math.random() < 0.2 && !s.items.contains("glaiveCopper")){
-				s.addItem("glaiveCopper");
-				cheapWeapons ++;		
-			}
-			if(Math.random() < 0.2 && !s.items.contains("lswordCopper")){
-				s.addItem("lswordCopper");
-				cheapWeapons ++;		
+		while(cheapWeapons <3){
+			switch ((int)(Math.random() * 6)) {
+				case 0:
+					if(s.findShopItemLoc(Item.item("sswordCopper")) == -1){
+						s.addItem("sswordCopper");
+						cheapWeapons++;
+					}
+					break;
+				case 1:
+					if(s.findShopItemLoc(Item.item("glaiveBladeRusted")) == -1){
+						s.addItem("glaiveBladeRusted");
+						cheapWeapons++;
+					}
+					break;
+				case 2:
+					if(s.findShopItemLoc(Item.item("maceRusted")) == -1){
+						s.addItem("maceRusted");
+						cheapWeapons++;
+					}
+					break;
+				case 3:
+					if(s.findShopItemLoc(Item.item("spearheadRusted")) == -1){
+						s.addItem("spearheadRusted");
+						cheapWeapons++;
+					}
+					break;
+				case 4:
+					if(s.findShopItemLoc(Item.item("glaiveCopper")) == -1){
+						s.addItem("glaiveCopper");
+						cheapWeapons++;
+					}
+					break;
+				case 5:
+					if(s.findShopItemLoc(Item.item("lswordCopper")) == -1){
+						s.addItem("lswordCopper");
+						cheapWeapons++;
+					}
+					break;
 			}
 		}
-		if(Math.random() < 0.3){s.addItem("sswordBronze");}
-		if(Math.random() < 0.2){s.addItem("sswordIron");}
-		if(Math.random() < 0.35){s.addItem("maceCopper");}
-		if(Math.random() < 0.25){s.addItem("maceBronze");}
-		if(Math.random() < 0.15){s.addItem("maceIron");}
-		if(Math.random() < 0.15){s.addItem("lswordBronze");}
-		if(Math.random() < 0.1){s.addItem("lswordIron");}
-		if(Math.random() < 0.3){s.addItem("vestFurDingo");}
-		if(Math.random() < 0.2){s.addItem("vestFurBear");}
-		if(Math.random() < 0.1){s.addItem("glaiveBladeCopper");}
-		if(Math.random() < 0.2){s.addItem("glaiveBladeBronze");}
-		if(Math.random() < 0.1){s.addItem("glaiveBladeIron");}
-		if(Math.random() < 0.3){s.addItem("spearheadCopper");}
-		if(Math.random() < 0.2){s.addItem("spearheadBronze");}
-		if(Math.random() < 0.1){s.addItem("pikeCopper");}
-		if(Math.random() < 0.1){s.addItem("pikeBronze");}
-		if(Math.random() < 0.1){s.addItem("mailCopper");}
-		if(Math.random() < 0.1){s.addItem("plateIron");}
-		if(Math.random() < 0.1){s.addItem("mailIron");}
+
+		s.randomItem("sswordBronze", 0.3, 1, 1);
+		s.randomItem("sswordIron", 0.2, 1, 1);
+		s.randomItem("maceCopper", 0.35, 1, 1);
+		s.randomItem("maceBronze", 0.25, 1, 1);
+		s.randomItem("maceIron", 0.15, 1, 1);
+		s.randomItem("lswordBronze", 0.15, 1, 1);
+		s.randomItem("lswordIron", 0.1, 1, 1);
+		s.randomItem("vestFurDingo", 0.3, 1, 1);
+		s.randomItem("vestFurBear", 0.2, 1, 1);
+		s.randomItem("glaiveBladeCopper", 0.1, 1, 1);
+		s.randomItem("glaiveBladeBronze", 0.2, 1, 1);
+		s.randomItem("glaiveBladeIron", 0.1, 1, 1);
+		s.randomItem("spearheadCopper", 0.3, 1, 1);
+		s.randomItem("spearheadBronze", 0.2, 1, 1);
+		s.randomItem("pikeCopper", 0.1, 1, 1);
+		s.randomItem("pikeBronze", 0.1, 1, 1);
+		s.randomItem("mailCopper", 0.1, 1, 1);
+		s.randomItem("plateIron", 0.1, 1, 1);
+		s.randomItem("mailIron", 0.1, 1, 1);
 
 	
 		//double r = Math.random();

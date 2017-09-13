@@ -91,10 +91,12 @@ public class Game{
 		IO.println("Before setting out on your adventure you decide to prepare yourself.");
 		player.addItem("bread", 2);
 		
-		startingShop.addItem("bread");
-		startingShop.addItem("mushroom");
-		startingShop.addItem("string");
-		startingShop.addItem("stickyString");
+		startingShop.addItem("bread", 3);
+		startingShop.addItem("pastry", 2);
+		startingShop.addItem("mushroom", 4);
+		startingShop.addItem("string", 8);
+		startingShop.addItem("stickyString", 3);
+		startingShop.addItem("clothCotton", 3);
 		startingShop.addItem("walrusTusk");
 		startingShop.addItem("butterKnife");
 		startingShop.addItem("glaiveBladeRusted");

@@ -1241,6 +1241,7 @@ Weapons
 {[ITEM:beret]
 	[NAME:Beret]
 	[TAG:wear_hat]
+	[DESCRIPTION:Hon hon hon.]
 }
 
 {[ITEM:fedora]
