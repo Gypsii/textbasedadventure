@@ -18,7 +18,6 @@ public class Item {
 	public double swingTime = 1;
 	public int dmgType = 0;
 	public String prefix = "a"; 
-	public int armourType = 0;
 	public double cost = -1;
 
 	public Set<Tag> tags = new HashSet<>();
@@ -84,7 +83,6 @@ public class Item {
 	public Item clone(){
 		Item i = new Item(name, dmg, dmgType, swingTime, prefix);
 		i.id = this.id;
-		i.armourType = this.armourType;
 		i.isIngredient = this.isIngredient;
 		i.count = this.count;
 		i.cost = this.cost;

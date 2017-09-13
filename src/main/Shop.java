@@ -84,10 +84,13 @@ public class Shop {
 							IO.print("<green>");
 						}
 						IO.print(i + ":" + items.get(i).name + " (" + items.get(i).count);
-						if (cost <= Game.money) {
-							IO.println(", " + cost + " gold)<r>");
+						if (cost >= 0) {
+							IO.println(", " + cost + " gold)");
 						} else {
 							IO.println(")");
+						}
+						if (cost <= Game.money) {
+							IO.print("<r>");
 						}
 					}
 					n = IO.readInt(0, items.size(), "There is no item with that ID!");
@@ -125,7 +128,7 @@ public class Shop {
 						if(price > 0){
 							IO.print("<green>");
 						}
-						IO.println(i + ": " + item.name + " (" + item.count);
+						IO.print(i + ": " + item.name + " (" + item.count);
 						if(price > 0){
 							IO.println(", " + price + " gold)<r>");
 						}else{

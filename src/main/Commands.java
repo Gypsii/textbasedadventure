@@ -210,8 +210,8 @@ public class Commands {
 		if(Game.zone.isFinalZone){
 			if(Game.canExitZone()){
 				Game.player.hp = Math.max(Game.player.hp, (int)(Game.player.maxHp * 0.75));
-				Game.levelNum ++;
-				Game.levelDiff ++;
+				Game.levelNum++;
+				Game.levelDiff++;
 				Level.generateLevel(Game.levelDiff);
 				Game.level = Game.levels.get(Game.levelNum);
 				Game.level.shop.shop();
@@ -235,33 +235,27 @@ public class Commands {
 		for(;;){
 			Text.listInvCookable();
 			IO.println(Game.player.inv.size() + ": Finish");
-			try{
-				int n = Integer.parseInt(Game.br.readLine());
-				if(n < Game.player.inv.size() && n >= 0){
-					if(Game.player.inv.get(n).hasTag("cookable")){
-						foods.add(Game.player.inv.get(n));
-						Game.player.inv.remove(n);
-					}else{
-						IO.println("<red>This cannot be used as a food.<r>");
+			int n = IO.readInt(0, Game.player.inv.size()+1, "<red>There is no item with that ID!<r>");
+			if(n == -1) {
+				finishingRecipe = false;
+				Game.player.inv.addAll(foods);
+				break;
+			}
+			if(n == Game.player.inv.size()){
+				finishingRecipe = true;
+				for(int i = 0; i < foods.size(); i++){
+					foods.get(i).count --;
+					if(foods.get(i).count > 0){
+						Game.player.addItem(foods.get(i));
 					}
-				}else if(n == -1){
-					finishingRecipe = false;
-					Game.player.inv.addAll(foods);
-					break;
-				}else if(n == Game.player.inv.size()){
-					finishingRecipe = true;
-					for(int i = 0; i < foods.size(); i++){
-						foods.get(i).count --;
-						if(foods.get(i).count > 0){
-							Game.player.addItem(foods.get(i));
-						}
-					}
-					break;
-				}else{
-					IO.println("<red>There is no recipe or category with that ID!<r>");
 				}
-			}catch(NumberFormatException nfe){
-				IO.println("<red>Invalid Format!<r>");
+				break;
+			}
+			if(Game.player.inv.get(n).hasTag("cookable")){
+				foods.add(Game.player.inv.get(n));
+				Game.player.inv.remove(n);
+			}else{
+				IO.println("<red>This cannot be used as a food.<r>");
 			}
 		}
 		if(finishingRecipe){
@@ -284,16 +278,9 @@ public class Commands {
 
 	private static double commandTarget() throws IOException{
 		Text.listTargets();
-		int n = 0;
-		try{
-			n = Integer.parseInt(Game.br.readLine());
-			if(n < Game.zone.creatures.size() && n >= 0){
-				Game.targetIndex = n;
-			}else{
-				IO.println("<red>There is no creature with that ID!<r>");
-			}
-		}catch(NumberFormatException nfe){
-			IO.println("<red>Invalid Format!<r>");
+		int n = IO.readInt(0, Game.zone.creatures.size(), "<red>There is no creature with that ID!<r>");
+		if(n != -1) {
+			Game.targetIndex = n;
 		}
 		return 0;
 	}
@@ -427,37 +414,24 @@ public class Commands {
 				for(int i = 0; i < c.shopInv.size(); i++){
 					IO.println(i + ": " + c.shopInv.get(i).name + " (" + c.shopInv.get(i).count + ", " + c.prices.get(c.shopInv.get(i).name) + " gold)");
 				}
-				int n = 0;
-				try{
-					n = Integer.parseInt(Game.br.readLine());
-					if(n < c.shopInv.size() && n >= 0){
-						if(Game.money < c.prices.get(c.shopInv.get(n).name)){
-							IO.println("<red>You cannot afford that item<r>");
-						}else{
-							IO.println("<green>You bought the " + c.shopInv.get(n).name + " for " + c.prices.get(c.shopInv.get(n).name) + " gold<r>");  
-							Item item = c.shopInv.get(n).clone();
-							item.count = 1;
-							Game.player.addItem(item);
-							Game.money -= c.prices.get(c.shopInv.get(n).name);
-							for(int j = 0; j < c.inv.size(); j++){
-								if(c.inv.get(j).name.equals(Item.item("money").name)){
-									c.inv.get(j).count += c.prices.get(c.shopInv.get(n).name);// Possibly the most indented line yet
-									break;
-								}
-							}
-							c.shopInv.get(n).count --;
-							if(c.shopInv.get(n).count < 1){
-								c.shopInv.remove(n);
-							}
-						} 
-					}else if(n == -1){
-						break;
-					}else{
-						IO.println("<red>There is no item with that ID!<r>");
-	
+				int n = IO.readInt(0,  c.shopInv.size(), "<red>There is no item with that ID!<r>");
+				if(n == -1){
+					break;
+				}
+				if(Game.money < c.prices.get(c.shopInv.get(n).name)){
+					IO.println("<red>You cannot afford that item<r>");
+				}else{
+					IO.println("<green>You bought the " + c.shopInv.get(n).name + " for " + c.prices.get(c.shopInv.get(n).name) + " gold<r>");
+					Item item = c.shopInv.get(n);
+					Item clone = item.clone();
+					clone.count = 1;
+					Game.player.addItem(clone);
+					Game.money -= c.prices.get(item.name);
+					c.addItem(Item.item("money"), c.prices.get(item.name));
+					item.count--;
+					if(item.count < 1){
+						c.shopInv.remove(n);
 					}
-				}catch(NumberFormatException nfe){
-					IO.println("<red>Invalid Format!<r>");
 				}
 			} 			
 		}else{
@@ -489,32 +463,23 @@ public class Commands {
 
 	private static double commandEat() throws IOException{
 		Text.listInvEdible();
-		int n = 0;
-		try{
-			n = Integer.parseInt(Game.br.readLine());
-			if(n < Game.player.inv.size() && n >= 0){						
-				if(Game.player.inv.get(n).hasTag("edible")){
-					Item f = Game.player.inv.get(n);
-					IO.println("<blue>You ate the " + f.getNameWithCount() + ", restoring " + f.healthRestore + " health.<r>");
-					if(Game.player.equipped == f){//If there's ever edible armour that might need to go in here
-						Game.player.equipped = Item.unarmed;
-					}
-					Game.player.hp += f.healthRestore;
-					Game.player.hp = Math.min(Game.player.maxHp, Game.player.hp);
-					IO.println("You are now on " + Game.player.hp + " hp");
-					Game.player.inv.get(n).count--;
-					if(Game.player.inv.get(n).count <= 0){
-						Game.player.removeItem(n);
-					}
-					return 1;
-				}else{
-					IO.println("<red>The selected item is not a food!<r>");
-				}	
-			}else{
-				IO.println("<red>There is no item with that ID!<r>");
+		int n = IO.readInt(0, Game.player.inv.size(), "<red>There is no item with that ID!<r>");
+		if(Game.player.inv.get(n).hasTag("edible")){
+			Item f = Game.player.inv.get(n);
+			IO.println("<blue>You ate the " + f.getNameWithCount() + ", restoring " + f.healthRestore + " health.<r>");
+			if(Game.player.equipped == f){//If there's ever edible armour that might need to go in here
+				Game.player.equipped = Item.unarmed;
 			}
-		}catch(NumberFormatException nfe){
-			IO.println("<red>Invalid Format!<r>");
+			Game.player.hp += f.healthRestore;
+			Game.player.hp = Math.min(Game.player.maxHp, Game.player.hp);
+			IO.println("You are now on " + Game.player.hp + " hp");
+			f.count--;
+			if(f.count <= 0){
+				Game.player.removeItem(n);
+			}
+			return 1;
+		}else{
+			IO.println("<red>The selected item is not a food!<r>");
 		}
 		return 0;
 	}
@@ -527,90 +492,62 @@ public class Commands {
 		for(;;){
 			IO.println("Select an item to enchant:");
 			Text.listInvEnchantable();
-			int n = 0;
-			try{
-				n = Integer.parseInt(Game.br.readLine());
-				if(n == -1){
-					exiting = true;
-					break;
+			int n = IO.readInt(0, Game.player.inv.size(), "<red>There is no item with that ID!<r>");
+			if(n == -1){
+				exiting = true;
+				break;
+			}
+			a = Game.player.inv.get(n);
+			if(a.hasTag("enchanted") || a.hasTag("wear_ring") || a.hasTag("wear_cloak") || a.hasTag("wear_hat")){
+				a.count--;
+				if(a.count <= 0){
+					Game.player.removeItem(n);
 				}
-				if(n < Game.player.inv.size() && n >= 0){						
-					if(Game.player.inv.get(n).armourType > 1){
-						a = Game.player.inv.get(n);
-						Game.player.inv.get(n).count--;
-						if(Game.player.inv.get(n).count <= 0){
-							Game.player.removeItem(n);
-						}
-						break;
-					}else{
-						IO.println("<red>The selected item is not enchantable<r>");
-					}	
-				}else{
-					IO.println("<red>There is no item with that ID!<r>");
-				}
-			}catch(NumberFormatException nfe){
-				IO.println("<red>Invalid Format!<r>");
+				break;
+			}else{
+				IO.println("<red>The selected item is not enchantable<r>");
 			}
 		}
 		if(!exiting && !a.hasTag("enchanted")){
 			while(!exiting){
 				IO.println("Select a scroll:");
 				Text.listInvScrolls();
-				int n = 0;
-				try{
-					n = Integer.parseInt(Game.br.readLine());
-					if(n == -1){
-						exiting = true;
-						Game.player.addItem(a);
-						break;
-					}
-					if(n < Game.player.inv.size() && n >= 0){						
-						if(Game.player.inv.get(n).getClass().equals(Scroll.scrollCrit.getClass())){
-							s = (Scroll) Game.player.inv.get(n);
-							break;
-						}else{
-							IO.println("<red>The selected item is not a scroll<r>");
-						}	
-					}else{
-						IO.println("<red>There is no item with that ID!<r>");
-					}
-				}catch(NumberFormatException nfe){
-					IO.println("<red>Invalid Format!<r>");
+				int n = IO.readInt(0, Game.player.inv.size());
+				if(n == -1){
+					exiting = true;
+					Game.player.addItem(a);
+					break;
+				}
+				if(Game.player.inv.get(n).getClass().equals(Scroll.scrollCrit.getClass())){
+					s = (Scroll) Game.player.inv.get(n);
+					break;
+				}else{
+					IO.println("<red>The selected item is not a scroll<r>");
 				}
 			}
 		}	
 		while(!exiting){
 			IO.println("Select a gem:");
 			Text.listInvGems();
-			int n = 0;
-			try{
-				n = Integer.parseInt(Game.br.readLine());
-				if(n == -1){
-					exiting = true;
-					Game.player.addItem(a);
-					break;
-				}
-				if(n < Game.player.inv.size() && n >= 0){						
-					if(Game.player.inv.get(n).hasTag("gem")){
-						g = Game.player.inv.get(n);
-						if(a.hasTag("enchanted")){
-							Game.player.addItem(MagicItem.improveEnchant(a));
-						}else{
-							Game.player.addItem(MagicItem.playerEnchant(a, s, g));
-						}
-						Game.player.inv.get(n).count--;
-						if(Game.player.inv.get(n).count <= 0){
-							Game.player.removeItem(n);
-						}
-						return 5;
-					}else{
-						IO.println("<red>The selected item is not a Gem<r>");
-					}	
+			int n = IO.readInt(0, Game.player.inv.size());
+			if(n == -1){
+				Game.player.addItem(a);
+				break;
+			}
+			if(Game.player.inv.get(n).hasTag("gem")){
+				g = Game.player.inv.get(n);
+				if(a.hasTag("enchanted")){
+					Game.player.addItem(MagicItem.improveEnchant(a));
 				}else{
-					IO.println("<red>There is no item with that ID!<r>");
+					Game.player.addItem(MagicItem.playerEnchant(a, s, g));
 				}
-			}catch(NumberFormatException nfe){
-				IO.println("<red>Invalid Format!<r>");
+				g.count--;
+				if(g.count <= 0){
+					Game.player.removeItem(n);
+				}
+				return 5;
+			}else{
+				IO.println("<red>The selected item is not a Gem<r>");
 			}
 		}
 		return 0;
