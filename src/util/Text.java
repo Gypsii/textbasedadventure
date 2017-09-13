@@ -23,8 +23,8 @@ public class Text {
 		attackMessage(attacker, attackee, damage, resist_id, verb, "");
 	}
 
-	public static void selfHealMessage(Creature c, int damage){//TODO better name? Also damage names
-		IO.print(getDefName(c) + " healed " + damage + " hp, ");
+	public static void selfHealMessage(Creature c, int damage, String verb){//TODO better name? Also damage names
+		IO.print(getDefName(c) + " " + verb + " " + damage + " hp, ");
 	}
 	
 	public static void attackMessage(Creature attacker, Creature attackee, int damage, int resist_id, String verb, String weaponName){//TODO better name? Also damage names

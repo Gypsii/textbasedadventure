@@ -15,7 +15,7 @@ public class Elemental extends Creature{
 	public Elemental(int t){
 		type = t;
 		name = "<red>ERR UNTYPED ELEMENTAL<r>";
-		tags.add(CreatureTag.elemental);
+		addTag("elemental");
 		baseDmg = 14;
 		maxHp = 160;
 		xp = 47;

@@ -4,15 +4,15 @@ import item.Item;
 
 import java.util.ArrayList;
 
-import item.ItemTag;
+import main.Tag;
 import main.Game;
 
 public class FoodRecipe {
 	
 	public static ArrayList<FoodRecipe> recipes = new ArrayList<FoodRecipe>();
 	
-	public ArrayList<ItemTag> components = new ArrayList<ItemTag>();
-	public ArrayList<ItemTag> badComponents = new ArrayList<ItemTag>();
+	public ArrayList<Tag> components = new ArrayList<Tag>();
+	public ArrayList<Tag> badComponents = new ArrayList<Tag>();
 	public String product;
 
 	public int level;
@@ -24,35 +24,35 @@ public class FoodRecipe {
 	}
 	
 	public void addComponent(String tag){
-		addComponent(ItemTag.tag(tag));
+		addComponent(Tag.tag(tag));
 	}
 
-	public void addComponent(ItemTag tag){
+	public void addComponent(Tag tag){
 		components.add(tag);
 		badComponents.remove(tag);
 	}
 
 	public void forbidComponent(String tag){
-		forbidComponent(ItemTag.tag(tag));
+		forbidComponent(Tag.tag(tag));
 	}
 
-	public void forbidComponent(ItemTag tag){
+	public void forbidComponent(Tag tag){
 		badComponents.add(tag);
 	}
 	
 	public void forbidAll(){
-		badComponents.add(ItemTag.tag("mushroom"));
-		badComponents.add(ItemTag.tag("slime"));
-		badComponents.add(ItemTag.tag("meat"));
-		badComponents.add(ItemTag.tag("vegetable"));
-		badComponents.add(ItemTag.tag("fruit"));
-		badComponents.add(ItemTag.tag("spice"));
-		badComponents.add(ItemTag.tag("bread"));
-		badComponents.add(ItemTag.tag("egg"));
-		badComponents.add(ItemTag.tag("toxic"));
+		badComponents.add(Tag.tag("mushroom"));
+		badComponents.add(Tag.tag("slime"));
+		badComponents.add(Tag.tag("meat"));
+		badComponents.add(Tag.tag("vegetable"));
+		badComponents.add(Tag.tag("fruit"));
+		badComponents.add(Tag.tag("spice"));
+		badComponents.add(Tag.tag("bread"));
+		badComponents.add(Tag.tag("egg"));
+		badComponents.add(Tag.tag("toxic"));
 	}
 	
-	public void removeForbiddenComponent(ItemTag tag){//uhhh this used to be FoodTag but the array is for strings so ????
+	public void removeForbiddenComponent(Tag tag){//uhhh this used to be FoodTag but the array is for strings so ????
 		badComponents.remove(tag);
 	}
 	

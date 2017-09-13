@@ -9,21 +9,22 @@ import creatures.Slime;
 public class Level {
 	public HashMap<Integer, Zone> zones = new  HashMap<Integer, Zone>();
 	ArrayList<Integer> slimeTypes = new ArrayList<Integer>();
-	public static int LEVELSIZE = 3;
+	public static final int LEVEL_SIZE = 3;
 	public Shop shop;
 	public int temp = 100;
 	static final int SLIME_STANDARD = 0;
 	static final int SLIME_COLD = 1;
 	static final int SLIME_FIRE = 2;
 	static final int SLIME_JUNGLE = 3;
-	static final int SLIME_MIXED_BAG = 4;
+	static final int SLIME_MAGIC = 4;
+	static final int SLIME_MIXED_BAG = 5;
 	
 	public Level(){
 		
 	}
 	
 	public void selectSlimes(){
-		int slimeType = (int)(Math.random() * 4);//TODO real slime stuff
+		int slimeType = (int)(Math.random() * 5);//TODO real slime stuff
 		switch(slimeType){
 		case SLIME_STANDARD:
 			slimeTypes.add(Slime.STICKY);
@@ -57,6 +58,14 @@ public class Level {
 			slimeTypes.add(Slime.EARTHEN);
 			slimeTypes.add(Slime.VOLATILE);
 			break;
+		case SLIME_MAGIC:
+			slimeTypes.add(Slime.ELECTRIC);
+			slimeTypes.add(Slime.ELECTRIC);
+			slimeTypes.add(Slime.FUNGAL);
+			slimeTypes.add(Slime.FUNGAL);
+			slimeTypes.add(Slime.ICY);
+			slimeTypes.add(Slime.FIERY);
+			break;
 		case SLIME_MIXED_BAG:
 			slimeTypes.add(Slime.STICKY);
 			slimeTypes.add(Slime.WATERY);
@@ -73,13 +82,13 @@ public class Level {
 		temp += (int)(r.nextGaussian() * 10);
 		System.out.println("Temp = " + temp);//TODO this is a debug
 		selectSlimes();
-		int setX = (int)(Math.random() * (LEVELSIZE - 1)) + 1;
-		int setY = (int)(Math.random() * (LEVELSIZE - 1)) + 1;
-		for(int w = 0; w <= LEVELSIZE; w++){
-			for(int h = 0; h <= LEVELSIZE; h++){
-				if((w == LEVELSIZE && h == 0) || (h == LEVELSIZE && w == 0) || (h == setY && w == setX)){
+		int setX = (int)(Math.random() * (LEVEL_SIZE - 1)) + 1;
+		int setY = (int)(Math.random() * (LEVEL_SIZE - 1)) + 1;
+		for(int w = 0; w <= LEVEL_SIZE; w++){
+			for(int h = 0; h <= LEVEL_SIZE; h++){
+				if((w == LEVEL_SIZE && h == 0) || (h == LEVEL_SIZE && w == 0) || (h == setY && w == setX)){
 					zones.put(w + (100 * h), Zone.generateSetPiece());
-				}else if(w == LEVELSIZE && h == LEVELSIZE){
+				}else if(w == LEVEL_SIZE && h == LEVEL_SIZE){
 					zones.put(w + (100 * h), Zone.generateFinalZone(diff, temp, slimeTypes));
 				}else{
 					zones.put(w + (100 * h), Zone.generateZone(diff, temp, slimeTypes));

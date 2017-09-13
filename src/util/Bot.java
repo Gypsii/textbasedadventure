@@ -130,27 +130,27 @@ public class Bot {
 	}
 	
 	static String nextZone(){
-//		if(y < Level.LEVELSIZE && x != Level.LEVELSIZE){
+//		if(y < Level.LEVEL_SIZE && x != Level.LEVEL_SIZE){
 //			y++;
 //			visited[x][y] = true;
 //			return "n";
-//		}else if(x < Level.LEVELSIZE){
+//		}else if(x < Level.LEVEL_SIZE){
 //			x++;
 //			visited[x][y] = true;
 //			return "e";
-//		}else if(x == Level.LEVELSIZE && y > 0 && !visited[x][y-1]){
+//		}else if(x == Level.LEVEL_SIZE && y > 0 && !visited[x][y-1]){
 //			IO.print("<cyan>GOING SOUTH<r>");
 //			y--;
 //			visited[x][y] = true;
 //			return "s";
-//		}else if(y < Level.LEVELSIZE){
+//		}else if(y < Level.LEVEL_SIZE){
 //			y++;
 //			visited[x][y] = true;
 //			return "n";
 //		}
 //
-//		for(int i = 0; i < Level.LEVELSIZE; i++){
-//			for(int j = 0; j < Level.LEVELSIZE; j++){
+//		for(int i = 0; i < Level.LEVEL_SIZE; i++){
+//			for(int j = 0; j < Level.LEVEL_SIZE; j++){
 //				visited[i][j] = false;
 //			}
 //		}

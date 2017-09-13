@@ -16,7 +16,7 @@ public class Bird extends Creature{
 	public Bird(int t){
 		name = "UNDEFINED BIRD";
 		type = t;
-		tags.add(CreatureTag.bird);
+		addTag("bird");
 		maxHp = 15;
 		hp = maxHp;
 		baseDmg = 4;

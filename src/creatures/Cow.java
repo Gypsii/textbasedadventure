@@ -7,7 +7,7 @@ public class Cow extends Creature{
 
 	public Cow(){
 		name = "Cow";
-		tags.add(CreatureTag.livestock);
+		addTag("livestock");
 		maxHp = 101;
 		hp = maxHp;
 		baseDmg = 9;

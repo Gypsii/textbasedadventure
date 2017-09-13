@@ -3,12 +3,13 @@ package creatures;
 import main.Game;
 import item.Item;
 import item.MagicItem;
+import main.Tag;
 
 public class Fiend extends Creature{
 	
 	public Fiend(){
-		name = "tDemonic Fiend";
-		tags.add(CreatureTag.fiend);
+		name = "Demonic Fiend";
+		addTag("fiend");
 		maxHp = 132;
 		hp = maxHp;
 		baseDmg = 16;
@@ -34,7 +35,7 @@ public class Fiend extends Creature{
 			equip(1);
 		}
 		if(Math.random() < 0.45){addItem("ruby");}
-		addTarget(CreatureTag.humanoid, 100);
+		addTarget(Tag.tag("humanoid"), 100);
 		postInitialisation();
 	}
 	

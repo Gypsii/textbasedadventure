@@ -7,6 +7,7 @@ import java.util.Random;
 import main.DamageOnHit;
 import main.DamageType;
 import main.Game;
+import util.AttackHandler;
 import util.IO;
 import util.Text;
 
@@ -28,8 +29,8 @@ public class Slime extends Creature{
 	public static final int[] diffConstants = {1, 1, 0, 0, 0, 2, 1, 0, 0, 0, 2, 1};
 	
 	
-	public Slime(int t, int s){//Size should be a power of 2
-		tags.add(CreatureTag.slime);
+	public Slime(int t, int s){//Size should be a power of 2 (enforce this?)
+		addTag("slime");
 		size = s;
 		dmg = 8;
 		maxHp = 32;
@@ -62,7 +63,7 @@ public class Slime extends Creature{
 			}
 			name = "Icy Slime";
 			baseResists[Game.DMG_BLUNT] = 2 * size;
-			baseResists[Game.DMG_SLASH] = 4 * size;
+			baseResists[Game.DMG_SLASH] = 5 * size;
 			baseResists[Game.DMG_PIERCE] = 15 * size;
 			baseResists[Game.DMG_BURN] = -10 * size;
 			baseResists[Game.DMG_COLD] = 20 * size;
@@ -71,7 +72,7 @@ public class Slime extends Creature{
 			addItem("slimeWater", dropCount);
 			name = "Watery Slime";
 			baseResists[Game.DMG_SLASH] = 12 * size;
-			baseResists[Game.DMG_BURN] = 8 * size;
+			baseResists[Game.DMG_BURN] = 5 * size;
 			baseResists[Game.DMG_PIERCE] = 40 * size;
 		}else if(type == STICKY){
 			addItem("slimeSticky", dropCount);
@@ -144,15 +145,15 @@ public class Slime extends Creature{
 		}else if(size == 4){
 			maxHp = 224;
 			name = "Huge " + name;
-			xp *= 6;
+			xp *= 10;
 		}else if(size == 8){
 			maxHp = 440;
 			name = "Colossal " + name;
-			xp *= 20;
+			xp *= 50;
 		}else if(size == 16){
 			maxHp = 1180;
 			name = "Titanic " + name;
-			xp *= 50;
+			xp *= 200;
 		}
 		dmg *= size;
 		hp = maxHp;
@@ -164,12 +165,9 @@ public class Slime extends Creature{
 	}
 	
 	public void passiveAction(){
-		if(type == PLANT){
+		if(type == PLANT || type == FUNGAL){
 			if(hp != maxHp){
-				IO.print(Text.getDefName(this) + " regenerated " + Math.min(size * 4, maxHp - hp) + " hp, leaving it on ");
-				hp += size * 4;
-				hp = Math.min(hp, maxHp);
-				IO.println(hp + " hp");
+				AttackHandler.selfHeal(this, size*4, "regenerated");
 			}
 		}	
 	}
@@ -192,7 +190,8 @@ public class Slime extends Creature{
 			}
 		}
 	}
-	
+
+	//TODO do something about takeExplosionDamage
 	public void takeExplosionDamage(int d) {
 		hp -= d;
 		IO.println(Text.capitalised(Text.getDefName(this)) + " took " + d + " damage from the explosion, leaving it on " + Math.max(0, hp) + " hp");

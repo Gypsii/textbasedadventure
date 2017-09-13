@@ -5,16 +5,17 @@ import item.Item;
 import java.util.Random;
 
 import creatures.CreatureTag;
+import main.Tag;
 
 public class SealHunter extends Human{
 	
 	public void setTargets(){
-		addTarget(CreatureTag.seal, 103);
-		addTarget(CreatureTag.walrus, 101);
+		addTarget(Tag.tag("seal"), 103);
+		addTarget(Tag.tag("walrus"), 101);
 	}
 	
 	public void setSpecifics(){
-		tags.add(CreatureTag.sealHunter);
+		addTag("sealHunter");
 		name = "Seal Hunter";
 		
 		Random r = new Random();	

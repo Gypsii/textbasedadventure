@@ -3,12 +3,13 @@ package creatures;
 import main.Game;
 import item.Item;
 import item.MagicItem;
+import main.Tag;
 
 public class FiendGuardian extends Creature{
 	
 	public FiendGuardian(){
 		name = "Demonic Guardian";
-		tags.add(CreatureTag.fiend);
+		addTag("fiend");
 		maxHp = 666;
 		hp = maxHp;
 		dmg = 40;
@@ -31,7 +32,7 @@ public class FiendGuardian extends Creature{
 		if(Math.random() < 0.45){addItem("ruby");}
 		if(Math.random() < 0.45){addItem("ruby");}
 		if(Math.random() < 0.45){addItem("ruby");}
-		addTarget(CreatureTag.humanoid, 200);
+		addTarget(Tag.tag("humanoid"), 200);
 		postInitialisation();
 	}
 	

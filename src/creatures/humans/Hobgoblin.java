@@ -6,13 +6,14 @@ import item.MagicItem;
 import java.util.Random;
 
 import creatures.CreatureTag;
+import main.Tag;
 
 public class Hobgoblin extends Humanoid{
 	
 	public Hobgoblin(){
 		name = "Hobgoblin";
-		tags.add(CreatureTag.humanoid);
-		tags.add(CreatureTag.hobgoblin);
+		addTag("humanoid");
+		addTag("hobgoblin");
 		maxHp = 70;
 		hp = maxHp;
 		baseDmg = 6;
@@ -82,7 +83,7 @@ public class Hobgoblin extends Humanoid{
 	}
 	
 	public void setTargets(){
-		addTarget(CreatureTag.fiend, 150);
-		addTarget(CreatureTag.human, 20);
+		addTarget(Tag.tag("fiend"), 150);
+		addTarget(Tag.tag("human"), 20);
 	}
 }

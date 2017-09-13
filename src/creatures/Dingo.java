@@ -2,6 +2,7 @@ package creatures;
 
 import item.Item;
 import main.Game;
+import main.Tag;
 
 public class Dingo extends Creature{
 	public int type;
@@ -38,7 +39,7 @@ public class Dingo extends Creature{
 			dmg *= 2;
 			addBodyPart(Item.item("hideHellDingo"), 0.5);
 		}
-		this.addTarget(CreatureTag.rodent, 100);
+		this.addTarget(Tag.tag("rodent"), 100);
 		
 		defaultAttackPattern = new AttackPattern(baseDmg, Game.DMG_PIERCE, "bit");
 		

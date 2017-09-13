@@ -3,6 +3,7 @@ package item;
 import java.util.*;
 
 import main.OnHit;
+import main.Tag;
 import util.IO;
 import main.Game;
 
@@ -20,7 +21,7 @@ public class Item {
 	public int armourType = 0;
 	public double cost = -1;
 
-	public Set<ItemTag> tags = new HashSet<>();
+	public Set<Tag> tags = new HashSet<>();
 	public List<OnHit> onHits = new ArrayList<>();
 
 	public boolean isStackable = true;
@@ -46,26 +47,26 @@ public class Item {
 	}
 
 	public boolean hasTag(String tag){
-		return hasTag(ItemTag.tag(tag));
+		return hasTag(Tag.tag(tag));
 	}
 
-	public boolean hasTag(ItemTag tag){
+	public boolean hasTag(Tag tag){
 		return tags.contains(tag);
 	}
 
 	public void addTag(String tag){
-		addTag(ItemTag.tag(tag));
+		addTag(Tag.tag(tag));
 	}
 
-	public void addTag(ItemTag tag){
+	public void addTag(Tag tag){
 		tags.add(tag);
 	}
 
 	public boolean removeTag(String tag){
-		return removeTag(ItemTag.tag(tag));
+		return removeTag(Tag.tag(tag));
 	}
 
-	public boolean removeTag(ItemTag tag){
+	public boolean removeTag(Tag tag){
 		if(hasTag(tag)) {
 			tags.remove(tag);
 			return true;

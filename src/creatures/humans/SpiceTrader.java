@@ -5,8 +5,8 @@ import creatures.CreatureTag;
 public class SpiceTrader extends Human{
 	
 	public void setTags(){
-		tags.add(CreatureTag.merchant);
-		tags.add(CreatureTag.spiceTrader);
+		addTag("merchant");
+		addTag("spiceTrader");
 	}
 	
 	public void setWeapon(){

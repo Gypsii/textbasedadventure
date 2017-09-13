@@ -8,9 +8,9 @@ public class Player extends Creature{
     public int lvl = 1;
     
     public Player(){
-		tags.add(CreatureTag.humanoid);
-		tags.add(CreatureTag.human);
-		tags.add(CreatureTag.player);
+		addTag("humanoid");
+		addTag("human");
+		addTag("player");
     	dmg = 5;
     	baseDmg = 5;
         maxHp = 100;

@@ -2,6 +2,7 @@ package creatures.humans;
 
 import creatures.CreatureTag;
 import item.Item;
+import main.Tag;
 
 public class Bandit extends Human {
 
@@ -59,12 +60,12 @@ public class Bandit extends Human {
 	}
 	
 	public void setTags(){
-		tags.add(CreatureTag.bandit);
+		addTag("bandit");
 	}
 	
 	public void setTargets(){
 		setHostilityTowardsPlayer(true);
-		addTarget(CreatureTag.merchant, 101);
+		addTarget(Tag.tag("merchant"), 101);
 	}
 	
 	public void setSpecifics(){

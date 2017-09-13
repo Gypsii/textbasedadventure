@@ -4,9 +4,7 @@ import item.Item;
 
 import java.util.*;
 
-import main.Game;
-import main.Skillset;
-import main.Zone;
+import main.*;
 import util.*;
 import util.Text;
 
@@ -33,6 +31,7 @@ public class Creature {
 	public String description = "";
 
 	public Set<Condition> conditions = new HashSet<>();
+	public Set<Tag> tags = new HashSet<>();
 
 	public double courage = 100000;//this needs fixing
 	public Zone zone;
@@ -41,12 +40,12 @@ public class Creature {
 	public AttackPattern defaultAttackPattern;
 
 	public Creature target = null;
-	public ArrayList<CreatureTag> tags = new ArrayList<CreatureTag>();
-	public ArrayList<CreatureTag> targetTags = new ArrayList<CreatureTag>();
-	public ArrayList<Integer> targetWeights = new ArrayList<Integer>();
+//	public ArrayList<CreatureTag> tags = new ArrayList<CreatureTag>();
+	public List<Tag> targetTags = new ArrayList<>();
+	public List<Integer> targetWeights = new ArrayList<>();
 	static Comparator<TargetPair> targetComparator = new TargetComparator();
-	public PriorityQueue<TargetPair> targetQueue = new PriorityQueue<TargetPair>(targetComparator);
-	public HashMap<Creature, TargetPair> targetMap = new HashMap<Creature, TargetPair>();
+	public PriorityQueue<TargetPair> targetQueue = new PriorityQueue<>(targetComparator);
+	public Map<Creature, TargetPair> targetMap = new HashMap<>();
 
 	public ArrayList<Item> inv = new ArrayList<Item>();
 	public ArrayList<Item> butcherInv = new ArrayList<Item>();
@@ -147,6 +146,34 @@ public class Creature {
 		overwriteStats();
 	}
 
+	public boolean hasTag(String tag){
+		return hasTag(Tag.tag(tag));
+	}
+
+	public boolean hasTag(Tag tag){
+		return tags.contains(tag);
+	}
+
+	public void addTag(String tag){
+		addTag(Tag.tag(tag));
+	}
+
+	public void addTag(Tag tag){
+		tags.add(tag);
+	}
+
+	public boolean removeTag(String tag){
+		return removeTag(Tag.tag(tag));
+	}
+
+	public boolean removeTag(Tag tag){
+		if(hasTag(tag)) {
+			tags.remove(tag);
+			return true;
+		}
+		return false;
+	}
+
 	public String getName() {
 		String result = name;
 
@@ -163,21 +190,23 @@ public class Creature {
 		return result;
 	}
 
+
+	private static final int NUM_EFFECTS = 14;
 	/**
 	 * Rolls for whether this {@code Creature} is a boss, then rolls for boss type.
 	 * Takes into account the {@code canBeBoss} parameter of this {@code Creature}.
 	 */
 	public void doBossType() {
 		if (Math.random() < 0.1 && this.canBeBoss) {
-			bossType = (int) (Math.random() * 11) + 1;//times number of cases
+			bossType = (int) (Math.random() * NUM_EFFECTS) + 1;
 			switch (bossType) {
 				case 1:
 					name = "Devastating " + name;
 					baseCritChance += 0.5;
-					critChance += 0.5;
+					critChance += 0.5;//is this how crit works?
 					break;
 				case 2:
-					name = "Resilient " + name;
+					name = "Resilient " + name; //Maybe have these scale with something?
 					baseResists[Game.DMG_BLUNT] += 5;
 					baseResists[Game.DMG_SLASH] += 5;
 					baseResists[Game.DMG_PIERCE] += 5;
@@ -218,30 +247,40 @@ public class Creature {
 					break;
 				case 7:
 					name = "Brutal " + name;
-					baseDmg *= 1.25;
+					baseDmg *= 1.5;
 					break;
 				case 8:
 					name = "Rich " + name;
-					addItem("money", (int) (Math.random() * 20) + 20);
+					addItem("money", (int) (Math.random() * 30) + 20);
 					break;
 				case 9:
-					name = "Agressive " + name;
-					addTarget(CreatureTag.rodent, 120);
-					addTarget(CreatureTag.slime, 120);
-					addTarget(CreatureTag.humanoid, 120);
-					addTarget(CreatureTag.fiend, 120);
-					addTarget(CreatureTag.bird, 120);
-					addTarget(CreatureTag.spider, 120);
-					addTarget(CreatureTag.walrus, 120);
+					name = "Aggressive " + name; //TODO stop hitting yourself
+					addTarget("rodent", 120);
+					addTarget("slime", 120);
+					addTarget("humanoid", 120);
+					addTarget("fiend", 120);
+					addTarget("bird", 120);
+					addTarget("spider", 120);
+					addTarget("walrus", 120);
 					break;
 				case 10:
 					name = "Easily Infuriated " + name;
 					conditions.add(Condition.ENRAGEABLE);
-//				enrageable = true;
 					break;
 				case 11:
 					name = "Weak " + name;
-					baseDmg *= 0.75;
+					baseDmg *= 0.5;
+					break;
+				case 12:
+					name = "Mystical " + name;
+					defaultAttackPattern.onHits.add(new DamageOnHit(Math.max(baseDmg / 4, 1), Game.DMG_MAGIC));
+					break;
+				case 13:
+					name = "Vampiric " + name;
+					defaultAttackPattern.onHits.add(new SelfHealOnHit(baseDmg / 2));
+					break;
+				case NUM_EFFECTS:
+					conditions.add(Condition.SLEEPING);
 					break;
 			}
 			name = "<purple>" + name + "<r>";
@@ -263,7 +302,7 @@ public class Creature {
 		passiveAction();
 		if (isAbsconding()) {
 			abscond();
-			return 10000;
+			return 10000;//TODO remove from queue properly
 		} else {
 			while (!targetQueue.isEmpty()) {
 				TargetPair p = targetQueue.peek();
@@ -299,7 +338,8 @@ public class Creature {
 	 * Actions
 	 */
 
-	public AttackPattern decideAttackPattern() {
+
+	public AttackPattern decideAttackPattern() { //TODO make this intelligent
 		return defaultAttackPattern;
 	}
 
@@ -313,7 +353,7 @@ public class Creature {
 	/**
 	 * Taken at the start of every turn when alive.
 	 */
-	public void passiveAction() {
+	public void passiveAction() { //TODO put this separately on the queue so it isn't dependant on swing speed
 
 	}
 
@@ -334,52 +374,53 @@ public class Creature {
 	}
 
 	public void equip(Item i) {
-		if (i.armourType == 0) {
+		if (i.hasTag("wear_chest")) {
+			armourChest = i;
+		} else if (i.hasTag("wear_ring")) {//TODO give a menu when an item can be worn in several slots (or in hand)
+			ring = i;
+		} else if (i.hasTag("wear_cloak")) {
+			cloak = i;
+		} else if (i.hasTag("wear_hat")) {
+			hat = i;
+		}else{
 			equipped = i;
 			dmg = calculateDamage();
-		} else {
-			if (i.armourType == 1) {
-				armourChest = i;
-			} else if (i.armourType == 2) {
-				ring = i;
-			} else if (i.armourType == 3) {
-				cloak = i;
-			} else if (i.armourType == 4) {
-				hat = i;
-			}
-			refreshArmour();
 		}
+		refreshArmour();
 	}
 
+
+	static final int DPS_PER_LEVEL = 2;
 	/**
 	 * Calculates the damage of this {@code Creature} based off its weapons and {@code SkillSet}
 	 *
 	 * @return DamageType calculation results
 	 */
 	public int calculateDamage() {
-		int dmgPerLvl = 2;
-		int weaponDmg = equipped.dmg;
+
+		int modifiedDmg = equipped.dmg;
 		switch (equipped.dmgType) {
 			case Game.DMG_BLUNT:
-				weaponDmg += (skills.bluntLvl - 1) * (equipped.swingTime * dmgPerLvl);
+				modifiedDmg += (skills.bluntLvl - 1) * (equipped.swingTime * DPS_PER_LEVEL);
 				break;
 			case Game.DMG_SLASH:
-				weaponDmg += (skills.slashLvl - 1) * (equipped.swingTime * dmgPerLvl);
+				modifiedDmg += (skills.slashLvl - 1) * (equipped.swingTime * DPS_PER_LEVEL);
 				break;
 			case Game.DMG_PIERCE:
-				weaponDmg += (skills.pierceLvl - 1) * (equipped.swingTime * dmgPerLvl);
+				modifiedDmg += (skills.pierceLvl - 1) * (equipped.swingTime * DPS_PER_LEVEL);
 				break;
 		}
 		if (equipped.hasTag("polearm")) {
-			weaponDmg += (skills.poleLvl - 1) * (equipped.swingTime * dmgPerLvl);
+			modifiedDmg += (skills.poleLvl - 1) * (equipped.swingTime * DPS_PER_LEVEL);
 		}
 		if (equipped.hasTag("sword")) {
-			weaponDmg += (skills.swordLvl - 1) * (equipped.swingTime * dmgPerLvl);
+			modifiedDmg += (skills.swordLvl - 1) * (equipped.swingTime * DPS_PER_LEVEL);
 		}
-		weaponDmg = Math.min(weaponDmg, equipped.dmg * 2);
-		return Math.max(baseDmg, weaponDmg);
+		modifiedDmg = Math.min(modifiedDmg, equipped.dmg * 2);
+		return Math.max(baseDmg, modifiedDmg);
 	}
 
+	//TODO misses
 	public boolean checkAttackSuccess(Creature c) {//TODO attack hits/misses
 		return true;
 	}
@@ -409,16 +450,18 @@ public class Creature {
 	private int findWeight(Creature c) {
 		int weight = 0;
 		for (int j = 0; j < targetTags.size(); j++) {
-			for (int k = 0; k < c.tags.size(); k++) {
-				if (c.tags.get(k) == targetTags.get(j)) {
+			if (c.hasTag(targetTags.get(j))) {
 					weight += targetWeights.get(j);
-				}
 			}
 		}
 		return weight;
 	}
 
-	public void addTarget(CreatureTag t, int weight) {
+	public void addTarget(String t, int weight) {
+		addTarget(Tag.tag(t), weight);
+	}
+
+	public void addTarget(Tag t, int weight) {
 		targetTags.add(t);
 		targetWeights.add(weight);
 	}

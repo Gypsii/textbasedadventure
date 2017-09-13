@@ -254,7 +254,7 @@ public class Zone {
 					maxHp = 140;
 					maxHp = 140;
 					name = "Wandering Chef";
-					tags.add(CreatureTag.merchant);
+					addTag("merchant");
 					for(int i = 0; i < 4; i++){
 						if(Math.random() < 0.7){addShopItem("bread", 10);}
 					}
@@ -458,14 +458,14 @@ public class Zone {
 			zone.addCreature(new Human(){
 				public void overwriteStats(){
 					name = "Armour Merchant";
-					tags.add(CreatureTag.merchant);
+					addTag("merchant");
 					hp = 200;
 					maxHp = 200;
 					baseCritChance = 0.25;
-					this.addShopItem(Item.item("armourLeather"), 167);
-					this.addShopItem(Item.item("mailCopper"), 302);
-					this.addShopItem(Item.item("plateIron"), 1863);
-					this.addShopItem(Item.item("mailSteel"), 2549);
+					this.addShopItem(Item.item("armourLeather"), (int)(Item.item("armourLeather").cost * (Math.random()/2 + 0.5)));
+					this.addShopItem(Item.item("mailCopper"), (int)(Item.item("mailCopper").cost * (Math.random()/2 + 0.5)));
+					this.addShopItem(Item.item("plateIron"), (int)(Item.item("plateIron").cost * (Math.random()/2 + 0.5)));
+					this.addShopItem(Item.item("mailSteel"), (int)(Item.item("mailSteel").cost * (Math.random()/2 + 0.5)));
 				}
 				
 				public void setArmour(){
@@ -523,7 +523,7 @@ public class Zone {
 			zone.addCreature(new Human(){
 				public void overwriteStats(){
 					name = "Jeweller";
-					tags.add(CreatureTag.merchant);
+					addTag("merchant");
 					hp = 165;
 					maxHp = 165;
 					if(Math.random() < 0.4){addShopItem(Item.item("amethyst"), 180);}

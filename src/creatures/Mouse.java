@@ -14,7 +14,7 @@ public class Mouse extends Creature{
 		setHostilityTowardsPlayer(false);
 		canBeBoss = false;
 		courage = (Math.random() * 2);
-		tags.add(CreatureTag.rodent);
+		addTag("rodent");
 		
 		defaultAttackPattern = new AttackPattern(baseDmg, Game.DMG_SLASH, "scratched", 0.6);
 		

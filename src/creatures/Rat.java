@@ -12,7 +12,7 @@ public class Rat extends Creature{
 		baseDmg = 6;
 		xp = 6;
 		courage = 0.75 + Math.random();
-		tags.add(CreatureTag.rodent);
+		addTag("rodent");
 		addBodyPart("meatRat", 0.15);
 		addBodyPart("meatRat", 0.15);
 		

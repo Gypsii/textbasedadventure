@@ -1,15 +1,15 @@
-package item;
+package main;
 
 import util.IO;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class ItemTag {
+public class Tag {
 
-	private static Map<String,ItemTag> itemTags = new HashMap<>();
+	private static Map<String, Tag> itemTags = new HashMap<>();
 
-	public static ItemTag tag(String name){
+	public static Tag tag(String name){
 		if(!itemTags.containsKey(name)){
 			addTag(name);
 		}
@@ -20,13 +20,13 @@ public class ItemTag {
 		if(itemTags.containsKey(name)){
 			IO.println("<lred>Tag \"" + name + "\" already exists<r>");
 		} else {
-			itemTags.put(name, new ItemTag(name));
+			itemTags.put(name, new Tag(name));
 		}
 	}
 
 	public String name;
 
-	public ItemTag(String name) {
+	public Tag(String name) {
 		this.name = name;
 	}
 }

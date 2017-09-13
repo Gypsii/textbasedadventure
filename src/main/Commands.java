@@ -147,7 +147,7 @@ public class Commands {
 
 	private static double commandNorth(){
 		if(Game.canExitZone()){
-			if(Game.position < Level.LEVELSIZE * 100){
+			if(Game.position < Level.LEVEL_SIZE * 100){
 				IO.println("<blue>You walk North<r>");
 				Game.position += 100;
 				Game.enterZone();
@@ -193,7 +193,7 @@ public class Commands {
 
 	private static double commandEast(){
 		if(Game.canExitZone()){
-			if(Game.position % 100 < Level.LEVELSIZE){
+			if(Game.position % 100 < Level.LEVEL_SIZE){
 				IO.println("<blue>You walk East<r>");
 				Game.position += 1;
 				Game.enterZone();
