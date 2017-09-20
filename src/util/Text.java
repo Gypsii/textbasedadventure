@@ -1,5 +1,6 @@
 package util;
 
+import item.Item;
 import item.Scroll;
 import main.Game;
 import creatures.Creature;
@@ -171,11 +172,12 @@ public class Text {
 	 */
 	public static void listInvEnchantable(){
 		for(int i = 0; i < Game.player.inv.size(); i++){
+			Item a = Game.player.inv.get(i);
 			IO.print(i + ": ");
-			if(Game.player.inv.get(i).armourType > 1){
-				IO.println("<green>" + Game.player.inv.get(i).getNameWithCount() + "<r>");
+			if(a.hasTag("enchanted") || a.hasTag("wear_ring") || a.hasTag("wear_cloak") || a.hasTag("wear_hat")){
+				IO.println("<green>" + a.getNameWithCount() + "<r>");
 			}else{
-				IO.println(Game.player.inv.get(i).getNameWithCount());
+				IO.println(a.getNameWithCount());
 			}		
 		}
 	}

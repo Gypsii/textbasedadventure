@@ -46,12 +46,13 @@ public class Commands {
 	}
 
 	/**
-	 * Reads in a player command and exceutes the turn.
+	 * Reads in a player command and executes the turn.
 	 * @return the number of standard actions the turn took.
 	 * @throws IOException
 	 */
 	public static double playerTurn() throws IOException{
-		String command = IO.read().toLowerCase();
+		String commandRaw = IO.read();
+		String command = commandRaw.toLowerCase();
 		if(command.equals("dingo stole my baby")){
 			Game.zone.addItem(Item.item("shanker"));
 			return 0;
@@ -124,8 +125,8 @@ public class Commands {
 		if(command.equals("x") || command.equals("enchant")){
 			return Commands.commandEnchant();
 		}
-		if(command.equals("!") && Game.player.name.equals("debug")){
-			return TestEnvironment.debugCommands();
+		if(command.startsWith("!") && command.length() > 1 && Game.player.name.equals("debug")){
+			return TestEnvironment.debugCommands(commandRaw);
 		}
 		IO.print("<red>Invalid Command<r>");
 		return 0;
@@ -277,6 +278,10 @@ public class Commands {
 	}
 
 	private static double commandTarget() throws IOException{
+		if(Game.zone.creatures.size() == 0) {
+			IO.println("<red>There are no creatures in the zone to target.<r>");
+			return 0;
+		}
 		Text.listTargets();
 		int n = IO.readInt(0, Game.zone.creatures.size(), "<red>There is no creature with that ID!<r>");
 		if(n != -1) {
@@ -464,6 +469,9 @@ public class Commands {
 	private static double commandEat() throws IOException{
 		Text.listInvEdible();
 		int n = IO.readInt(0, Game.player.inv.size(), "<red>There is no item with that ID!<r>");
+		if(n == -1) {
+			return 0;
+		}
 		if(Game.player.inv.get(n).hasTag("edible")){
 			Item f = Game.player.inv.get(n);
 			IO.println("<blue>You ate the " + f.getNameWithCount() + ", restoring " + f.healthRestore + " health.<r>");
