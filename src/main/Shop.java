@@ -24,21 +24,26 @@ public class Shop {
 	}
 	
 	public void addItem(String id){
-		addItem(Item.item(id));
+		addItem(Item.item(id), 1);
 	}
 
 	public void addItem(String id, int count){
-		Item i = Item.item(id);
-		i.count = count;
-		addItem(i);
+		addItem(Item.item(id), count);
 	}
 
-	public void addItem(Item i) {
+	public void addItem(Item i){
+		addItem(i, -1);
+	}
+
+	public void addItem(Item i, int count) {
 		Item item = i.clone();
+		if(count != -1){
+			item.count = count;
+		}
 		if (i.isStackable) {
 			int loc = findShopItemLoc(i);
 			if (loc >= 0) {
-				items.get(loc).count += i.count;
+				items.get(loc).count += item.count;
 			} else {
 				items.add(item);
 			}
