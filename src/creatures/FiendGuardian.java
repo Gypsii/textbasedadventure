@@ -12,7 +12,7 @@ public class FiendGuardian extends Creature{
 		addTag("fiend");
 		maxHp = 666;
 		hp = maxHp;
-		dmg = 40;
+		baseDmg = 40;
 		xp = 300;
 		baseResists[Game.DMG_BLUNT] = 15;
 		baseResists[Game.DMG_SLASH] = 30;
@@ -27,7 +27,6 @@ public class FiendGuardian extends Creature{
 		}
 		skills.slashLvl = 100;
 		critChance = 0.5;
-		calculateDamage();
 		if(Math.random() < 0.45){addItem("ruby");}
 		if(Math.random() < 0.45){addItem("ruby");}
 		if(Math.random() < 0.45){addItem("ruby");}

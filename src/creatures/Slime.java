@@ -32,7 +32,7 @@ public class Slime extends Creature{
 	public Slime(int t, int s){//Size should be a power of 2 (enforce this?)
 		addTag("slime");
 		size = s;
-		dmg = 8;
+		baseDmg = 8;
 		maxHp = 32;
 		xp = 7;
 		baseResists[Game.DMG_BLUNT] = -4 * size;
@@ -155,9 +155,8 @@ public class Slime extends Creature{
 			name = "Titanic " + name;
 			xp *= 200;
 		}
-		dmg *= size;
+		baseDmg *= size;
 		hp = maxHp;
-		baseDmg = dmg;
 
 		defaultAttackPattern.baseDamage = baseDmg;
 		

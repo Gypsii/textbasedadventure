@@ -10,16 +10,14 @@ public class Dingo extends Creature{
 	public static final int SNOW = 1;
 	public static final int HELL = 2;
 	
-	public Dingo(int t){
+	public Dingo(int type){
 		maxHp = 45;
 		hp = maxHp;
 		baseDmg = 9;
-		dmg = 9;
 		xp = 15;
 		courage = 5 + (Math.random() * 3);
 
 		conditions.add(Condition.ENRAGEABLE);
-//		enrageable = true;
 		
 		addBodyPart("meatDingo", 0.3);
 		addBodyPart("meatDingo", 0.3);
@@ -36,7 +34,6 @@ public class Dingo extends Creature{
 		}else if(type == HELL){
 			name = "Hellish Dingo";
 			baseDmg *= 2;
-			dmg *= 2;
 			addBodyPart(Item.item("hideHellDingo"), 0.5);
 		}
 		this.addTarget(Tag.tag("rodent"), 100);

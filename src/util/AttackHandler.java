@@ -35,7 +35,7 @@ public class AttackHandler {
 		String verb = "";
 		
 		if(attackPattern == AttackPattern.weaponAttack){
-			damage = attacker.dmg;
+			damage = attacker.getDamage();
 			damageType = attacker.equipped.dmgType;
 			duration = attacker.equipped.swingTime;
 			verb = getVerb(damageType);

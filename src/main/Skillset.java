@@ -53,7 +53,7 @@ public class Skillset{
 				if(creature == Game.player){
 					IO.println("<purple>You have reached level " + bluntLvl + " with blunt weapons<r>");
 				}
-				creature.dmg = creature.calculateDamage();
+				creature.markDamageModified();
 			}
 			break;
 		case SLASH:
@@ -64,7 +64,7 @@ public class Skillset{
 				if(creature == Game.player){
 					IO.println("<purple>You have reached level " + slashLvl + " with slashing weapons<r>");
 				}
-				creature.dmg = creature.calculateDamage();
+				creature.markDamageModified();
 			}
 			break;
 		case PIERCE:
@@ -75,7 +75,7 @@ public class Skillset{
 				if(creature == Game.player){
 					IO.println("<purple>You have reached level " + pierceLvl + " with piercing weapons<r>");		
 				}
-				creature.dmg = creature.calculateDamage();
+				creature.markDamageModified();
 			}
 			break;
 		case POLE:
@@ -86,7 +86,7 @@ public class Skillset{
 				if(creature == Game.player){
 					IO.println("<purple>You have reached level " + poleLvl + " with polearms<r>");		
 				}
-				creature.dmg = creature.calculateDamage();
+				creature.markDamageModified();
 			}
 			break;		
 		case SWORD:
@@ -97,7 +97,7 @@ public class Skillset{
 				if(creature == Game.player){
 					IO.println("<purple>You have reached level " + swordLvl + " with swords<r>");		
 				}
-				creature.dmg = creature.calculateDamage();
+				creature.markDamageModified();
 			}
 			break;
 		case COOK:

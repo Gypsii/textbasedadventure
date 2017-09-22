@@ -13,7 +13,7 @@ public class Creature {
 
 	public int maxHp;
 	public int hp;
-	public int dmg;
+//	public int dmg;
 	public boolean canBeBoss = true;
 	public int bossType = 0;
 	public double critDmg, baseCritDmg = 1.25;
@@ -40,7 +40,6 @@ public class Creature {
 	public AttackPattern defaultAttackPattern;
 
 	public Creature target = null;
-//	public ArrayList<CreatureTag> tags = new ArrayList<CreatureTag>();
 	public List<Tag> targetTags = new ArrayList<>();
 	public List<Integer> targetWeights = new ArrayList<>();
 	static Comparator<TargetPair> targetComparator = new TargetComparator();
@@ -59,6 +58,8 @@ public class Creature {
 	public ArrayList<Item> shopInv = new ArrayList<Item>();
 	public HashMap<String, Integer> prices = new HashMap<String, Integer>();
 
+	private boolean damageDirty = true;
+	private int calculatedDamage = -1;
 
 	public Creature() {
 		armourChest = Item.item("unarmoured");
@@ -87,9 +88,6 @@ public class Creature {
 		c.description = this.description;
 
 		c.conditions.addAll(this.conditions);
-//		c.alive = this.alive;
-//		c.enraged = this.enraged;
-//		c.enrageable = this.enrageable;
 		c.courage = this.courage;
 		c.canBeBoss = this.canBeBoss;
 
@@ -118,7 +116,6 @@ public class Creature {
 		c.shopInv = (ArrayList<Item>) this.shopInv.clone();
 		c.prices = (HashMap<String, Integer>) this.prices.clone();
 
-		c.dmg = c.calculateDamage();
 		c.refreshArmour();
 
 		return c;
@@ -142,7 +139,6 @@ public class Creature {
 	public void postInitialisation() {
 		doBossType();
 		refreshArmour();
-		this.dmg = calculateDamage();
 		overwriteStats();
 	}
 
@@ -384,40 +380,45 @@ public class Creature {
 			hat = i;
 		}else{
 			equipped = i;
-			dmg = calculateDamage();
+			markDamageModified();
 		}
 		refreshArmour();
 	}
 
 
-	static final int DPS_PER_LEVEL = 2;
-	/**
-	 * Calculates the damage of this {@code Creature} based off its weapons and {@code SkillSet}
-	 *
-	 * @return DamageType calculation results
-	 */
-	public int calculateDamage() {
+	public void markDamageModified() {
+		damageDirty = true;
+	}
 
-		int modifiedDmg = equipped.dmg;
-		switch (equipped.dmgType) {
-			case Game.DMG_BLUNT:
-				modifiedDmg += (skills.bluntLvl - 1) * (equipped.swingTime * DPS_PER_LEVEL);
-				break;
-			case Game.DMG_SLASH:
-				modifiedDmg += (skills.slashLvl - 1) * (equipped.swingTime * DPS_PER_LEVEL);
-				break;
-			case Game.DMG_PIERCE:
-				modifiedDmg += (skills.pierceLvl - 1) * (equipped.swingTime * DPS_PER_LEVEL);
-				break;
+	static final int DPS_PER_LEVEL = 2;
+	public int getDamage() {
+		if(damageDirty) {
+			damageDirty = false;
+			int modifiedDmg = equipped.dmg;
+			switch (equipped.dmgType) {
+				case Game.DMG_BLUNT:
+					modifiedDmg += (skills.bluntLvl - 1) * (equipped.swingTime * DPS_PER_LEVEL);
+					break;
+				case Game.DMG_SLASH:
+					modifiedDmg += (skills.slashLvl - 1) * (equipped.swingTime * DPS_PER_LEVEL);
+					break;
+				case Game.DMG_PIERCE:
+					modifiedDmg += (skills.pierceLvl - 1) * (equipped.swingTime * DPS_PER_LEVEL);
+					break;
+			}
+			if (equipped.hasTag("polearm")) {
+				modifiedDmg += (skills.poleLvl - 1) * (equipped.swingTime * DPS_PER_LEVEL);
+			}
+			if (equipped.hasTag("sword")) {
+				modifiedDmg += (skills.swordLvl - 1) * (equipped.swingTime * DPS_PER_LEVEL);
+			}
+			modifiedDmg = Math.min(modifiedDmg, equipped.dmg * 2);
+			calculatedDamage = Math.max(baseDmg, modifiedDmg);
+			if(conditions.contains(Condition.ENRAGED)) {
+				calculatedDamage *= 2;
+			}
 		}
-		if (equipped.hasTag("polearm")) {
-			modifiedDmg += (skills.poleLvl - 1) * (equipped.swingTime * DPS_PER_LEVEL);
-		}
-		if (equipped.hasTag("sword")) {
-			modifiedDmg += (skills.swordLvl - 1) * (equipped.swingTime * DPS_PER_LEVEL);
-		}
-		modifiedDmg = Math.min(modifiedDmg, equipped.dmg * 2);
-		return Math.max(baseDmg, modifiedDmg);
+		return calculatedDamage;
 	}
 
 	//TODO misses
@@ -607,8 +608,8 @@ public class Creature {
 	 */
 	public void removeItem(Item i) {
 		if (equipped == i) {
-			equip(Item.unarmed);
-			dmg = calculateDamage();
+			equipped = Item.unarmed;
+			markDamageModified();
 		} else if (armourChest == i) {
 			equipped = Item.item("unarmoured");
 			refreshArmour();
@@ -728,7 +729,7 @@ public class Creature {
 		IO.println("");
 		if (!equipped.name.equals("unarmed")) {
 			IO.println("Weapon: " + equipped.getNameWithCount());
-			IO.println("DamageType: " + dmg + " " + Game.DAMAGE_TYPE_STRINGS[equipped.dmgType]);
+			IO.println("DamageType: " + getDamage() + " " + Game.DAMAGE_TYPE_STRINGS[equipped.dmgType]);
 		} else {
 			IO.println("DamageType: " + defaultAttackPattern.baseDamage + " " + Game.DAMAGE_TYPE_STRINGS[defaultAttackPattern.damageType]);
 		}
@@ -829,7 +830,6 @@ public class Creature {
 		if (conditions.contains(Condition.ENRAGEABLE) && !conditions.contains(Condition.ENRAGED) && isAlive()) {
 			IO.println(Text.capitalised(Text.getDefName(this)) + " became enraged!");
 			conditions.add(Condition.ENRAGED);
-			dmg *= 2;
 		}
 	}
 

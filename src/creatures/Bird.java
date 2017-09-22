@@ -68,7 +68,6 @@ public class Bird extends Creature{
 		if(!conditions.contains(Condition.ENRAGED)){
 			conditions.add(Condition.ENRAGED);
 			IO.println(Text.capitalised(Text.getDefName(this)) + " became enraged!");
-			dmg *= 2;
 		}
 	}
 	

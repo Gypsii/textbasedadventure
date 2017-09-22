@@ -11,7 +11,6 @@ public class Player extends Creature{
 		addTag("humanoid");
 		addTag("human");
 		addTag("player");
-    	dmg = 5;
     	baseDmg = 5;
         maxHp = 100;
         hp = maxHp;
@@ -20,9 +19,9 @@ public class Player extends Creature{
         armourChest.name = "unarmoured";
     }
     
-	public void equip(int id){
-    	super.equip(id);
-    }
+//	public void equip(int id){
+//    	super.equip(id);
+//    }
 	
 	public void equip(Item i){
     	super.equip(i);
@@ -33,12 +32,12 @@ public class Player extends Creature{
     	System.err.println("ERR: Player absconding. This should not happen. Yell at dev");
     }
     
-    public void takeDamage(int d) {
-		hp -= Math.max(d, 0);
-		if(hp <= 0){
-			IO.println("RIP. You were killed.");
-		}
-	}
+//    public void takeDamage(int d) {
+//		hp -= Math.max(d, 0);
+//		if(hp <= 0){
+//			IO.println("RIP. You were killed.");
+//		}
+//	}
     
     public void kill(){
 		IO.println("RIP. You were killed.");

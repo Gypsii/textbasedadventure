@@ -97,7 +97,6 @@ public class CreatureTemplate {
 		
 		c.setHostilityTowardsPlayer(hostile);
 		c.hp = c.maxHp;
-		c.dmg = c.calculateDamage();
 		c.refreshArmour();			
 		return c;
 	}

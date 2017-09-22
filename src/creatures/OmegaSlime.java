@@ -9,7 +9,7 @@ public class OmegaSlime extends Creature{
 		name = "Omega Slime";
 		maxHp = 65536;
 		hp = maxHp;
-		dmg = 1000;
+		baseDmg = 1000;
 		xp = 8000;
 		
 		defaultAttackPattern = new AttackPattern(baseDmg, Game.DMG_MAGIC, "shook");
