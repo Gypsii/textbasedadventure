@@ -120,15 +120,20 @@ public class Item {
 		IO.println(name + ":");
 		if(dmg > 0){
 			IO.print("" + dmg);
-			if(dmgType == 0){
+			if(dmgType == Game.DMG_BLUNT){
 				IO.print(" bludgeoning");
-			}else if(dmgType == 1){
+			}else if(dmgType == Game.DMG_PIERCE){
 				IO.print(" piercing");
-			}else if(dmgType == 2){
+			}else if(dmgType == Game.DMG_SLASH){
 				IO.print(" slashing");
 			}
 			IO.println(" damage.");
 			IO.println("Swing time: " + swingTime);
+		}
+		if(healthRestore > 0) {
+			IO.println("Restores <green>" + healthRestore +  "<r> hp when eaten.");
+		}else if(healthRestore < 0) {
+			IO.println("Deals <red>" + healthRestore +  "<r> damage when eaten.");
 		}
 		if(!description.equals("")){
 			IO.println("");
