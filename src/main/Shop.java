@@ -73,7 +73,7 @@ public class Shop {
 			IO.println("1: Sell");
 			IO.println("2: Exit");
 			try{
-				n = Integer.parseInt(Game.br.readLine());
+				n = Integer.parseInt(IO.read());
 			}catch(NumberFormatException nfe){
 				IO.println("<red>Invalid Format!<r>");
 				continue;
@@ -141,7 +141,7 @@ public class Shop {
 						}
 
 					}
-					n = IO.readInt(0, items.size(), "There is no item with that ID!");
+					n = IO.readInt(0, Game.player.inv.size(), "There is no item with that ID!");
 					if(n < Game.player.inv.size() && n >= 0){
 						Item item = Game.player.inv.get(n);
 						int price = (int)(item.cost * hagglingValue + 0.5);

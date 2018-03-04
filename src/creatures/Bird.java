@@ -1,6 +1,8 @@
 package creatures;
 
 import item.Item;
+import main.DamageInstance;
+import main.DamageType;
 import main.Game;
 import util.IO;
 import util.Text;
@@ -19,12 +21,11 @@ public class Bird extends Creature{
 		addTag("bird");
 		maxHp = 15;
 		hp = maxHp;
-		baseDmg = 4;
 		xp = 3;
 		setHostilityTowardsPlayer(false);
 		courage = 1 + Math.random();//between 1 and 2 (note that every attack the bird loses 0-1 courage due to subtrigger)
 		
-		defaultAttackPattern = new AttackPattern(baseDmg, Game.DMG_PIERCE, "pecked", 1);
+		naturalAttackPattern = new AttackPattern(new DamageInstance(4, DamageType.PIERCE), "pecked", 1);
 		
 		String featherType = "feather";
 		if(type == SNOW){

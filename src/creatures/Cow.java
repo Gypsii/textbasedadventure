@@ -1,6 +1,7 @@
 package creatures;
 
-import main.Game;
+import main.DamageInstance;
+import main.DamageType;
 
 
 public class Cow extends Creature{
@@ -10,7 +11,6 @@ public class Cow extends Creature{
 		addTag("livestock");
 		maxHp = 101;
 		hp = maxHp;
-		baseDmg = 9;
 		xp = 12;
 		setHostilityTowardsPlayer(false);
 		canBeBoss = false;
@@ -18,7 +18,7 @@ public class Cow extends Creature{
 			addBodyPart("meatCow", 0.3);
 		}
 
-		defaultAttackPattern = new AttackPattern(baseDmg, Game.DMG_PIERCE, "gored", 1.2);
+		naturalAttackPattern = new AttackPattern(new DamageInstance(15, DamageType.PIERCE), "gored", 1.7);
 		
 		postInitialisation();
 	}

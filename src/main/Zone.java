@@ -13,6 +13,7 @@ import creatures.humans.Hobgoblin;
 import creatures.humans.Human;
 import creatures.humans.SealHunter;
 import creatures.humans.SpiceTrader;
+import util.IO;
 
 public class Zone {
 	
@@ -22,6 +23,8 @@ public class Zone {
 
 	public boolean containsEgg = false;//TODO find a better way of doing this that would work for any item
 	public boolean isFinalZone = false;
+
+	public boolean inFocus = false;
 	
 	public static Zone generateZone(int diff, int temp, ArrayList<Integer> slimeTypes){
 		Random r = new Random();
@@ -237,6 +240,11 @@ public class Zone {
 					zone.addItem("fungus");
 					l += 5;
 				}
+			}else if(rand < 0.8){
+				if(d - l >= 1){
+					zone.addItem("rock");
+					l += 1;
+				}
 			}else{
 				value ++;
 			}	
@@ -249,6 +257,7 @@ public class Zone {
 		int zoneNum = (int)(Math.random() * 22);
 		switch(zoneNum){
 		case 0:
+			default:
 			zone.addCreature(new Human(){
 				public void overwriteStats(){
 					maxHp = 140;
@@ -294,7 +303,7 @@ public class Zone {
 			break;
 		case 1:
 			Creature graham = Creature.creature("walrus");
-			graham.defaultAttackPattern = AttackPattern.weaponAttack;
+			graham.naturalAttackPattern = AttackPattern.weaponAttack;
 			graham.name = "Graham the Walrus";
 			graham.xp = 30;
 			graham.addItem("clawGloves");
@@ -410,6 +419,7 @@ public class Zone {
 			Item i3 = Item.item("slimeFire").clone();
 			i3.count += Math.random() * 2;
 			zone.addItem(i3);
+			zone.addItem("obsidian");
 			zone.addCreature(new Slime(Slime.FIERY, 1){
 				public void overwriteStats(){
 					double x = Math.random();
@@ -438,21 +448,6 @@ public class Zone {
 			guardGiantSpider.sleep(true);
 			guardGiantSpider.addItem(MagicItem.pickRandomMagicItem(5));
 			zone.addCreature(guardGiantSpider);
-//			zone.addCreature(new SpiderGiant(){
-//				public void overwriteStats(){
-//					name = "<purple>Sleeping Giant Guardian Spider<r>";
-//					setHostilityTowardsPlayer(false);
-//					addItem(MagicItem.pickRandomMagicItem(5));
-//				}
-//				
-//				public void aggravateTrigger(Creature c){
-//					super.aggravateTrigger(c);
-//					if(alive && !hostileTowards(Game.player)){
-//						name = "<purple>Giant Guardian Spider<r>";
-//						System.out.println("The " + name + " woke up!");
-//					}
-//				}
-//			});
 			break;
 		case 14:
 			zone.addCreature(new Human(){
@@ -495,15 +490,7 @@ public class Zone {
 		case 17:
 			zone.addCreature(new Elemental((int)(Math.random() * Elemental.ELEMENTAL_TYPES)){//Currently fighting this elemental is optional.
 				public void overwriteStats(){
-					name = "Sealed " + name;
-					setHostilityTowardsPlayer(false);
-				}	
-				public void aggravateTrigger(Creature c){
-					super.aggravateTrigger(c);
-					if(isAlive() && !hostileTowards(Game.player)){
-						name = name.substring(7, name.length());
-						System.out.println("The Elemental was freed!");
-					}
+					conditions.add(Condition.SEALED);
 				}
 			});
 			double x = Math.random();
@@ -593,21 +580,6 @@ public class Zone {
 			guardSpider.sleep(true);
 			guardSpider.addItem(MagicItem.pickRandomMagicItem(2));
 			zone.addCreature(guardSpider);
-//			zone.addCreature(new Spider(){
-//				public void overwriteStats(){
-//					name = "sleeping <purple>Guardian Spider<r>";
-//					addItem(MagicItem.pickRandomMagicItem(2));
-//					setHostilityTowardsPlayer(false);
-//				}
-//				
-//				public void aggravateTrigger(Creature c){
-//					super.aggravateTrigger(c);
-//					if(alive && !hostileTowards(Game.player)){
-//						name = "<purple>Guardian Spider<r>";
-//						System.out.println("The " + name + " woke up!");
-//					}
-//				}
-//			});
 			break;
 		}
 		return zone;
@@ -623,9 +595,9 @@ public class Zone {
 	public void printDescription(){
 		if(descriptors.size() > 0){
 			for(int i = 0; i < descriptors.size(); i++){
-				System.out.print(descriptors.get(i));
+				IO.print(descriptors.get(i));
 			}
-			System.out.println("");
+			IO.println("");
 		}
 	}
 	
@@ -635,6 +607,9 @@ public class Zone {
 	
 	public void addCreature(Creature c){
 		this.creatures.add(c);
+		if(inFocus){
+			//Graphics.notifyCreatureAddition(c);
+		}
 		c.zone = this;
 		for(Creature c2 : creatures){
 			c2.addPresentCreature(c);

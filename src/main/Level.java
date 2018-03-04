@@ -6,6 +6,7 @@ import java.util.Random;
 
 import creatures.Slime;
 import item.Item;
+import util.IO;
 
 public class Level {
 	public HashMap<Integer, Zone> zones = new  HashMap<Integer, Zone>();
@@ -81,7 +82,7 @@ public class Level {
 	public void generate(int diff){
 		Random r = new Random();
 		temp += (int)(r.nextGaussian() * 10);
-		System.out.println("Temp = " + temp);//TODO this is a debug
+		IO.println("Temp = " + temp);//TODO this is a debug
 		selectSlimes();
 		int setX = (int)(Math.random() * (LEVEL_SIZE - 1)) + 1;
 		int setY = (int)(Math.random() * (LEVEL_SIZE - 1)) + 1;
@@ -98,21 +99,7 @@ public class Level {
 		}
 		shop = generateShop();
 	}
-	
-//	public void generate2(){
-//		int approxDiff = 0;
-//		Random r = new Random();
-//		temp = 100 + (int)(r.nextGaussian() * 10);
-//		selectSlimes();
-//		int humanPresence = Math.max((int)(r.nextGaussian() * 15), 0);
-//		int hobgPresence = Math.max((int)(r.nextGaussian() * 15), 0);
-//		int fiendPresence = Math.max((int)(r.nextGaussian() * 15), 0);
-////		approxDiff += humanPresence * 1.5;
-////		approxDiff += hobgPresence;
-////		approxDiff += fiendPresence * 4;
-//		int magicLevel = Math.max((int)(r.nextGaussian() * 10) + 70, 50);
-//	}
-	
+
 	public static void generateLevel(int d){
 		Level level = new Level();
 		level.generate(d);
@@ -121,14 +108,30 @@ public class Level {
 
 	public static Shop generateShop(){
 		Shop s = new Shop();
-		s.addItem("string", 6);
-		s.addItem("stickyString", 3);
-		s.addItem("clothCotton", 3);
 		s.addItem("bread", 4);
+		s.randomItem("string", 0.8, 4, 6);
+		s.randomItem("stickyString", 0.8, 2, 3);
+		s.randomItem("clothCotton", 0.6, 2, 6);
 		s.randomItem("mushroom", 0.4, 1, 6);
 		s.randomItem("mushroomWhite", 0.4, 1, 6);
 		s.randomItem("fungus", 0.1, 1, 2);
 		s.randomItem("walrusTusk", 0.1, 1, 3);
+
+		double r = Math.random();
+		if(r < 0.02){
+			s.randomItem("pepper", 0.7, 1, 5);
+			s.randomItem("nutmeg", 0.7, 1, 5);
+			s.randomItem("ginger", 0.7, 1, 5);
+			s.randomItem("cinnamon", 0.7, 1, 5);
+			s.randomItem("cumin", 0.7, 1, 5);
+		} else if(r < 0.04){
+			s.randomItem("diamond", 0.3, 1, 2);
+			s.randomItem("emerald", 0.3, 1, 2);
+			s.randomItem("ruby", 0.3, 1, 2);
+			s.randomItem("sapphire", 0.3, 1, 2);
+			s.randomItem("citrine", 0.3, 1, 2);
+			s.randomItem("amethyst", 0.3, 1, 2);
+		}
 
 		int cheapWeapons = 0;
 		while(cheapWeapons <3){
@@ -191,23 +194,20 @@ public class Level {
 		s.randomItem("mailCopper", 0.1, 1, 1);
 		s.randomItem("plateIron", 0.1, 1, 1);
 		s.randomItem("mailIron", 0.1, 1, 1);
-
-	
-		//double r = Math.random();
 		return s;
 	}
 	
 	public void printLevelDescription(){
 		if(temp < 85){
-			System.out.println("It is very cold and barren.");
+			IO.println("It is very cold and barren.");
 		}else if(temp < 95){
-			System.out.println("It is cold.");
+			IO.println("It is cold.");
 		}else if(temp < 105){
-			System.out.println("It is temperate.");
+			IO.println("It is temperate.");
 		}else if(temp < 115){
-			System.out.println("It is warm.");
+			IO.println("It is warm.");
 		}else{
-			System.out.println("It is hot.");
+			IO.println("It is hot.");
 		}
 	}
 }

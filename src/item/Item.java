@@ -2,10 +2,8 @@ package item;
 
 import java.util.*;
 
-import main.OnHit;
-import main.Tag;
+import main.*;
 import util.IO;
-import main.Game;
 
 public class Item {
 	public static TreeMap<String, Item> items = new TreeMap<String, Item>();
@@ -14,9 +12,8 @@ public class Item {
 	public String id = "";
 	public String description = "";
 	public int count = 1;
-	public int dmg = 0;
+	public DamageInstance dmg = new DamageInstance(0, DamageType.BLUNT);
 	public double swingTime = 1;
-	public int dmgType = 0;
 	public String prefix = "a"; 
 	public double cost = -1;
 
@@ -28,16 +25,15 @@ public class Item {
 	public int enchantLvl = 0;
 	public int enchantType = 0;
 	public boolean isIngredient = false;
-		
+
+	// Ensure damage types are loaded before determining array size
+	public int resists[] = new int[DamageType.damageTypeCount()];
 	
-	public int resists[] = new int[Game.DMG_TYPE_COUNT];
 	
-	
-	public Item(String n, int damage, int type, double speed, String pref){//"Weapon" with prefix
+	public Item(String n, DamageInstance damage, double speed, String pref){//"Weapon" with prefix
 		name = n;
 		dmg = damage;
 		prefix = pref;
-		dmgType = type;
 		swingTime = speed;
 	}
 	
@@ -81,7 +77,7 @@ public class Item {
 	}
 	
 	public Item clone(){
-		Item i = new Item(name, dmg, dmgType, swingTime, prefix);
+		Item i = new Item(name, dmg, swingTime, prefix);
 		i.id = this.id;
 		i.isIngredient = this.isIngredient;
 		i.count = this.count;
@@ -95,8 +91,13 @@ public class Item {
 		return i;
 	}
 	
-	public static Item bug = new Item("Item Table Bug", 1, 0, 1, "an unexpected");
-	public static Item unarmed = new Item("unarmed", 0, 0, 1, "");
+	public static Item bug;
+	public static Item unarmed;
+	static {
+		bug = new Item("Item Table Bug", new DamageInstance(0, DamageType.BLUNT), 1, "an unexpected");
+		unarmed = new Item("unarmed", new DamageInstance(0, DamageType.BLUNT), 1, "");
+		unarmed.id = "unarmed";
+	}
 
 	/**
 	 * Returns the {@code Item} mapped to the String {@code id}.
@@ -118,16 +119,8 @@ public class Item {
 	public void printInfo(){
 		IO.printHorizontalLine();
 		IO.println(name + ":");
-		if(dmg > 0){
-			IO.print("" + dmg);
-			if(dmgType == Game.DMG_BLUNT){
-				IO.print(" bludgeoning");
-			}else if(dmgType == Game.DMG_PIERCE){
-				IO.print(" piercing");
-			}else if(dmgType == Game.DMG_SLASH){
-				IO.print(" slashing");
-			}
-			IO.println(" damage.");
+		if(dmg.amount > 0){
+			IO.println(dmg.amount + " " + dmg.type.name + " damage.");
 			IO.println("Swing time: " + swingTime);
 		}
 		if(healthRestore > 0) {

@@ -5,7 +5,6 @@ import item.MagicItem;
 
 import java.util.Random;
 
-import creatures.CreatureTag;
 import main.Tag;
 
 public class Hobgoblin extends Humanoid{
@@ -16,7 +15,7 @@ public class Hobgoblin extends Humanoid{
 		addTag("hobgoblin");
 		maxHp = 70;
 		hp = maxHp;
-		baseDmg = 6;
+		naturalAttackPattern.baseDamage.amount = 6;
 		xp = 0;
 		baseCritChance = 0.25;
 		baseCritDmg = 1.5;

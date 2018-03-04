@@ -1,14 +1,15 @@
 package util;
 
-import item.Item;
+import gfx.Graphics;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Scanner;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static main.Game.GRAPHICS_ENABLED;
 
 public class IO {
 
@@ -43,7 +44,7 @@ public class IO {
 	static Stack<String> colourStack = new Stack<String>();
 	static Stack<String> formatStack = new Stack<String>();
 	
-	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	
 	/**
 	 * Prints the String s, coloured based on the user's settings
@@ -57,7 +58,7 @@ public class IO {
 		
 		int i = 0;
 		while(matcher.find()){
-			s2 += s.substring(i, matcher.start(0));
+			s2 += s.substring(i, matcher.start(0)); // Get the plaintext
 			i = matcher.end(0);
 			if(ANSIEnabled){
 				switch(matcher.group(1)){
@@ -161,7 +162,11 @@ public class IO {
 				}
 			}
 		}
-		System.out.print(s2);
+		if(GRAPHICS_ENABLED) {
+			Graphics.send(s2);
+		} else {
+			System.out.print(s2);
+		}
 	}
 	
 	/**
@@ -186,7 +191,11 @@ public class IO {
 	 * @throws IOException
 	 */
 	public static String read() throws IOException{
-		return br.readLine();
+		if(GRAPHICS_ENABLED){
+			return Graphics.getLine();
+		}else{
+			return br.readLine();
+		}
 	}
 	
 	/**
@@ -208,7 +217,7 @@ public class IO {
 		int n;
 		while(true){
 			try{
-				n = Integer.parseInt(br.readLine());
+				n = Integer.parseInt(read());
 				if(n < max && n >= min){
 					break;
 				}else if(n == -1){
@@ -220,7 +229,6 @@ public class IO {
 				IO.println("<lred>Invalid Format! Enter an integer<r>");
 			}
 		}
-		Class meme = Scanner.class;
 		return n;
 	}
 	
@@ -234,9 +242,9 @@ public class IO {
 	
 	public static void printHorizontalLine(){
 		for(int i = 0; i < 60; i++){//Maybe give this a variable that can be adjusted?
-			System.out.print("-");
+			print("-");
 		}
-		System.out.println("");
+		println("");
 	}
 	
 }

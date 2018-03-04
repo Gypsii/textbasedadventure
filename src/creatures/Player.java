@@ -1,6 +1,8 @@
 package creatures;
 
 import item.Item;
+import main.DamageInstance;
+import main.DamageType;
 import util.IO;
 
 public class Player extends Creature{
@@ -11,12 +13,13 @@ public class Player extends Creature{
 		addTag("humanoid");
 		addTag("human");
 		addTag("player");
-    	baseDmg = 5;
         maxHp = 100;
         hp = maxHp;
         equipped = Item.unarmed;
         armourChest = new Item();
         armourChest.name = "unarmoured";
+
+		naturalAttackPattern = new AttackPattern(new DamageInstance(5, DamageType.BLUNT), "punched", 1);
     }
     
 //	public void equip(int id){
@@ -29,7 +32,7 @@ public class Player extends Creature{
     }
     
     public void abscond(){
-    	System.err.println("ERR: Player absconding. This should not happen. Yell at dev");
+    	System.err.println("ERR: Player absconding.");
     }
     
 //    public void takeDamage(int d) {

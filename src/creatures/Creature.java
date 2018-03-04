@@ -13,17 +13,15 @@ public class Creature {
 
 	public int maxHp;
 	public int hp;
-//	public int dmg;
 	public boolean canBeBoss = true;
 	public int bossType = 0;
 	public double critDmg, baseCritDmg = 1.25;
 	public double critChance, baseCritChance = 0;
-	public int xp = 0;//xp to be dropped not xp accumulated
-	public int resists[] = new int[Game.DMG_TYPE_COUNT];
-	public int baseResists[] = new int[Game.DMG_TYPE_COUNT];
-	public int baseDmg;//Should this exist?
+	public int xp = 0; // xp to be dropped not xp accumulated
+	public int resists[] = new int[DamageType.damageTypeCount()];
+	public int baseResists[] = new int[DamageType.damageTypeCount()];
 	public double nextActionTime = 0;
-	public Skillset skills = new Skillset(this);
+	public SkillSet skills = new SkillSet(this);
 
 	public String name;
 	public String articleIndef = "a";
@@ -33,11 +31,10 @@ public class Creature {
 	public Set<Condition> conditions = new HashSet<>();
 	public Set<Tag> tags = new HashSet<>();
 
-	public double courage = 100000;//this needs fixing
+	public double courage = 100000; // this needs fixing
 	public Zone zone;
 
-	public String defaultAttackPatternId = "weapon";
-	public AttackPattern defaultAttackPattern;
+	public AttackPattern naturalAttackPattern;
 
 	public Creature target = null;
 	public List<Tag> targetTags = new ArrayList<>();
@@ -59,7 +56,7 @@ public class Creature {
 	public HashMap<String, Integer> prices = new HashMap<String, Integer>();
 
 	private boolean damageDirty = true;
-	private int calculatedDamage = -1;
+	private DamageInstance calculatedDamage = null;
 
 	public Creature() {
 		armourChest = Item.item("unarmoured");
@@ -67,7 +64,7 @@ public class Creature {
 		cloak = Item.item("unarmouredRing");
 		hat = Item.item("unarmouredHat");
 		refreshArmour();
-		defaultAttackPattern = AttackPattern.attack(defaultAttackPatternId);
+		naturalAttackPattern = null;
 		addPresentCreature(Game.player);
 		setHostilityTowardsPlayer(true);
 	}
@@ -92,7 +89,6 @@ public class Creature {
 		c.canBeBoss = this.canBeBoss;
 
 		c.baseCritChance = this.baseCritChance;
-		c.baseDmg = this.baseDmg;
 		c.baseResists = this.baseResists.clone();
 		c.maxHp = this.maxHp;
 		c.hp = this.hp;
@@ -107,8 +103,7 @@ public class Creature {
 
 		c.inv.addAll(this.inv);
 
-		c.defaultAttackPattern = this.defaultAttackPattern;
-		c.defaultAttackPatternId = this.defaultAttackPatternId;
+		c.naturalAttackPattern = this.naturalAttackPattern.clone();
 
 
 		c.butcherInv.addAll(this.butcherInv);
@@ -183,6 +178,9 @@ public class Creature {
 				result = "sleeping " + result;
 			}
 		}
+		if(conditions.contains(Condition.SEALED)) {
+			result = "sealed " + result;
+		}
 		return result;
 	}
 
@@ -199,13 +197,13 @@ public class Creature {
 				case 1:
 					name = "Devastating " + name;
 					baseCritChance += 0.5;
-					critChance += 0.5;//is this how crit works?
+					critChance += 0.5;
 					break;
 				case 2:
 					name = "Resilient " + name; //Maybe have these scale with something?
-					baseResists[Game.DMG_BLUNT] += 5;
-					baseResists[Game.DMG_SLASH] += 5;
-					baseResists[Game.DMG_PIERCE] += 5;
+					baseResists[DamageType.BLUNT.number] += 5; //5 is VERY strong early but near useless late
+					baseResists[DamageType.SLASH.number] += 5;
+					baseResists[DamageType.PIERCE.number] += 5;
 					break;
 				case 3:
 					name = "Tough " + name;
@@ -217,9 +215,9 @@ public class Creature {
 					break;
 				case 5:
 					name = "Vulnerable " + name;
-					baseResists[Game.DMG_BLUNT] -= 5;
-					baseResists[Game.DMG_SLASH] -= 5;
-					baseResists[Game.DMG_PIERCE] -= 5;
+					baseResists[DamageType.BLUNT.number] -= 5;
+					baseResists[DamageType.SLASH.number] -= 5;
+					baseResists[DamageType.PIERCE.number] -= 5;
 					break;
 				case 6:
 					name = "Stylish " + name;
@@ -243,7 +241,7 @@ public class Creature {
 					break;
 				case 7:
 					name = "Brutal " + name;
-					baseDmg *= 1.5;
+					naturalAttackPattern.baseDamage.amount *= 1.5;
 					break;
 				case 8:
 					name = "Rich " + name;
@@ -265,15 +263,16 @@ public class Creature {
 					break;
 				case 11:
 					name = "Weak " + name;
-					baseDmg *= 0.5;
+					naturalAttackPattern.baseDamage.amount *= 1.5;
 					break;
 				case 12:
 					name = "Mystical " + name;
-					defaultAttackPattern.onHits.add(new DamageOnHit(Math.max(baseDmg / 4, 1), Game.DMG_MAGIC));
+					int d = Math.max(naturalAttackPattern.baseDamage.amount / 4, 1);
+					naturalAttackPattern.onHits.add(new DamageOnHit(new DamageInstance(d, DamageType.MAGIC)));
 					break;
 				case 13:
 					name = "Vampiric " + name;
-					defaultAttackPattern.onHits.add(new SelfHealOnHit(baseDmg / 2));
+					naturalAttackPattern.onHits.add(new SelfHealOnHit(1, 0.5));
 					break;
 				case NUM_EFFECTS:
 					conditions.add(Condition.SLEEPING);
@@ -336,7 +335,10 @@ public class Creature {
 
 
 	public AttackPattern decideAttackPattern() { //TODO make this intelligent
-		return defaultAttackPattern;
+		if(equipped.id.equals(Item.unarmed.id)){
+			return naturalAttackPattern;
+		}
+		return AttackPattern.weaponAttack;
 	}
 
 	/**
@@ -349,14 +351,14 @@ public class Creature {
 	/**
 	 * Taken at the start of every turn when alive.
 	 */
-	public void passiveAction() { //TODO put this separately on the queue so it isn't dependant on swing speed
+	public void passiveAction() { // TODO put this separately on the queue so it isn't dependant on swing speed
 
 	}
 
 	/**
 	 * Causes this {@code Creature} to leave the zone.
 	 */
-	public void abscond() {//TODO maybe this should remove creature from targets? Testing required
+	public void abscond() { // TODO maybe this should remove creature from targets? Testing required
 		IO.println(Text.getDefName(this) + " ran away.");
 		Game.zone.creatures.remove(this);
 	}
@@ -372,7 +374,7 @@ public class Creature {
 	public void equip(Item i) {
 		if (i.hasTag("wear_chest")) {
 			armourChest = i;
-		} else if (i.hasTag("wear_ring")) {//TODO give a menu when an item can be worn in several slots (or in hand)
+		} else if (i.hasTag("wear_ring")) { // TODO give a menu when an item can be worn in several slots (or in hand)
 			ring = i;
 		} else if (i.hasTag("wear_cloak")) {
 			cloak = i;
@@ -385,47 +387,51 @@ public class Creature {
 		refreshArmour();
 	}
 
-
 	public void markDamageModified() {
 		damageDirty = true;
 	}
 
-	static final int DPS_PER_LEVEL = 2;
-	public int getDamage() {
-		if(damageDirty) {
+	static final int DPS_PER_LEVEL = 2; // TODO Move this somewhere nicer
+
+	/**
+	 *  Returns a new DamageInstance containing a Creature's damage, adjusted for skills.
+	 *
+	 */
+	public DamageInstance getDamage() {
+		if(damageDirty) { // Avoid recalculating this
 			damageDirty = false;
-			int modifiedDmg = equipped.dmg;
-			switch (equipped.dmgType) {
-				case Game.DMG_BLUNT:
-					modifiedDmg += (skills.bluntLvl - 1) * (equipped.swingTime * DPS_PER_LEVEL);
-					break;
-				case Game.DMG_SLASH:
-					modifiedDmg += (skills.slashLvl - 1) * (equipped.swingTime * DPS_PER_LEVEL);
-					break;
-				case Game.DMG_PIERCE:
-					modifiedDmg += (skills.pierceLvl - 1) * (equipped.swingTime * DPS_PER_LEVEL);
-					break;
+			int weaponDmg = equipped.dmg.amount;
+			if (equipped.dmg.type == DamageType.BLUNT) {
+				weaponDmg += (skills.bluntLvl - 1) * (equipped.swingTime * DPS_PER_LEVEL);
+			} else if(equipped.dmg.type == DamageType.SLASH) {
+				weaponDmg += (skills.slashLvl - 1) * (equipped.swingTime * DPS_PER_LEVEL);
+			} else if(equipped.dmg.type == DamageType.PIERCE) {
+				weaponDmg += (skills.pierceLvl - 1) * (equipped.swingTime * DPS_PER_LEVEL);
 			}
 			if (equipped.hasTag("polearm")) {
-				modifiedDmg += (skills.poleLvl - 1) * (equipped.swingTime * DPS_PER_LEVEL);
+				weaponDmg += (skills.poleLvl - 1) * (equipped.swingTime * DPS_PER_LEVEL);
 			}
 			if (equipped.hasTag("sword")) {
-				modifiedDmg += (skills.swordLvl - 1) * (equipped.swingTime * DPS_PER_LEVEL);
+				weaponDmg += (skills.swordLvl - 1) * (equipped.swingTime * DPS_PER_LEVEL);
 			}
-			modifiedDmg = Math.min(modifiedDmg, equipped.dmg * 2);
-			calculatedDamage = Math.max(baseDmg, modifiedDmg);
+			weaponDmg = Math.min(weaponDmg, equipped.dmg.amount * 2); // Skills can at most double damage
+			if(weaponDmg > naturalAttackPattern.baseDamage.amount) {
+				calculatedDamage = new DamageInstance(weaponDmg, equipped.dmg.type);
+			} else {
+				calculatedDamage = naturalAttackPattern.baseDamage.copy();
+			}
+
 			if(conditions.contains(Condition.ENRAGED)) {
-				calculatedDamage *= 2;
+				calculatedDamage.amount *= 2;
 			}
 		}
-		return calculatedDamage;
+		return calculatedDamage.copy();
 	}
 
 	//TODO misses
 	public boolean checkAttackSuccess(Creature c) {//TODO attack hits/misses
 		return true;
 	}
-	
 
 	/*
 	 * Targeting
@@ -487,15 +493,6 @@ public class Creature {
 	/*
 	 * Things happening to creature
 	 */
-
-	public void takeDamage(int d) {
-		hp -= Math.max(d, 0);
-		if (hp <= 0) {
-			kill();
-		} else {
-			damageTrigger(d);
-		}
-	}
 
 	public void kill() {
 		if (isAlive()) {
@@ -719,19 +716,19 @@ public class Creature {
 		IO.printHorizontalLine();
 		IO.println(name + ":");
 		IO.println("Health: " + Math.max(0, hp) + "/" + maxHp);
-		for (int i = 0; i < Game.DMG_TYPE_COUNT; i++) {
+		for (int i = 0; i < DamageType.damageTypeCount(); i++) {
 			if (resists[i] > 0) {
-				IO.println(Game.DAMAGE_TYPE_STRINGS[i] + " resistance: " + resists[i]);
+				IO.println(Text.capitalised(DamageType.get(i).name + " resistance: " + resists[i]));
 			} else if (resists[i] < 0) {
-				IO.println(Game.DAMAGE_TYPE_STRINGS[i] + " vulnerability: " + (0 - resists[i]));
+				IO.println(Text.capitalised(DamageType.get(i).name + " vulnerability: " + (0 - resists[i])));
 			}
 		}
 		IO.println("");
-		if (!equipped.name.equals("unarmed")) {
-			IO.println("Weapon: " + equipped.getNameWithCount());
-			IO.println("DamageType: " + getDamage() + " " + Game.DAMAGE_TYPE_STRINGS[equipped.dmgType]);
+		if (equipped.name.equals("unarmed")) {
+			IO.println("Damage: " + getDamage() + ".");
 		} else {
-			IO.println("DamageType: " + defaultAttackPattern.baseDamage + " " + Game.DAMAGE_TYPE_STRINGS[defaultAttackPattern.damageType]);
+			IO.println("Weapon: " + equipped.getNameWithCount());
+			IO.println("Damage: " + getDamage() + ".");
 		}
 		IO.println("");
 		IO.println(getDescription());
@@ -751,13 +748,13 @@ public class Creature {
 	 *
 	 * @param d
 	 */
-	public void damageTrigger(int d) {//TODO rewrite courage
+	public void damageTrigger(DamageInstance d) {//TODO rewrite courage
 		if (conditions.contains(Condition.SLEEPING)) {
 			awaken(false);
 		}
-		d = Math.max(d, 0);
-		if (d > maxHp / 4) {//If damage deals over 25% hp
-			double c = Math.max((maxHp / d) - 0.25, 0);//Lose a decimal amount of courage equal to the %hp of damage over 25%
+		int damage = Math.max(d.amount, 0);
+		if (damage > maxHp / 4) {//If damage deals over 25% hp
+			double c = Math.max((maxHp / damage) - 0.25, 0);//Lose a decimal amount of courage equal to the %hp of damage over 25%
 			if (hp < maxHp / 4) {
 				c *= 2;
 			}//Doubled if under half hp
@@ -827,10 +824,19 @@ public class Creature {
 			targetQueue.add(p);
 		}
 		targetMap.get(c).weight += 10;
+		if (conditions.contains(Condition.SEALED)) {
+			IO.println(Text.capitalised(Text.getDefName(this)) + " was unsealed.");
+			conditions.remove(Condition.SEALED);
+		}
+		if (conditions.contains(Condition.SLEEPING) && isAlive()) {
+			IO.println(Text.capitalised(Text.getDefName(this)) + " woke up.");
+			conditions.remove(Condition.SLEEPING);
+		}
 		if (conditions.contains(Condition.ENRAGEABLE) && !conditions.contains(Condition.ENRAGED) && isAlive()) {
 			IO.println(Text.capitalised(Text.getDefName(this)) + " became enraged!");
 			conditions.add(Condition.ENRAGED);
 		}
+
 	}
 
 	/**
@@ -846,10 +852,10 @@ public class Creature {
 	}
 
 	public void refreshArmour() {
-		critChance = baseCritChance;
+		critChance = baseCritChance; // TODO Why is this here? I don't know if it's safe to remove
 		critDmg = baseCritDmg;
 		resists = baseResists.clone();
-		for (int i = 0; i < Game.DMG_TYPE_COUNT; i++) {
+		for (int i = 0; i < DamageType.damageTypeCount(); i++) {
 			resists[i] += armourChest.resists[i];
 			resists[i] += ring.resists[i];
 			resists[i] += cloak.resists[i];

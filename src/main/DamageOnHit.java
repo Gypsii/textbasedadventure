@@ -5,18 +5,15 @@ import util.AttackHandler;
 
 public class DamageOnHit extends OnHit{
 
-	public int damage;
-	public int damageType;
+	public DamageInstance damage;
 
-	public DamageOnHit(int damage, int damageType) {
-		this.damage = damage;
-		this.damageType = damageType;
+	public DamageOnHit(DamageInstance dmg) {
+		this.damage = dmg;
 	}
 
 	@Override
 	public void apply(Creature attacker, Creature target){
-		int d = damage - target.resists[damageType];
-		AttackHandler.applyDamagePassively(attacker, target, d, damageType, DamageType.getDamageVerb(damageType));
+		AttackHandler.applyDamagePassively(attacker, target, damage, null);
 	}
 
 }

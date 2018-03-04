@@ -1,5 +1,7 @@
 package creatures;
 
+import main.DamageInstance;
+import main.DamageType;
 import main.Game;
 import item.Item;
 import item.MagicItem;
@@ -12,12 +14,14 @@ public class FiendGuardian extends Creature{
 		addTag("fiend");
 		maxHp = 666;
 		hp = maxHp;
-		baseDmg = 40;
+		
 		xp = 300;
-		baseResists[Game.DMG_BLUNT] = 15;
-		baseResists[Game.DMG_SLASH] = 30;
-		baseResists[Game.DMG_PIERCE] = 8;
-		baseResists[Game.DMG_BURN] = 50;
+		baseResists[DamageType.BLUNT.number] = 15;
+		baseResists[DamageType.SLASH.number] = 30;
+		baseResists[DamageType.PIERCE.number] = 8;
+		baseResists[DamageType.BURN.number] = 50;
+
+		naturalAttackPattern = new AttackPattern(new DamageInstance(66, DamageType.PIERCE), "clawed", 0.666);
 
 		addItem("lswordDemonEmpowered");
 		equip("lswordDemonEmpowered");

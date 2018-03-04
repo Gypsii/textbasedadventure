@@ -922,6 +922,9 @@ Weapons
 
 {[ITEM:obsidian]
 	[NAME:Shard of Obsidian]
+	[DAMAGE:14]
+    [SWINGSPEED:0.8]
+    [DAMAGETYPE:slash]
 	[COST:50]
 	[DESCRIPTION:Very sharp around the edges.]
 }
@@ -1135,7 +1138,7 @@ Weapons
 {[ITEM:tunicSilk]
 	[NAME:Silk Tunic]
 	[SLASH:2]
-	[PIERCE:1]
+	[PIERCE:1]6
 	[TAG:wear_chest]
 }
 

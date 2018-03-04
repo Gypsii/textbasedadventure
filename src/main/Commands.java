@@ -1,5 +1,6 @@
 package main;
 
+import gfx.Graphics;
 import item.Item;
 import item.MagicItem;
 import item.Scroll;
@@ -51,6 +52,9 @@ public class Commands {
 	 * @throws IOException
 	 */
 	public static double playerTurn() throws IOException{
+		if(Game.GRAPHICS_ENABLED){
+			Graphics.refresh();
+		}
 		String commandRaw = IO.read();
 		String command = commandRaw.toLowerCase();
 		if(command.equals("dingo stole my baby")){
@@ -270,7 +274,7 @@ public class Commands {
 				}
 			}
 			IO.println("<blue>You made " + Item.item(result).prefix + " " + Item.item(result).name + "<r>");
-			Game.player.skills.incrementSkill(Skillset.COOK, xp);
+			Game.player.skills.incrementSkill(SkillSet.COOK, xp);
 			Game.player.addItem(result);
 			return 10;
 		}
@@ -294,7 +298,7 @@ public class Commands {
 		IO.println("Wait for how long?");
 		double n = 0;
 		try{
-			n = Double.parseDouble(Game.br.readLine());
+			n = Double.parseDouble(IO.read());
 			if(n > 0){
 				IO.println("<blue>You do nothing<r>");
 				return n;

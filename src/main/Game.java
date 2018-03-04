@@ -1,11 +1,10 @@
 package main;
 
 import creatures.Condition;
+import gfx.Graphics;
 import item.Item;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.PriorityQueue;
@@ -21,17 +20,10 @@ import creatures.Creature;
 import creatures.Player;
 
 public class Game{
+	public static final boolean GRAPHICS_ENABLED = false;
+
 	public static final int PASSIVECREATURECAP = 3;
 	public static final int STARTGOLD = 50;
-	
-	public static final int DMG_BLUNT = 0;
-	public static final int DMG_SLASH = 1;
-	public static final int DMG_PIERCE = 2;
-	public static final int DMG_BURN = 3;
-	public static final int DMG_COLD = 4;
-	public static final int DMG_MAGIC = 5;
-	public static final int DMG_TYPE_COUNT = 6;
-	public static final String[] DAMAGE_TYPE_STRINGS = {"bludgeoning", "slashing", "piercing", "burn", "cold", "magical"};
 
 	static String osName;
 
@@ -46,32 +38,43 @@ public class Game{
 	public static Player player;
 	public static Shop startingShop;
 	static Comparator<Creature> comparator = new TurnComparator();
-	static PriorityQueue<Creature> toTakeTurn = new PriorityQueue<Creature>(10, comparator);
-	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-	
+	public static PriorityQueue<Creature> toTakeTurn = new PriorityQueue<Creature>(10, comparator);
+
 	public static void main(String[] args) throws IOException{
-		osName = System.getProperty("os.name");
-		IO.println(osName);
-//		for(;;){
-		initialiseGame();
-		runGame();		
-//		}	
+		if(GRAPHICS_ENABLED){
+			Graphics.doWindow();
+			IO.ANSIEnabled = false;
+			synchronized (toTakeTurn) { //Synced on something random
+				try {
+					toTakeTurn.wait(); //Wait for graphics to load before anything prints
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		} else {
+			osName = System.getProperty("os.name");
+			if(osName.startsWith("Windows") && !osName.equals("Windows 10")){
+				IO.ANSIEnabled = false;
+			}else if(osName.equals("Windows 10")){
+				IO.println("Windows 10 users may have to change console colours to black on white for best effect");
+			}
+		}
+		Crafting.categories.put("all", Crafting.all);
+
+		FileReader.readFromFiles();
+		for(;;){
+			loadGame();
+			runGame();
+		}
 	}
 	
 	/**
 	 * Creates the player, first level and shop, and gets all pre-game information from the player.
 	 * @throws IOException
 	 */
-	public static void initialiseGame() throws IOException{
-		if(osName.startsWith("Windows") && !osName.equals("Windows 10")){
-			IO.ANSIEnabled = false;
-		}else if(osName.equals("Windows 10")){
-			IO.println("Windows 10 users may have to change console colours to black on white for best effect");
-		}
+	public static void loadGame() throws IOException{
 		IO.print("<black><fnormal>");//resets the colour to default
-		Crafting.categories.put("all", Crafting.all);
-		
-		FileReader.readFromFiles();
+
 		
 		player = new Player();
 		startingShop = new Shop();
@@ -79,16 +82,16 @@ public class Game{
 		position = 0;
 		money = STARTGOLD;
 		levels = new  HashMap<Integer, Level>();
-		
+
 		IO.println("Who do you think you are?");
 		player.name = IO.read();
 		if(player.name.equals("nocolour")){
 			IO.ANSIEnabled = false;
 		}
-		
 		position = 0;
 		zone = new Zone();
 		IO.println("Before setting out on your adventure you decide to prepare yourself.");
+
 		player.addItem("bread", 2);
 		
 		startingShop.addItem("bread", 3);
@@ -133,6 +136,7 @@ public class Game{
 			toTakeTurn.add(c);
 		}
 		IO.println("Game over.");
+		IO.printHorizontalLine();
 	}
 
 	
@@ -154,8 +158,13 @@ public class Game{
 	 * Executes things that happen upon entering a new zone, such as printing descriptions.
 	 */
 	public static void enterZone(){
+		zone.inFocus = false;
 		IO.println(position / 100 + ", " + position % 100);
 		zone = level.zones.get(position);
+		zone.inFocus = true;
+		if(GRAPHICS_ENABLED){
+			Graphics.updateZoneGraphics();
+		}
 		Text.viewZone();
 		targetIndex = 0;
 		doTurnList();
@@ -168,7 +177,7 @@ public class Game{
 	public static boolean canExitZone(){		
 		for(int i = 0; i < zone.creatures.size(); i++){
 			Creature c = zone.creatures.get(i);
-			if(c.isAlive() && c.hostileTowards(player) && !c.conditions.contains(Condition.SLEEPING)){
+			if(c.isAlive() && c.hostileTowards(player) && !c.conditions.contains(Condition.SLEEPING) && !c.conditions.contains(Condition.SEALED)){
 				return false;
 			}
 		}

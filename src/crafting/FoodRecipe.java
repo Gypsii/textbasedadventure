@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import main.Tag;
 import main.Game;
+import util.IO;
 
 public class FoodRecipe {
 	
@@ -62,28 +63,22 @@ public class FoodRecipe {
 	 * @return
 	 */
 	public boolean check(ArrayList<Item> foods){
-		//System.out.println("Checking " + product.name);
 		for(int i = 0; i < badComponents.size(); i++){
-			//System.out.println("Checking for bad food " + i);
 			for(int j = 0; j < foods.size(); j++){
 				if(foods.get(j).hasTag(badComponents.get(i))){
 					return false;
 				}
 			}
 		}
-		//System.out.println("Components = " + components.size());
 		for(int i = 0; i < components.size(); i++){
-			//System.out.println("Checking for food " + i);
 			boolean satisfied = false;
 			for(int j = 0; j < foods.size(); j++){
 				if(foods.get(j).hasTag(components.get(i))){
-					//System.out.println("Found " + i);
 					satisfied = true;
 					break;
 				}
 			}
 			if(!satisfied){
-				//System.out.println(product.name + "failed");
 				return false;
 			}
 		}
@@ -102,10 +97,10 @@ public class FoodRecipe {
 	 * Prints the product and then requirements for this recipe
 	 */
 	private void print(){
-		System.out.print(Item.item(product).name + ": ");
+		IO.print(Item.item(product).name + ": ");
 		for(int i = 0; i < components.size(); i++){
-			System.out.print(components.get(i) + ", ");
+			IO.print(components.get(i) + ", ");
 		}
-		System.out.println();
+		IO.println();
 	}
 }

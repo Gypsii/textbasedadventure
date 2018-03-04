@@ -2,10 +2,32 @@ package util;
 
 import item.Item;
 import item.Scroll;
+import main.DamageInstance;
 import main.Game;
 import creatures.Creature;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class Text {
+
+	static Pattern tag = Pattern.compile("<([^>]+)>");
+
+	public static String deformat(String s) {
+		s += "<end>";	//this tag is really just so I don't have to read from the last tag to the end
+						// it doesnt actually do anything
+		String plain = "";
+		Matcher matcher = tag.matcher(s);
+		for(int i = 0; matcher.find(); i = matcher.end(0)) {
+			plain += s.substring(i, matcher.start(0));
+		}
+		return plain;
+	}
+
+	public static String formatForJLabel(String s) {
+		return "<html>" + deformat(s) + "</html>";
+	}
+
 	
 	/**
 	 * Returns a new string with the first character of the given string in upper case.
@@ -20,15 +42,15 @@ public class Text {
 		return s.substring(0, 1) + s.substring(1);
 	}
 	
-	public static void attackMessage(Creature attacker, Creature attackee, int damage, int resist_id, String verb){//TODO better name? Also damage names
-		attackMessage(attacker, attackee, damage, resist_id, verb, "");
+	public static void attackMessage(Creature attacker, Creature attackee, DamageInstance damage, String verb){//TODO better name? Also damage names
+		attackMessage(attacker, attackee, damage, verb, "");
 	}
 
-	public static void selfHealMessage(Creature c, int damage, String verb){//TODO better name? Also damage names
-		IO.print(getDefName(c) + " " + verb + " " + damage + " hp, ");
+	public static void selfHealMessage(Creature c, int health, String verb){//TODO better name? Also damage names
+		IO.print(getDefName(c) + " " + verb + " " + health + " hp, ");
 	}
 	
-	public static void attackMessage(Creature attacker, Creature attackee, int damage, int resist_id, String verb, String weaponName){//TODO better name? Also damage names
+	public static void attackMessage(Creature attacker, Creature attackee, DamageInstance damage, String verb, String weaponName){//TODO better name? Also damage names
 		String s = "";
 		if(attacker == Game.player){
 			s += "<lblue>You";
@@ -58,15 +80,15 @@ public class Text {
 			}
 			s += weaponName;
 		}
-		s += " for " + damage + " damage";
+		s += " for " + damage.amount + " damage";
 		IO.print(s);
 	}
 
-	public static void attackMessage(Creature attackee, int damage, int resist_id, String verb){//TODO better name? Also damage names
-		attackMessage(attackee, damage, resist_id, verb, "");
+	public static void attackMessage(Creature attackee, DamageInstance damage, String verb){//TODO better name? Also damage names
+		attackMessage(attackee, damage, verb, "");
 	}
 
-	public static void attackMessage(Creature attackee, int damage, int resist_id, String verb, String weaponName){//TODO better name? Also damage names
+	public static void attackMessage(Creature attackee, DamageInstance damage, String verb, String weaponName){ //TODO better name? Also damage names
 		String s = "";
 		if(attackee == Game.player){
 			s += "You were";
@@ -83,7 +105,7 @@ public class Text {
 		if(attackee == Game.player){
 			attackeePronoun = "you";
 		}else{
-			attackeePronoun = "it";// Is 'it' even a pronoun? I don't think it is.
+			attackeePronoun = "it";// Is 'it' even a pronoun? I don't think it is. // Lol it's 2018 now it is
 		}
 		if(attackee.hp > 0){
 			s += ", leaving " + attackeePronoun + " on " + attackee.hp + " hp";

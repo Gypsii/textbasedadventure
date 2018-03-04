@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import main.DamageInstance;
+import main.DamageType;
 import main.Game;
 import crafting.Category;
 import crafting.Crafting;
@@ -30,11 +32,11 @@ public class FileReader {
 //				new FileOutputStream("filename.txt"), "utf-8"))) {
 //			writer.write("something");
 //		}
-		readMainGameFile("game.memes");
-		readFile("item.memes");
-		readFile("food.memes");
-		readFile("creature.memes");
-		readFile("crafting.memes");
+		readMainGameFile("game.txt");
+		readFile("item.txt");
+		readFile("food.txt");
+		readFile("creature.txt");
+		readFile("crafting.txt");
 
 	}
 
@@ -98,45 +100,32 @@ public class FileReader {
 				i.prefix = value;
 				break;
 			case "DAMAGE":
-				i.dmg = Integer.parseInt(value);
+				i.dmg.amount = Integer.parseInt(value);
 				break;
 			case "TAG":
 				i.addTag(value);
 				break;
 			case "DAMAGETYPE":
-				if(value.equals("blunt")){
-					i.dmgType = Game.DMG_BLUNT;
-				}else if(value.equals("pierce")){
-					i.dmgType = Game.DMG_PIERCE;
-				}else if(value.equals("slash")){
-					i.dmgType = Game.DMG_SLASH;
-				}else if(value.equals("burn")){
-					i.dmgType = Game.DMG_BURN;
-				}else if(value.equals("cold")){
-					i.dmgType = Game.DMG_COLD;
-				}else if(value.equals("magic")){
-					i.dmgType = Game.DMG_MAGIC;
-				}else{
-					IO.println("<red>Invalid value \"" + value + "\" for tag \"DAMAGETYPE\" of type item (id " + id + ")<r>");
-				}
+				i.dmg.type = DamageType.get(value);
+//					IO.println("<red>Invalid value \"" + value + "\" for tag \"DAMAGETYPE\" of type item (id " + id + ")<r>");
 				break;
 			case "BLUNT":
-				i.resists[Game.DMG_BLUNT] = Integer.parseInt(value);
+				i.resists[DamageType.BLUNT.number] = Integer.parseInt(value);
 				break;
 			case "SLASH":
-				i.resists[Game.DMG_SLASH] = Integer.parseInt(value);
+				i.resists[DamageType.SLASH.number] = Integer.parseInt(value);
 				break;
 			case "PIERCE":
-				i.resists[Game.DMG_PIERCE] = Integer.parseInt(value);
+				i.resists[DamageType.PIERCE.number] = Integer.parseInt(value);
 				break;
 			case "BURN":
-				i.resists[Game.DMG_BURN] = Integer.parseInt(value);
+				i.resists[DamageType.BURN.number] = Integer.parseInt(value);
 				break;
 			case "COLD":
-				i.resists[Game.DMG_COLD] = Integer.parseInt(value);
+				i.resists[DamageType.COLD.number] = Integer.parseInt(value);
 				break;
 			case "MAGIC":
-				i.resists[Game.DMG_MAGIC] = Integer.parseInt(value);
+				i.resists[DamageType.MAGIC.number] = Integer.parseInt(value);
 				break;
 			case "SWINGSPEED":
 				i.swingTime = Double.parseDouble(value);
@@ -254,46 +243,28 @@ public class FileReader {
 		Matcher t = tagPattern.matcher(obj);
 		t.find();
 		String id = t.group(2);
-		AttackPattern p = new AttackPattern(0, 0);
+		AttackPattern p = new AttackPattern(new DamageInstance(0, DamageType.BLUNT));
 		AttackPattern.attacks.put(id, p);
-		boolean verbSet = false;
 		while(t.find()){
 			String tag = t.group(1);
 			String value = t.group(2);
 			switch(tag){
 			case "DAMAGE":
-				p.baseDamage = Integer.parseInt(value);
+				p.baseDamage.amount = Integer.parseInt(value);
 				break;
 			case "DAMAGE_TYPE":
-				if(value.equals("blunt")){
-					p.damageType = Game.DMG_BLUNT;
-				}else if(value.equals("pierce")){
-					p.damageType = Game.DMG_PIERCE;
-				}else if(value.equals("slash")){
-					p.damageType = Game.DMG_SLASH;
-				}else if(value.equals("burn")){
-					p.damageType = Game.DMG_BURN;
-				}else if(value.equals("cold")){
-					p.damageType = Game.DMG_COLD;
-				}else if(value.equals("magic")){
-					p.damageType = Game.DMG_MAGIC;
-				}else{
-					IO.println("<red>Invalid value \"" + value + "\" for tag \"DAMAGETYPE\" of type item (id " + id + ")<r>");
-				}
+				p.baseDamage.type = DamageType.get(value);
+//				IO.println("<red>Invalid value \"" + value + "\" for tag \"DAMAGETYPE\" of type item (id " + id + ")<r>");
 			case "VERB":
 				p.verb = value;
-				verbSet = true;
 				break;
 			case "DURATION":
-				p.duration = Double.parseDouble(value);
+				p.period = Double.parseDouble(value);
 				break;
 			default:
 				IO.println("<red>Invalid tag \"" + tag + "\" for type attack (id " + id + ")<r>");
 				break;
 			}
-		}
-		if(!verbSet){
-			p.verb = AttackHandler.getVerb(p.damageType);
 		}
 	}
 
@@ -321,22 +292,22 @@ public class FileReader {
 				c.description = value;
 				break;
 			case "RESIST_BLUNT":
-				c.baseResists[Game.DMG_BLUNT] = Integer.parseInt(value);
+				c.baseResists[DamageType.BLUNT.number] = Integer.parseInt(value);
 				break;
 			case "RESIST_SLASH":
-				c.baseResists[Game.DMG_SLASH] = Integer.parseInt(value);
+				c.baseResists[DamageType.SLASH.number] = Integer.parseInt(value);
 				break;
 			case "RESIST_PIERCE":
-				c.baseResists[Game.DMG_PIERCE] = Integer.parseInt(value);
+				c.baseResists[DamageType.PIERCE.number] = Integer.parseInt(value);
 				break;
 			case "RESIST_BURN":
-				c.baseResists[Game.DMG_BURN] = Integer.parseInt(value);
+				c.baseResists[DamageType.BURN.number] = Integer.parseInt(value);
 				break;
 			case "RESIST_COLD":
-				c.baseResists[Game.DMG_COLD] = Integer.parseInt(value);
+				c.baseResists[DamageType.COLD.number] = Integer.parseInt(value);
 				break;
 			case "RESIST_MAGIC":
-				c.baseResists[Game.DMG_MAGIC] = Integer.parseInt(value);
+				c.baseResists[DamageType.MAGIC.number] = Integer.parseInt(value);
 				break;
 			case "CRIT":
 				c.baseCritChance = Double.parseDouble(value);
@@ -377,6 +348,11 @@ public class FileReader {
 			case "ENRAGED":
 				if(stringToBoolean(value)){
 					c.conditions.add(Condition.ENRAGED);
+				}
+				break;
+			case "SEALED":
+				if(stringToBoolean(value)){
+					c.conditions.add(Condition.SEALED);
 				}
 				break;
 			case "ATTACK":

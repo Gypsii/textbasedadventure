@@ -1,8 +1,6 @@
 package util;
 
-import main.Game;
-import main.OnHit;
-import main.Skillset;
+import main.*;
 import creatures.AttackPattern;
 import creatures.Creature;
 
@@ -11,75 +9,52 @@ import java.util.List;
 
 public class AttackHandler {
 
-	public static String getVerb(int damageType){
-		switch(damageType){
-		case Game.DMG_BLUNT:
-			return "hit";
-		case Game.DMG_SLASH:
-			return "slashed";
-		case Game.DMG_PIERCE:
-			return "pierced";
-		case Game.DMG_BURN:
-			return "burnt";
-		case Game.DMG_COLD:
-			return "froze";
-		default:
-			return "damaged";
-		}
-	}
-	
 	public static double attack(Creature attacker, Creature target, AttackPattern attackPattern){
-		int damage = 0;
-		int damageType = 0;
-		double duration = 1;
-		String verb = "";
-		
+		DamageInstance damage;
+		double period;
+		String verb;
+
 		if(attackPattern == AttackPattern.weaponAttack){
 			damage = attacker.getDamage();
-			damageType = attacker.equipped.dmgType;
-			duration = attacker.equipped.swingTime;
-			verb = getVerb(damageType);
+			period = attacker.equipped.swingTime;
+			verb = damage.type.verb;
 		}else{
-			damage = attackPattern.baseDamage;
-			damageType = attackPattern.damageType;
-			duration = attackPattern.duration;
+			damage = attackPattern.baseDamage.copy();
+			period = attackPattern.period;
 			verb = attackPattern.verb;
 		}
 		
 		boolean crit = false;
-		if(attackPattern.canCrit && Math.random() < attacker.critChance){
-			damage *= attacker.critDmg;
+		if (attackPattern.canCrit && Math.random() < attacker.critChance) {
+			damage.amount *= attacker.critDmg;
 			crit = true;
 		}
-		damage -= target.resists[damageType];
+
+		damage.amount -= target.resists[damage.type.number];
 		
-		applyDamage(attacker, target, damage, damageType, verb);
-		if(crit){IO.println("<cyan>Critical hit!<r>");}
+		applyDamage(attacker, target, damage, verb);
+		if (crit){IO.println("<cyan>Critical hit!<r>");}
 		
 		applyOnHits(attacker, target, attackPattern);
 
-		if(attacker == Game.player){
-			switch(attacker.equipped.dmgType){
-			case Game.DMG_BLUNT:
-				attacker.skills.incrementSkill(Skillset.BLUNT, 8);
-				break;
-			case Game.DMG_SLASH:
-				attacker.skills.incrementSkill(Skillset.SLASH, 8);
-				break;
-			case Game.DMG_PIERCE:
-				attacker.skills.incrementSkill(Skillset.PIERCE, 8);
-				break;
+		if (attacker == Game.player) {
+			if (damage.type == DamageType.BLUNT) {
+				attacker.skills.incrementSkill(SkillSet.BLUNT, 8);
+			} else if (damage.type == DamageType.SLASH) {
+				attacker.skills.incrementSkill(SkillSet.SLASH, 8);
+			} else if (damage.type == DamageType.PIERCE) {
+				attacker.skills.incrementSkill(SkillSet.PIERCE, 8);
 			}
-			if(attacker.equipped.hasTag("polearm")){
-				attacker.skills.incrementSkill(Skillset.POLE, 8);
+			if (attacker.equipped.hasTag("polearm")) {
+				attacker.skills.incrementSkill(SkillSet.POLE, 8);
 			}
-			if(attacker.equipped.hasTag("sword")){
-				attacker.skills.incrementSkill(Skillset.SWORD, 8);
+			if (attacker.equipped.hasTag("sword")) {
+				attacker.skills.incrementSkill(SkillSet.SWORD, 8);
 			}
 		}
 		target.aggravateTrigger(attacker);
 
-		return duration;
+		return period;
 	}
 
 	public static void applyOnHits(Creature attacker, Creature target, AttackPattern attackPattern){
@@ -93,10 +68,10 @@ public class AttackHandler {
 		}
 	}
 
-	public static void applyDamage(Creature attacker, Creature target, int damage, int damageType, String verb){
-		Text.attackMessage(attacker, target, damage, damageType, verb);
+	public static void applyDamage(Creature attacker, Creature target, DamageInstance damage, String verb){
+		Text.attackMessage(attacker, target, damage, verb);
 		boolean wasAlive = target.isAlive();
-		target.hp -= Math.min(target.hp, Math.max(damage, 0));
+		target.hp -= Math.min(target.hp, Math.max(damage.amount, 0));
 		Text.healthRemainingMessage(attacker, target, !wasAlive);
 
 		if(target.hp <= 0){
@@ -106,10 +81,13 @@ public class AttackHandler {
 		}
 	}
 
-	public static void applyDamagePassively(Creature attacker, Creature target, int damage, int damageType, String verb){
-		Text.attackMessage(target, damage, damageType, verb);
+	public static void applyDamagePassively(Creature attacker, Creature target, DamageInstance damage, String verb){
+		if (verb == null) {
+			verb = damage.type.verbPassive;
+		}
+		Text.attackMessage(target, damage, verb);
 		boolean wasAlive = target.isAlive();
-		target.hp -= Math.min(target.hp, Math.max(damage, 0));
+		target.hp -= Math.min(target.hp, Math.max(damage.amount, 0));
 		Text.healthRemainingMessage(null, target, !wasAlive);
 
 		if(target.hp <= 0){

@@ -1,7 +1,5 @@
 package creatures.humans;
 
-import creatures.CreatureTag;
-
 public class SpiceTrader extends Human{
 	
 	public void setTags(){

@@ -4,7 +4,7 @@ import util.IO;
 import creatures.Creature;
 
 
-public class Skillset{
+public class SkillSet {
 	
 	public static final int BLUNT = 0;
 	public static final int SLASH = 2;
@@ -33,7 +33,7 @@ public class Skillset{
 	public int cookLvl = 1;
 	double cookXp = 0;
 	
-	public Skillset(Creature c){
+	public SkillSet(Creature c){
 		creature = c;
 	}
 	

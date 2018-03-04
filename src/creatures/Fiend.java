@@ -1,5 +1,7 @@
 package creatures;
 
+import main.DamageInstance;
+import main.DamageType;
 import main.Game;
 import item.Item;
 import item.MagicItem;
@@ -12,12 +14,13 @@ public class Fiend extends Creature{
 		addTag("fiend");
 		maxHp = 132;
 		hp = maxHp;
-		baseDmg = 16;
 		xp = 65;
-		baseResists[Game.DMG_BLUNT] = 8;
-		baseResists[Game.DMG_SLASH] = 13;
-		baseResists[Game.DMG_PIERCE] = 5;
-		baseResists[Game.DMG_BURN] = 40;
+		baseResists[DamageType.BLUNT.number] = 8;
+		baseResists[DamageType.SLASH.number] = 13;
+		baseResists[DamageType.PIERCE.number] = 5;
+		baseResists[DamageType.BURN.number] = 40;
+
+		naturalAttackPattern = new AttackPattern(new DamageInstance(25, DamageType.SLASH), "clawed", 0.666);
 
 		double rand = Math.random();
 		if(rand < 0.25){

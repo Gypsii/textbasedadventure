@@ -4,7 +4,6 @@ import item.Item;
 
 import java.util.Random;
 
-import creatures.CreatureTag;
 import main.Tag;
 
 public class SealHunter extends Human{

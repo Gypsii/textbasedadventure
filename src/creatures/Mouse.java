@@ -1,6 +1,10 @@
 package creatures;
 
+import main.DamageInstance;
+import main.DamageType;
 import main.Game;
+import util.IO;
+import util.Text;
 
 
 public class Mouse extends Creature{
@@ -9,14 +13,13 @@ public class Mouse extends Creature{
 		name = "Field Mouse";
 		maxHp = 9;
 		hp = maxHp;
-		baseDmg = 2;
 		xp = 2;
 		setHostilityTowardsPlayer(false);
 		canBeBoss = false;
 		courage = (Math.random() * 2);
 		addTag("rodent");
-		
-		defaultAttackPattern = new AttackPattern(baseDmg, Game.DMG_SLASH, "scratched", 0.6);
+
+		naturalAttackPattern = new AttackPattern(new DamageInstance(2, DamageType.SLASH), "scratched", 0.6);
 		
 		postInitialisation();
 	}
@@ -24,7 +27,7 @@ public class Mouse extends Creature{
 	
 	public void restingAction(){
 		if(Math.random() < 0.1){
-			System.out.println("The " + name + " squeaked");
+			IO.println(Text.capitalised(Text.getDefName(this)) + " squeaked.");
 		}
 	}
 	

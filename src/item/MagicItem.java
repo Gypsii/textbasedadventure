@@ -2,6 +2,7 @@ package item;
 
 import java.util.ArrayList;
 
+import main.DamageType;
 import main.Game;
 
 public class MagicItem {
@@ -68,35 +69,36 @@ public class MagicItem {
 		}
 		switch(effect){
 		case  RES_BLUNT:
-			magicA.resists[Game.DMG_BLUNT] = Item.item(magicA.id).resists[Game.DMG_BLUNT];
-			magicA.resists[Game.DMG_BLUNT] += level * 2;
+			magicA.resists[DamageType.BLUNT.number] = Item.item(magicA.id).resists[DamageType.BLUNT.number];
+			magicA.resists[DamageType.BLUNT.number] += level * 2;
 			magicA.name = magicA.name + "Blunt Resist";
 			break;
 		case  RES_SLASH:
-			magicA.resists[Game.DMG_SLASH] = Item.item(magicA.id).resists[Game.DMG_SLASH];
-			magicA.resists[Game.DMG_SLASH] += level * 2;
+			magicA.resists[DamageType.SLASH.number] = Item.item(magicA.id).resists[DamageType.SLASH.number];
+			magicA.resists[DamageType.SLASH.number] += level * 2;
 			magicA.name = magicA.name + "Slash Resist";
 			break;
 		case  RES_PIERCE:
-			magicA.resists[Game.DMG_PIERCE] = Item.item(magicA.id).resists[Game.DMG_PIERCE];
-			magicA.resists[Game.DMG_PIERCE] += level * 2;
+			magicA.resists[DamageType.PIERCE.number] = Item.item(magicA.id).resists[DamageType.PIERCE.number];
+			magicA.resists[DamageType.PIERCE.number] += level * 2;
 			magicA.name = magicA.name + "Pierce Resist";
 			break;
 		case  RES_BURN:
-			magicA.resists[Game.DMG_BURN] = Item.item(magicA.id).resists[Game.DMG_BURN];
-			magicA.resists[Game.DMG_BURN] += level * 2;
+			magicA.resists[DamageType.BURN.number] = Item.item(magicA.id).resists[DamageType.BURN.number];
+			magicA.resists[DamageType.BURN.number] += level * 2;
 			magicA.name = magicA.name + "Fire Resist";
 			break;
 		case  RES_COLD:
-			magicA.resists[Game.DMG_COLD] = Item.item(magicA.id).resists[Game.DMG_COLD];
-			magicA.resists[Game.DMG_COLD] += level * 2;
+			magicA.resists[DamageType.COLD.number] = Item.item(magicA.id).resists[DamageType.COLD.number];
+			magicA.resists[DamageType.COLD.number] += level * 2;
 			magicA.name = magicA.name + "Cold Resist";
 			break;
 		case  RES_MAGIC:
-			magicA.resists[Game.DMG_MAGIC] = Item.item(magicA.id).resists[Game.DMG_MAGIC];
-			magicA.resists[Game.DMG_MAGIC] += level * 2;
+			magicA.resists[DamageType.MAGIC.number] = Item.item(magicA.id).resists[DamageType.MAGIC.number];
+			magicA.resists[DamageType.MAGIC.number] += level * 2;
 			magicA.name = magicA.name + "Magic Resist";
 			break;
+			// TODO Re-enable
 //		case  CRIT:
 //			magicA.passives.add(new ArmourPassive(ArmourPassive.CRIT, level * 5));
 //			magicA.name = magicA.name + "Critical Chance";

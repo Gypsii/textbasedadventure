@@ -1,6 +1,8 @@
 package creatures;
 
 import item.Item;
+import main.DamageInstance;
+import main.DamageType;
 import main.Game;
 import main.Tag;
 
@@ -13,7 +15,6 @@ public class Dingo extends Creature{
 	public Dingo(int type){
 		maxHp = 45;
 		hp = maxHp;
-		baseDmg = 9;
 		xp = 15;
 		courage = 5 + (Math.random() * 3);
 
@@ -25,6 +26,9 @@ public class Dingo extends Creature{
 		if(Math.random() < 0.05){
 			addItem("baby");
 		}
+
+		naturalAttackPattern = new AttackPattern(new DamageInstance(9, DamageType.PIERCE), "bit", 1);
+
 		if(type == STANDARD){
 			name = "Dingo";
 			addBodyPart(Item.item("hideDingo"), 0.5);
@@ -33,12 +37,10 @@ public class Dingo extends Creature{
 			addBodyPart(Item.item("hideDingo"), 0.5);
 		}else if(type == HELL){
 			name = "Hellish Dingo";
-			baseDmg *= 2;
+			naturalAttackPattern.baseDamage.amount *= 2;
 			addBodyPart(Item.item("hideHellDingo"), 0.5);
 		}
 		this.addTarget(Tag.tag("rodent"), 100);
-		
-		defaultAttackPattern = new AttackPattern(baseDmg, Game.DMG_PIERCE, "bit");
 		
 		postInitialisation();
 	}
@@ -77,7 +79,7 @@ public class Dingo extends Creature{
 			return "Filthy dog creature.";
 		}else if(type == SNOW){
 			 return "Dingo: Snow edition.";
-		}else if(type == SNOW){
+		}else if(type == HELL){
 			return "Dingo: Hell edition.";
 		}
 		return "Dingo";

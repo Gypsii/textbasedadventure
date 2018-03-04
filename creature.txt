@@ -91,7 +91,7 @@ CREATURE:
 	[ATTACK:spider]
 	[ITEM:silk;0.45]	
 	[ITEM:stickyString;0.15]
-	[BUTCHER_DROP:meatSpider;0.3]
+	[BUTCHER_DROP:meatSpider;0.4]
 }
 
 {[CREATURE:spiderGiant]
@@ -104,10 +104,9 @@ CREATURE:
 	[ITEM:silk;0.4]	
 	[ITEM:silk;0.4]	
 	[ITEM:stickyString;0.6]
-	[BUTCHER_DROP:meatSpider;0.32]
-	[BUTCHER_DROP:meatSpider;0.32]
-	[BUTCHER_DROP:meatSpider;0.32]
-	[BUTCHER_DROP:meatSpider;0.32]
+	[BUTCHER_DROP:meatSpider;1]
+	[BUTCHER_DROP:meatSpider;0.4]
+	[BUTCHER_DROP:meatSpider;0.4]
 }
 
 {[CREATURE:rat]
@@ -116,8 +115,7 @@ CREATURE:
 	[XP:6]
 	[DESCRIPTION:A large rodent. It is filthy.]
 	[ATTACK:rat]
-	[BUTCHER_DROP:meatRat;0.15]
-	[BUTCHER_DROP:meatRat;0.15]
+	[BUTCHER_DROP:meatRat;0.4]
 }
 
 {[CREATURE:walrus]
@@ -129,10 +127,10 @@ CREATURE:
 	[XP:15]
 	[DESCRIPTION:A mighty beast with thick hide to protect it from the cold. Inhabits frozen wastelands.]
 	[ATTACK:walrus]
-	[BUTCHER_DROP:meatWalrus;0.4]
-	[BUTCHER_DROP:meatWalrus;0.4]
-	[BUTCHER_DROP:meatWalrus;0.4]
-	[BUTCHER_DROP:meatWalrus;0.4]
+	[BUTCHER_DROP:meatWalrus;1]
+	[BUTCHER_DROP:meatWalrus;0.5]
+	[BUTCHER_DROP:meatWalrus;0.5]
+	[BUTCHER_DROP:meatWalrus;0.5]
 	[BUTCHER_DROP:hideWalrus;0.4]
 	[BUTCHER_DROP:hideWalrus;0.4]	
 	[BUTCHER_DROP:walrusTusk;0.67]
@@ -147,8 +145,7 @@ CREATURE:
 	[XP:13]
 	[DESCRIPTION:No limbs.]
 	[ATTACK:snake]
-	[BUTCHER_DROP:meatSnake;0.15]
-	[BUTCHER_DROP:meatSnake;0.15]
+	[BUTCHER_DROP:meatSnake;0.3]
 }
 
 {[CREATURE:turtle]
@@ -160,7 +157,7 @@ CREATURE:
 	[XP:27]
 	[DESCRIPTION:A tough creature with a thick shell and a powerful bite. Lives in tropical regions.]
 	[ATTACK:turtle]
-	[BUTCHER_DROP:meatTurtle;0.3]
+	[BUTCHER_DROP:meatTurtle;0.9]
 	[BUTCHER_DROP:meatTurtle;0.3]
 	[BUTCHER_DROP:meatTurtle;0.3]	
 }
@@ -171,6 +168,7 @@ CREATURE:
 	[XP:40]
 	[DESCRIPTION:A large cat with deadly claws. Lives in warm climates.]
 	[ATTACK:tiger]
+	[BUTCHER_DROP:meatTiger;1]
 	[BUTCHER_DROP:meatTiger;0.4]
 	[BUTCHER_DROP:meatTiger;0.4]
 	[BUTCHER_DROP:meatTiger;0.4]	
@@ -182,7 +180,7 @@ CREATURE:
 	[XP:43]
 	[DESCRIPTION:Bear of the polar variety.]
 	[ATTACK:polarBear]
-	[BUTCHER_DROP:meatBear;0.4]
+	[BUTCHER_DROP:meatBear;1]
 	[BUTCHER_DROP:meatBear;0.4]
 	[BUTCHER_DROP:meatBear;0.4]
 	[BUTCHER_DROP:meatBear;0.4]

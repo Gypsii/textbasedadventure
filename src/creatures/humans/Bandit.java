@@ -1,6 +1,5 @@
 package creatures.humans;
 
-import creatures.CreatureTag;
 import item.Item;
 import main.Tag;
 
