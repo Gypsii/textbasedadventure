@@ -2,6 +2,7 @@ package main;
 
 import creatures.Creature;
 import util.AttackHandler;
+import util.IO;
 
 public class DamageOnHit extends OnHit{
 

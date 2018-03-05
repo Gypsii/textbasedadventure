@@ -1,10 +1,13 @@
 package creatures.humans;
 
+import creatures.AttackPattern;
 import item.Item;
 import item.MagicItem;
 
 import java.util.Random;
 
+import main.DamageInstance;
+import main.DamageType;
 import main.Tag;
 
 public class Hobgoblin extends Humanoid{
@@ -15,7 +18,7 @@ public class Hobgoblin extends Humanoid{
 		addTag("hobgoblin");
 		maxHp = 70;
 		hp = maxHp;
-		naturalAttackPattern.baseDamage.amount = 6;
+		naturalAttackPattern = new AttackPattern(new DamageInstance(8, DamageType.BLUNT), "punched", 1);
 		xp = 0;
 		baseCritChance = 0.25;
 		baseCritDmg = 1.5;

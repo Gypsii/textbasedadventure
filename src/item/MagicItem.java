@@ -2,8 +2,7 @@ package item;
 
 import java.util.ArrayList;
 
-import main.DamageType;
-import main.Game;
+import main.*;
 
 public class MagicItem {
 	public static final int RES_BURN = 0;
@@ -98,51 +97,51 @@ public class MagicItem {
 			magicA.resists[DamageType.MAGIC.number] += level * 2;
 			magicA.name = magicA.name + "Magic Resist";
 			break;
-			// TODO Re-enable
-//		case  CRIT:
-//			magicA.passives.add(new ArmourPassive(ArmourPassive.CRIT, level * 5));
-//			magicA.name = magicA.name + "Critical Chance";
-//			break;
-//		case  CRIT_DMG:
-//			magicA.passives.add(new ArmourPassive(ArmourPassive.CRIT_DMG, level * 2));
-//			magicA.name = magicA.name + "True Strikes";
-//			break;
-//		case  HIT_SHOCK:
-//			magicA.effects.add(new OnHit(OnHit.LIGHTNING, level * 2));
-//			magicA.name = magicA.name + "Arcing";
-//			break;
-//		case  HIT_BURN:
-//			magicA.effects.add(new OnHit(OnHit.BURN, level * 2));
-//			magicA.name = magicA.name + "Burning";
-//			break;
-//		case  HIT_COLD:
-//			magicA.effects.add(new OnHit(OnHit.COLD, level * 2));
-//			magicA.name = magicA.name + "Freezing";
-//			break;
-//		case  HIT_SHRED_BLUNT:
-//			magicA.effects.add(new OnHit(OnHit.SHRED_BLUNT, level * 2, 2));
-//			magicA.name = magicA.name + "Amplify Blunt";
-//			break;
-//		case  HIT_SHRED_SLASH:
-//			magicA.effects.add(new OnHit(OnHit.SHRED_SLASH, level * 2, 2));
-//			magicA.name = magicA.name + "Amplify Slashing";
-//			break;
-//		case  HIT_SHRED_PIERCE:
-//			magicA.effects.add(new OnHit(OnHit.SHRED_PIERCE, level * 2, 2));
-//			magicA.name = magicA.name + "Amplify Piercing";
-//			break;
-//		case  HIT_SHRED_BURN:
-//			magicA.effects.add(new OnHit(OnHit.SHRED_BURN, level * 2, 2));
-//			magicA.name = magicA.name + "Amplify Burns";
-//			break;
-//		case  HIT_SHRED_COLD:
-//			magicA.effects.add(new OnHit(OnHit.SHRED_COLD, level * 2, 2));
-//			magicA.name = magicA.name + "Amplify Cold";
-//			break;
-//		case  HIT_SHRED_MAGIC:
-//			magicA.effects.add(new OnHit(OnHit.SHRED_MAGIC, level * 2, 2));
-//			magicA.name = magicA.name + "Amplify Magic";
-//			break;
+		case  CRIT:
+			magicA.wornPassive.add(new PassiveCritChance(level * 0.05));
+			magicA.name = magicA.name + "Critical Chance";
+			break;
+		case  CRIT_DMG:
+			magicA.wornPassive.add(new PassiveCritDamage(level * 0.15));
+			magicA.name = magicA.name + "True Strikes";
+			break;
+		// TODO Re-enable
+		case  HIT_SHOCK:
+			magicA.onHits.add(new DamageOnHit(new DamageInstance(level*2, DamageType.MAGIC)));
+			magicA.name = magicA.name + "Arcing";
+			break;
+		case  HIT_BURN:
+			magicA.onHits.add(new DamageOnHit(new DamageInstance(level*2, DamageType.BURN)));
+			magicA.name = magicA.name + "Burning";
+			break;
+		case  HIT_COLD:
+			magicA.onHits.add(new DamageOnHit(new DamageInstance(level*2, DamageType.COLD)));
+			magicA.name = magicA.name + "Freezing";
+			break;
+		case  HIT_SHRED_BLUNT:
+			magicA.onHits.add(new ShredOnHit(DamageType.BLUNT, level * 2, 2));
+			magicA.name = magicA.name + "Amplify Blunt";
+			break;
+		case  HIT_SHRED_SLASH:
+			magicA.onHits.add(new ShredOnHit(DamageType.SLASH, level * 2, 2));
+			magicA.name = magicA.name + "Amplify Slashing";
+			break;
+		case  HIT_SHRED_PIERCE:
+			magicA.onHits.add(new ShredOnHit(DamageType.PIERCE, level * 2, 2));
+			magicA.name = magicA.name + "Amplify Piercing";
+			break;
+		case  HIT_SHRED_BURN:
+			magicA.onHits.add(new ShredOnHit(DamageType.BURN, level * 2, 2));
+			magicA.name = magicA.name + "Amplify Burns";
+			break;
+		case  HIT_SHRED_COLD:
+			magicA.onHits.add(new ShredOnHit(DamageType.COLD, level * 2, 2));
+			magicA.name = magicA.name + "Amplify Cold";
+			break;
+		case  HIT_SHRED_MAGIC:
+			magicA.onHits.add(new ShredOnHit(DamageType.MAGIC, level * 2, 2));
+			magicA.name = magicA.name + "Amplify Magic";
+			break;
 		}
 		magicA.addTag("enchanted");
 		magicA.name = "<purple>" + magicA.name + "<r>";
@@ -297,7 +296,7 @@ public class MagicItem {
 				break;
 			}
 		}
-		return enchant(i, effect, 6);
+		return enchant(i, effect, 3);
 		
 	}
 	

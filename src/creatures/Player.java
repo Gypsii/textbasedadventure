@@ -1,9 +1,12 @@
 package creatures;
 
 import item.Item;
+import main.Commands;
 import main.DamageInstance;
 import main.DamageType;
 import util.IO;
+
+import java.io.IOException;
 
 public class Player extends Creature{
 	public int xp = 0;
@@ -49,6 +52,19 @@ public class Player extends Creature{
     public void aggravateTrigger(Creature c){
 
     }
+
+    public double resolve() {
+		try {
+			return Commands.playerTurn();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public boolean removeOnZoneSwitch() {
+    	return false;
+	}
     
     public void giveXp(int x) {
 		xp += x;

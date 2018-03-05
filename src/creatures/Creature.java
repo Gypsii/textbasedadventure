@@ -8,7 +8,7 @@ import main.*;
 import util.*;
 import util.Text;
 
-public class Creature {
+public class Creature implements TimeObject{
 	public static TreeMap<String, CreatureTemplate> creatures = new TreeMap<String, CreatureTemplate>();
 
 	public int maxHp;
@@ -20,7 +20,7 @@ public class Creature {
 	public int xp = 0; // xp to be dropped not xp accumulated
 	public int resists[] = new int[DamageType.damageTypeCount()];
 	public int baseResists[] = new int[DamageType.damageTypeCount()];
-	public double nextActionTime = 0;
+	public double nextTriggerTime = 0;
 	public SkillSet skills = new SkillSet(this);
 
 	public String name;
@@ -291,6 +291,9 @@ public class Creature {
 
 	//Overwriting this one is not recommended
 	public double takeTurn() {
+		if (!isAlive()) {
+			return 10000;
+		}
 		if (conditions.contains(Condition.SLEEPING)) {
 			return 0.2;
 		}
@@ -851,8 +854,29 @@ public class Creature {
 
 	}
 
+	@Override
+	public double getNextTriggerTime() {
+		return nextTriggerTime;
+	}
+
+	@Override
+	public void setNextTriggerTime(double t) {
+		nextTriggerTime = t;
+	}
+
+	@Override
+	public boolean removeOnZoneSwitch() {
+		return true;
+	}
+
+	@Override
+	public double resolve() {
+		return takeTurn();
+	}
+
+	// This can probably afford to be slow, but if it needs to be sped up, just modify the one item that changes.
 	public void refreshArmour() {
-		critChance = baseCritChance; // TODO Why is this here? I don't know if it's safe to remove
+		critChance = baseCritChance;
 		critDmg = baseCritDmg;
 		resists = baseResists.clone();
 		for (int i = 0; i < DamageType.damageTypeCount(); i++) {
@@ -860,6 +884,18 @@ public class Creature {
 			resists[i] += ring.resists[i];
 			resists[i] += cloak.resists[i];
 			resists[i] += hat.resists[i];
+		}
+		for (PassiveEffect e : armourChest.wornPassive) {
+			e.apply(this);
+		}
+		for (PassiveEffect e : ring.wornPassive) {
+			e.apply(this);
+		}
+		for (PassiveEffect e : cloak.wornPassive) {
+			e.apply(this);
+		}
+		for (PassiveEffect e : hat.wornPassive) {
+			e.apply(this);
 		}
 	}
 

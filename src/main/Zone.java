@@ -170,12 +170,12 @@ public class Zone {
 		}
 		//Passive creatures
 		int count = 0;
-		while(count < Game.PASSIVECREATURECAP){
-			if(temp <= 97 && Math.random() < 0.15 && count < Game.PASSIVECREATURECAP){//These random numbers are low so creatures at the top are not biased towards as heavily.
+		while(count < Game.PASSIVE_CREATURE_CAP){
+			if(temp <= 97 && Math.random() < 0.15 && count < Game.PASSIVE_CREATURE_CAP){//These random numbers are low so creatures at the top are not biased towards as heavily.
 				zone.addCreature("seal");
 				count ++;
 			}
-			if(Math.random() < 0.25 && count < Game.PASSIVECREATURECAP){
+			if(Math.random() < 0.25 && count < Game.PASSIVE_CREATURE_CAP){
 				ArrayList<Integer> birds = new ArrayList<Integer>();
 				if(temp <= 96){
 					birds.add(Bird.SNOW);
@@ -197,7 +197,7 @@ public class Zone {
 					count ++;
 				}
 			}
-			if(temp <= 118 && temp >= 98 && Math.random() < 0.15 && count < Game.PASSIVECREATURECAP){
+			if(temp <= 118 && temp >= 98 && Math.random() < 0.15 && count < Game.PASSIVE_CREATURE_CAP){
 				zone.addCreature(new Mouse());
 				count ++;
 			}
@@ -616,12 +616,7 @@ public class Zone {
 			c.addPresentCreature(c2);
 		}
 		if(Game.zone == this){
-			if(Game.toTakeTurn.isEmpty()){
-				c.nextActionTime = 0;
-			}else{
-				c.nextActionTime = Game.toTakeTurn.peek().nextActionTime - 0.01;//puts the new creature just at the front of the queue.
-			}
-			Game.toTakeTurn.add(c);
+			Game.insertIntoTurnOrder(c); //puts the new creature just at the front of the queue.
 		}
 	}
 	

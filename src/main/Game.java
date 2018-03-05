@@ -9,10 +9,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 
-import util.FileReader;
-import util.IO;
-import util.Text;
-import util.TurnComparator;
+import util.*;
 import crafting.Crafting;
 import crafting.Recipe;
 import creatures.Bird;
@@ -22,8 +19,8 @@ import creatures.Player;
 public class Game{
 	public static final boolean GRAPHICS_ENABLED = false;
 
-	public static final int PASSIVECREATURECAP = 3;
-	public static final int STARTGOLD = 50;
+	public static final int PASSIVE_CREATURE_CAP = 3;
+	public static final int START_GOLD = 50;
 
 	static String osName;
 
@@ -37,8 +34,8 @@ public class Game{
 	public static int money;
 	public static Player player;
 	public static Shop startingShop;
-	static Comparator<Creature> comparator = new TurnComparator();
-	public static PriorityQueue<Creature> toTakeTurn = new PriorityQueue<Creature>(10, comparator);
+	static Comparator<TimeObject> comparator = new TurnComparator();
+	public static PriorityQueue<TimeObject> toTakeTurn = new PriorityQueue<>(10, comparator);
 
 	public static void main(String[] args) throws IOException{
 		if(GRAPHICS_ENABLED){
@@ -80,7 +77,7 @@ public class Game{
 		startingShop = new Shop();
 		levelDiff = 1;
 		position = 0;
-		money = STARTGOLD;
+		money = START_GOLD;
 		levels = new  HashMap<Integer, Level>();
 
 		IO.println("Who do you think you are?");
@@ -122,18 +119,12 @@ public class Game{
 	 */
 	public static void runGame() throws IOException{
 		while(player.hp > 0){
-			Creature c = toTakeTurn.remove();
-			if(c == player){
-				double time = Commands.playerTurn();   //This has to be like this or it breaks
-				player.nextActionTime += time;//I can't remember why just now
-			}else{
-				if(c.isAlive()){
-					c.nextActionTime += c.takeTurn();
-				}else{
-					c.nextActionTime += 10000;
-				}
+			TimeObject t = toTakeTurn.remove();
+			double time = t.resolve();
+			if (time >= 0) { // Use negative times to indicate that the TimeObject should be removed.
+				t.setNextTriggerTime(t.getNextTriggerTime() + time);
+				toTakeTurn.add(t);
 			}
-			toTakeTurn.add(c);
 		}
 		IO.println("Game over.");
 		IO.printHorizontalLine();
@@ -144,15 +135,25 @@ public class Game{
 	 * Clears the turn queue and refills it with the creatures in the current zone.
 	 */
 	public static void doTurnList(){
-		toTakeTurn.clear();
-		player.nextActionTime = -0.01;
-		//toTakeTurn.add(player);
+		PriorityQueue<TimeObject> temp = new PriorityQueue<>(10, comparator);
+		for (TimeObject t : toTakeTurn) {
+			if (!t.removeOnZoneSwitch()) {
+				temp.add(t);
+			}
+		}
+		toTakeTurn = temp;
 		for(int i = 0; i < zone.creatures.size(); i++){
-			zone.creatures.get(i).nextActionTime = 0;
-			toTakeTurn.add(zone.creatures.get(i));
+			zone.creatures.get(i).setNextTriggerTime(player.getNextTriggerTime() + 0.01);
+			toTakeTurn.add((TimeObject) zone.creatures.get(i));
 		}
 	}
-	
+
+	public static void insertIntoTurnOrder(TimeObject t) {
+		double time = toTakeTurn.peek().getNextTriggerTime();
+		t.setNextTriggerTime(time - 0.0001);
+		toTakeTurn.add(t);
+	}
+
 	
 	/**
 	 * Executes things that happen upon entering a new zone, such as printing descriptions.
@@ -234,5 +235,4 @@ public class Game{
 			}
 		}
 	}
-		
 }

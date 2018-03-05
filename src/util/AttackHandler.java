@@ -63,6 +63,10 @@ public class AttackHandler {
 		if(attackPattern == AttackPattern.weaponAttack){
 			onhits.addAll(attacker.equipped.onHits);
 		}
+		onhits.addAll(attacker.ring.onHits);
+		onhits.addAll(attacker.cloak.onHits);
+		onhits.addAll(attacker.hat.onHits);
+		onhits.addAll(attacker.armourChest.onHits);
 		for (OnHit oh : onhits) {
 			oh.apply(attacker, target);
 		}

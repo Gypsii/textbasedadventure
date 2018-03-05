@@ -19,6 +19,8 @@ public class Item {
 
 	public Set<Tag> tags = new HashSet<>();
 	public List<OnHit> onHits = new ArrayList<>();
+	public List<PassiveEffect> wornPassive = new ArrayList<>();
+	public List<PassiveEffect> heldPassive = new ArrayList<>();
 
 	public boolean isStackable = true;
 	public int healthRestore = 0;
@@ -88,6 +90,9 @@ public class Item {
 		i.enchantType = this.enchantType;
 		i.resists = this.resists.clone();
 		i.description = this.description;
+		i.onHits.addAll(this.onHits);
+		i.wornPassive.addAll(this.wornPassive);
+		i.heldPassive.addAll(this.heldPassive);
 		return i;
 	}
 	

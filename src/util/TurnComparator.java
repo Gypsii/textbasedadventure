@@ -4,14 +4,14 @@ import java.util.Comparator;
 
 import creatures.Creature;
 
-public class TurnComparator implements Comparator<Creature>{
+public class TurnComparator implements Comparator<TimeObject>{
 
 	@Override
-	public int compare(Creature c1, Creature c2) {
-		if (c1.nextActionTime < c2.nextActionTime){
+	public int compare(TimeObject c1, TimeObject c2) {
+		if (c1.getNextTriggerTime() < c2.getNextTriggerTime()){
             return -1;
         }
-        if (c1.nextActionTime > c2.nextActionTime){
+        if (c1.getNextTriggerTime() > c2.getNextTriggerTime()){
             return 1;
         }
         return 0;
