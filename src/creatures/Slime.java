@@ -4,10 +4,7 @@ import item.Item;
 
 import java.util.Random;
 
-import main.DamageInstance;
-import main.DamageOnHit;
-import main.DamageType;
-import main.Game;
+import main.*;
 import util.AttackHandler;
 import util.IO;
 import util.Text;
@@ -38,7 +35,7 @@ public class Slime extends Creature {
 		baseResists[DamageType.BLUNT.number] = -4 * size;
 		baseResists[DamageType.SLASH.number] = 7 * size;
 		baseResists[DamageType.PIERCE.number] = 20 * size;
-
+		addTarget(Tag.tag("player"), 100);
 		naturalAttackPattern = new AttackPattern(null, "hit", 1.2);
 		DamageInstance baseDmg = new DamageInstance(8, DamageType.BLUNT);
 

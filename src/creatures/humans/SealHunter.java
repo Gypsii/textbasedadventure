@@ -9,8 +9,8 @@ import main.Tag;
 public class SealHunter extends Human{
 	
 	public void setTargets(){
-		addTarget(Tag.tag("seal"), 103);
-		addTarget(Tag.tag("walrus"), 101);
+		addTarget(Tag.tag("seal"), 150);
+		addTarget(Tag.tag("walrus"), 105);
 	}
 	
 	public void setSpecifics(){

@@ -40,7 +40,8 @@ public class Dingo extends Creature{
 			naturalAttackPattern.baseDamage.amount *= 2;
 			addBodyPart(Item.item("hideHellDingo"), 0.5);
 		}
-		this.addTarget(Tag.tag("rodent"), 100);
+		addTarget(Tag.tag("rodent"), 120);
+		addTarget(Tag.tag("player"), 100);
 		
 		postInitialisation();
 	}

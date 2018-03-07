@@ -10,5 +10,12 @@ public class TargetPair {
 	public TargetPair(){
 		
 	}
-	
+
+	@Override
+	public String toString() {
+		return "TargetPair{" +
+				"creature=" + creature.getName() +
+				", weight=" + weight +
+				'}';
+	}
 }

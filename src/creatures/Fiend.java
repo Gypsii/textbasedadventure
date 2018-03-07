@@ -21,7 +21,7 @@ public class Fiend extends Creature{
 		baseResists[DamageType.BURN.number] = 40;
 
 		naturalAttackPattern = new AttackPattern(new DamageInstance(25, DamageType.SLASH), "clawed", 0.666);
-
+		addTarget(Tag.tag("player"), 666);
 		double rand = Math.random();
 		if(rand < 0.25){
 			addItem("lswordDemon");

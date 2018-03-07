@@ -6,6 +6,8 @@ import item.MagicItem;
 import item.Scroll;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import creatures.humans.Bandit;
@@ -14,6 +16,7 @@ import creatures.humans.Human;
 import creatures.humans.SealHunter;
 import creatures.humans.SpiceTrader;
 import util.IO;
+import util.Position;
 
 public class Zone {
 	
@@ -21,16 +24,28 @@ public class Zone {
 	public ArrayList<Item> items = new ArrayList<Item>();
 	public ArrayList<String> descriptors = new ArrayList<String>();//Prints in description of zone.
 
+	public static final int TILE_COUNT = 15;
+
+	private Tile[][] tiles = new Tile[TILE_COUNT][TILE_COUNT];
+
 	public boolean containsEgg = false;//TODO find a better way of doing this that would work for any item
 	public boolean isFinalZone = false;
 
 	public boolean inFocus = false;
-	
+
+	public Zone() {
+		for (int x = 0; x < TILE_COUNT; x++) {
+			for (int y = 0; y < TILE_COUNT; y++) {
+				tiles[x][y] = new Tile(new Position(x,y));
+			}
+		}
+	}
+
 	public static Zone generateZone(int diff, int temp, ArrayList<Integer> slimeTypes){
 		Random r = new Random();
 		temp += r.nextGaussian() * 2;
 		Zone zone = new Zone();
-		
+
 		int d = (int)(1.5 * diff + Math.random() * diff);
 		int loot = (int)(Math.random() * diff + 0.5);
 		int value = 0;
@@ -205,7 +220,6 @@ public class Zone {
 				count ++;
 			}
 		}
-		
 		//Loot
 		int l = 0;
 		while(loot > l){//TODO get some more cool loot in here
@@ -600,13 +614,48 @@ public class Zone {
 			IO.println("");
 		}
 	}
+
+	public void printMap() {
+		String s = "";
+		for (int y = TILE_COUNT-1; y >= 0; y--) {
+			for (int x = 0; x < TILE_COUNT; x++) {
+				s += tiles[x][y].getSymbol() + " ";
+			}
+			s += "\n";
+		}
+		IO.println(s);
+	}
+
+	public boolean inBounds(Position p) {
+		return p.x < TILE_COUNT && p.y < TILE_COUNT && p.x > 0 && p.y > 0;
+	}
+
+	public int distanceTo(Position p1, Position p2) {
+		return p1.manhattan(p2);
+	}
+
+	public int distanceTo(Creature c1, Creature c2) {
+		if(!((creatures.contains(c1) || c1 == Game.player) && (creatures.contains(c2) || c2 == Game.player))) {
+			throw new IllegalArgumentException("Compared creatures are not in the current zone");
+		}
+		return distanceTo(c1.position, c2.position);
+	}
 	
 	public void addCreature(String id){
 		addCreature(Creature.creature(id));
 	}
 	
 	public void addCreature(Creature c){
-		this.creatures.add(c);
+		int x, y;
+		do {
+			x = (int)(Math.random() * TILE_COUNT);
+			y = (int)(Math.random() * TILE_COUNT);
+		} while(tiles[x][y].creature != null);
+		addCreature(c, new Position(x, y));
+	}
+
+	public void addCreature(Creature c, Position p) {
+		c.position = p;
 		if(inFocus){
 			//Graphics.notifyCreatureAddition(c);
 		}
@@ -615,28 +664,85 @@ public class Zone {
 			c2.addPresentCreature(c);
 			c.addPresentCreature(c2);
 		}
-		if(Game.zone == this){
-			Game.insertIntoTurnOrder(c); //puts the new creature just at the front of the queue.
+		for(int i = 0; i < creatures.size(); i++){
+			if(creatures.get(i) == c) {
+				continue;
+			}
+			if(creatures.get(i).position == c.position) {
+				i = 0;
+				int x,y;
+				do {
+					x = (int)(Math.random() * TILE_COUNT);
+					y = (int)(Math.random() * TILE_COUNT);
+				} while(tiles[x][y].creature != null);
+				c.position = new Position(x, y);
+			}
 		}
+		if (c != Game.player) {
+			creatures.add(c);
+			if(Game.zone == this){
+				Game.insertIntoTurnOrder(c); //puts the new creature just at the front of the queue.
+			}
+		}
+
+		tiles[c.position.x][c.position.y].creature = c;
 	}
-	
-	public void addItem(Item i){
+
+	public void removeCreature(Creature c) {
+		if (c != Game.player) {
+			creatures.remove(c);
+		}
+		tiles[c.position.x][c.position.y].creature = null;
+	}
+
+	public void moveCreature(Creature c, Position p) {
+		getTile(c.position).creature = null;
+		getTile(p).creature = c;
+		c.position = p;
+	}
+
+	public void addItem(Item i, Position p){
+
 		Item item = i.clone();
-    	if(i.isStackable){
+    	if (i.isStackable) {
     		int loc = findItemLoc(i);
     		if(loc >= 0){
     			items.get(loc).count += i.count;
-    		}else{
-            	items.add(item);
+				return;
     		}
-    	}else{
-        	items.add(item);
     	}
-		if(i.id.equals("egg")){
+
+		for(int j = 0; j < items.size(); j++){
+			if(items.get(j) == item) {
+				continue;
+			}
+			if(items.get(j).position == item.position) {
+				j = 0;
+				int x,y;
+				do {
+					x = (int)(Math.random() * TILE_COUNT);
+					y = (int)(Math.random() * TILE_COUNT);
+				} while(tiles[x][y].item != null);
+				item.position = new Position(x, y);
+			}
+		}
+		items.add(item);
+		tiles[p.x][p.y].item = item;
+		item.position = p;
+		if (item.id.equals("egg")) {
 			containsEgg = true;
 		}
 	}
-	
+
+	public void addItem(Item i){
+		int x, y;
+		do {
+			x = (int)(Math.random() * TILE_COUNT);
+			y = (int)(Math.random() * TILE_COUNT);
+		} while(tiles[x][y].item != null);
+		addItem(i, new Position(x, y));
+	}
+
 	public void addItem(String id){
 		addItem(Item.item(id));
 	}
@@ -652,4 +758,15 @@ public class Zone {
     	}
 		return -1;
 	}
+
+	public void removeItem(Item i) {
+		items.remove(i);
+		tiles[i.position.x][i.position.y].item = null;
+	}
+
+
+	public Tile getTile(Position position) {
+		return tiles[position.x][position.y];
+	}
+
 }

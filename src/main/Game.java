@@ -5,9 +5,7 @@ import gfx.Graphics;
 import item.Item;
 
 import java.io.IOException;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.PriorityQueue;
+import java.util.*;
 
 import util.*;
 import crafting.Crafting;
@@ -77,6 +75,7 @@ public class Game{
 		startingShop = new Shop();
 		levelDiff = 1;
 		position = 0;
+		player.position = new Position(0,0);
 		money = START_GOLD;
 		levels = new  HashMap<Integer, Level>();
 
@@ -110,7 +109,6 @@ public class Game{
 		IO.print("<blue>You set out on your adventure.<r>");
 		level.printLevelDescription();
 		enterZone();
-		toTakeTurn.add(player);
 	}
 	
 	/**
@@ -118,10 +116,14 @@ public class Game{
 	 * @throws IOException
 	 */
 	public static void runGame() throws IOException{
+		toTakeTurn.add(player);
 		while(player.hp > 0){
 			TimeObject t = toTakeTurn.remove();
-			double time = t.resolve();
-			if (time >= 0) { // Use negative times to indicate that the TimeObject should be removed.
+			double time;
+			do {
+				time = t.resolve();
+			} while (time == 0);
+			if (time > 0) { // Use negative times to indicate that the TimeObject should be removed.
 				t.setNextTriggerTime(t.getNextTriggerTime() + time);
 				toTakeTurn.add(t);
 			}
@@ -149,14 +151,19 @@ public class Game{
 	}
 
 	public static void insertIntoTurnOrder(TimeObject t) {
-		double time = toTakeTurn.peek().getNextTriggerTime();
+		double time;
+		if(toTakeTurn.isEmpty()) {
+			time = 0.0001;
+		} else {
+			time = toTakeTurn.peek().getNextTriggerTime();
+		}
 		t.setNextTriggerTime(time - 0.0001);
 		toTakeTurn.add(t);
 	}
 
 	
 	/**
-	 * Executes things that happen upon entering a new zone, such as printing descriptions.
+	 * Executes things that happen upon entering a new zone.
 	 */
 	public static void enterZone(){
 		zone.inFocus = false;
@@ -166,8 +173,8 @@ public class Game{
 		if(GRAPHICS_ENABLED){
 			Graphics.updateZoneGraphics();
 		}
-		Text.viewZone();
 		targetIndex = 0;
+		zone.addCreature(player, player.position);
 		doTurnList();
 	}
 	

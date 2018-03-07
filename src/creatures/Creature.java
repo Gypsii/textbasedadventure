@@ -11,8 +11,11 @@ import util.Text;
 public class Creature implements TimeObject{
 	public static TreeMap<String, CreatureTemplate> creatures = new TreeMap<String, CreatureTemplate>();
 
+	public Position position;
+
 	public int maxHp;
 	public int hp;
+	public double movementTime = 0.5;
 	public boolean canBeBoss = true;
 	public int bossType = 0;
 	public double critDmg, baseCritDmg = 1.25;
@@ -65,8 +68,6 @@ public class Creature implements TimeObject{
 		hat = Item.item("unarmouredHat");
 		refreshArmour();
 		naturalAttackPattern = null;
-		addPresentCreature(Game.player);
-		setHostilityTowardsPlayer(true);
 	}
 
 
@@ -93,6 +94,7 @@ public class Creature implements TimeObject{
 		c.maxHp = this.maxHp;
 		c.hp = this.hp;
 		c.xp = this.xp;
+		c.movementTime = this.movementTime;
 
 		//Don't think these need cloning
 		c.equipped = this.equipped;
@@ -185,7 +187,7 @@ public class Creature implements TimeObject{
 	}
 
 
-	private static final int NUM_EFFECTS = 14;
+	private static final int NUM_EFFECTS = 16;
 	/**
 	 * Rolls for whether this {@code Creature} is a boss, then rolls for boss type.
 	 * Takes into account the {@code canBeBoss} parameter of this {@code Creature}.
@@ -274,6 +276,14 @@ public class Creature implements TimeObject{
 					name = "Vampiric " + name;
 					naturalAttackPattern.onHits.add(new SelfHealOnHit(1, 0.5));
 					break;
+				case 14:
+					name = "Speedy " + name;
+					movementTime *= 0.75;
+					break;
+				case 15:
+					name = "Sluggish " + name;
+					movementTime *= 1.5;
+					break;
 				case NUM_EFFECTS:
 					conditions.add(Condition.SLEEPING);
 					break;
@@ -308,7 +318,11 @@ public class Creature implements TimeObject{
 				if (target.isAlive()) {
 					if (p.weight > 0) {
 						AttackPattern ap = decideAttackPattern();
-						return AttackHandler.attack(this, target, ap);
+						if(Game.zone.distanceTo(this, p.creature) <= ap.reach) {
+							return AttackHandler.attack(this, target, ap);
+						} else {
+							return move();
+						}
 					} else {
 						break;
 					}
@@ -317,8 +331,40 @@ public class Creature implements TimeObject{
 				}
 			}
 			restingAction();
-			return 1;
+			return moveIdle();
 		}
+	}
+
+	private double move() {
+		Creature c = targetQueue.peek().creature;
+		double currDist = position.distSquared(c.position);
+		int x[] = {1, -1, 0, 0};
+		int y[] = {0, 0, 1, -1};
+		int move = (int)(Math.random() * 4);
+		for(int i = 0; i < 4; i++) {
+			int j = (move + i) % 4;
+			Position p = new Position(x[j], y[j]).add(position);
+			if (Game.zone.inBounds(p) && p.distSquared(c.position) < currDist && Game.zone.getTile(p).creature == null) {
+				Game.zone.moveCreature(this, p);
+				return movementTime;
+			}
+		}
+		return Math.min(movementTime, 0.2);
+	}
+
+	private double moveIdle() {
+		int x[] = {1, -1, 0, 0};
+		int y[] = {0, 0, 1, -1};
+		int move = (int)(Math.random() * 4);
+		for(int i = 0; i < 4; i++) {
+			int j = (move + i) % 4;
+			Position p = new Position(x[j], y[j]).add(position);
+			if (Game.zone.inBounds(p) && Game.zone.getTile(p).creature == null) {
+				Game.zone.moveCreature(this, p);
+				return movementTime;
+			}
+		}
+		return Math.min(movementTime, 0.2);
 	}
 
 	/**
@@ -331,6 +377,8 @@ public class Creature implements TimeObject{
 	boolean isAbsconding() {
 		return courage <= 0;
 	}
+
+
 	
 	/*
 	 * Actions
@@ -363,7 +411,7 @@ public class Creature implements TimeObject{
 	 */
 	public void abscond() { // TODO maybe this should remove creature from targets? Testing required
 		IO.println(Text.getDefName(this) + " ran away.");
-		Game.zone.creatures.remove(this);
+		Game.zone.removeCreature(this);
 	}
 
 	public void equip(int index) {
@@ -450,6 +498,7 @@ public class Creature implements TimeObject{
 	 * @param c
 	 */
 	public void addPresentCreature(Creature c) {
+
 		TargetPair p = new TargetPair();
 		p.creature = c;
 		p.weight = findWeight(c);
@@ -461,7 +510,7 @@ public class Creature implements TimeObject{
 		int weight = 0;
 		for (int j = 0; j < targetTags.size(); j++) {
 			if (c.hasTag(targetTags.get(j))) {
-					weight += targetWeights.get(j);
+				weight += targetWeights.get(j);
 			}
 		}
 		return weight;
@@ -474,6 +523,10 @@ public class Creature implements TimeObject{
 	public void addTarget(Tag t, int weight) {
 		targetTags.add(t);
 		targetWeights.add(weight);
+	}
+
+	public void removeTarget(Tag t) {
+		targetTags.remove(t);
 	}
 
 	public boolean hostileTowards(Creature c) {

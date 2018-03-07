@@ -3,6 +3,7 @@ package creatures;
 import item.Item;
 import main.DamageInstance;
 import main.DamageType;
+import main.Tag;
 
 
 public class Elemental extends Creature{
@@ -21,6 +22,7 @@ public class Elemental extends Creature{
 		addTag("elemental");
 		DamageInstance base = new DamageInstance(14, DamageType.MAGIC);
 		naturalAttackPattern = new AttackPattern(base, 1);
+		addTarget(Tag.tag("player"), 666);
 		maxHp = 160;
 		xp = 47;
 		for(int i = 0; i < DamageType.damageTypeCount(); i++){

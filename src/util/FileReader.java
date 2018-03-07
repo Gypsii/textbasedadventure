@@ -130,6 +130,9 @@ public class FileReader {
 			case "SWINGSPEED":
 				i.swingTime = Double.parseDouble(value);
 				break;
+			case "REACH":
+				i.reachBonus = Double.parseDouble(value);
+				break;
 			case "COST":
 				i.cost = Double.parseDouble(value);
 				break;

@@ -2,6 +2,7 @@ package creatures;
 
 import main.DamageInstance;
 import main.DamageType;
+import main.Tag;
 
 
 public class Cow extends Creature{
@@ -12,7 +13,6 @@ public class Cow extends Creature{
 		maxHp = 101;
 		hp = maxHp;
 		xp = 12;
-		setHostilityTowardsPlayer(false);
 		canBeBoss = false;
 		for(int i = 0; i < 7; i++){
 			addBodyPart("meatCow", 0.3);

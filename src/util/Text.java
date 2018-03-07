@@ -6,6 +6,7 @@ import main.DamageInstance;
 import main.Game;
 import creatures.Creature;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -139,12 +140,13 @@ public class Text {
 		return (c.articleDef == "" ? "" : c.articleDef + " ") + c.getName();
 	}
 
-	public static void listTargets(){
-		for(int i = 0; i < Game.zone.creatures.size(); i++){
-			if(Game.zone.creatures.get(i).isAlive()){
-				IO.println(i + ": " + Game.zone.creatures.get(i).getName() + " (" + Game.zone.creatures.get(i).hp + " hp)");
+	public static void listTargets(ArrayList<Creature> array){
+		for(int i = 0; i < array.size(); i++){
+			Creature c = array.get(i);
+			if(c.isAlive()){
+				IO.println(i + ": " + c.getName() + " (" + c.hp + " hp)");
 			}else{
-				IO.println(i + ": " + Game.zone.creatures.get(i).getName() + " (dead)");
+				IO.println(i + ": " + c.getName() + " (dead)");
 			}
 		}
 	}
@@ -246,6 +248,7 @@ public class Text {
 			}
 		}
 		Game.zone.printDescription();
+		Game.zone.printMap();
 	}
 
 	public static void listCreatures(){

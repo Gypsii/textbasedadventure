@@ -2,6 +2,7 @@ package util;
 
 import java.io.IOException;
 
+import gfx.Graphics;
 import main.Game;
 import main.Zone;
 import creatures.Creature;
@@ -14,43 +15,53 @@ public class TestEnvironment {
 		String commandStart = split[0];
 		switch(commandStart){
 		case "!clear":
+			IO.println("<cyan>Zone cleared.<r>");
+			Game.zone.inFocus = false;
 			Game.zone = new Zone();
-			Text.viewZone();
+			Game.zone.inFocus = true;
+			if(Game.GRAPHICS_ENABLED){
+				Graphics.updateZoneGraphics();
+			}
 			Game.targetIndex = 0;
+			Game.zone.addCreature(Game.player, Game.player.position);
 			Game.doTurnList();
-			IO.print("<cyan>Zone cleared.<r>");
 			break;
 		case "!item":
 			Game.zone.addItem(commandArg);
-			IO.print("<cyan>Added item.<r>");
+			IO.println("<cyan>Added item.<r>");
 			break;
 		case "!creature":
 			Game.zone.addCreature(commandArg);
-			IO.print("<cyan>Added creature.<r>");
+			IO.println("<cyan>Added creature.<r>");
 			break;
 		case "!heal":
 			Game.player.hp = Game.player.maxHp;
-			IO.print("<cyan>Healed to max HP.<r>");
+			IO.println("<cyan>Healed to max HP.<r>");
 			break;
 		case "!setpiece":
+			IO.println("<cyan>Replaced zone with random setpiece.<r>");
+			Game.zone.inFocus = false;
 			Game.zone = Zone.generateSetPiece();
-			IO.print("<cyan>Replaced zone with random setpiece.<r>");
-			Text.viewZone();
+			Game.zone.inFocus = true;
+			if(Game.GRAPHICS_ENABLED){
+				Graphics.updateZoneGraphics();
+			}
 			Game.targetIndex = 0;
+			Game.zone.addCreature(Game.player, Game.player.position);
 			Game.doTurnList();
 			break;
 		case "!calm":
 			for(Creature c : Game.zone.creatures){
 				c.setHostilityTowardsPlayer(false);
 			}
-			IO.print("<cyan>Creatures calmed.<r>");
+			IO.println("<cyan>Creatures calmed.<r>");
 			break;
 		case "!rename":
 			Game.zone.creatures.get(Game.targetIndex).name = commandArg;
-			IO.print("<cyan>Renamed target.<r>");
+			IO.println("<cyan>Renamed target.<r>");
 			break;
 		default:
-			IO.print("<red>Invalid debug command<r>");
+			IO.println("<red>Invalid debug command<r>");
 		}
 		
 		return 0;

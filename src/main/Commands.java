@@ -8,10 +8,7 @@ import item.Scroll;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import util.AttackHandler;
-import util.IO;
-import util.TestEnvironment;
-import util.Text;
+import util.*;
 import crafting.Category;
 import crafting.Crafting;
 import crafting.FoodRecipe;
@@ -20,15 +17,15 @@ import creatures.Creature;
 public class Commands {
 
 	private static double printHelp() {
-		//Free	gjopury,+-
-		//Used	abcdefhiklmnqstvwxz.?
-		IO.println("North: n");					
-		IO.println("South: s");
-		IO.println("East: e");
-		IO.println("West: w");
+		//Free	nopsuwyz,+-;
+		//Used	abcdefghijklmqrtvx.?$
+		IO.println("North: k");
+		IO.println("South: j");
+		IO.println("East: l");
+		IO.println("West: h");
 		IO.println("Attack: a");
 		IO.println("Target enemy: t");
-		IO.println("Take item: k");
+		IO.println("Take item: g");
 		IO.println("Drop item: d");
 		IO.println("Equip weapon/armour: q");
 		IO.println("Make items: m");
@@ -36,13 +33,21 @@ public class Commands {
 		IO.println("Eat food: f");
 		IO.println("View unlocked recipes: r");
 		IO.println("Butcher target: b");
-		IO.println("Enchant: x");
-		IO.println("Haggle with target: h");
-		IO.println("Look at zone: l");
-		IO.println("Inspect item: i");
-		IO.println("View Target info: v");
+		IO.println("Enchant: e");
+		IO.println("Haggle with target: $");
+		IO.println("Inspect item in inventory: i");
+		IO.println("View target info: v");
 		IO.println("Wait: .");
-		IO.println("Leave final zone: z");
+		IO.println("Exit final zone: x");
+		if(Game.player.name.equals("debug")) {
+			IO.println("Spawn item: !item itemcode");
+			IO.println("Spawn creature: !creature creaturecode");
+			IO.println("Spawn random setpiece: !setpiece");
+			IO.println("Heal fully: !heal");
+			IO.println("Clear zone: !clear");
+			IO.println("Calm enemies: !calm");
+			IO.println("Rename target: !rename newname");
+		}
 		return 0;
 	}
 
@@ -55,6 +60,8 @@ public class Commands {
 		if(Game.GRAPHICS_ENABLED){
 			Graphics.refresh();
 		}
+		Text.viewZone();
+
 		String commandRaw = IO.read();
 		String command = commandRaw.toLowerCase();
 		if(command.equals("dingo stole my baby")){
@@ -64,26 +71,26 @@ public class Commands {
 		if(command.equals("a") || command.equals("attack")){//TODO maybe lambdas in a map would be cleaner?
 			return Commands.commandAttack();
 		}
-		if(command.equals("n") || command.equals("north")){
+		if(command.equals("k") || command.equals("north")){
 			return Commands.commandNorth();
 		}
-		if(command.equals("s") || command.equals("south")){		
+		if(command.equals("j") || command.equals("south")){
 			return Commands.commandSouth();
 		}
-		if(command.equals("e") || command.equals("east")){			
+		if(command.equals("l") || command.equals("east")){
 			return Commands.commandEast();
 		}
-		if(command.equals("w") || command.equals("west")){
+		if(command.equals("h") || command.equals("west")){
 			return Commands.commandWest();
 		}
-		if(command.equals("l") || command.equals("list") || command.equals("look")){
+		if(command.equals("list") || command.equals("look")){
 			Text.viewZone();
 			return 0;
 		}
 		if(command.equals(".") || command.equals("wait")){
 			return Commands.commandWait();
 		}
-		if(command.equals("k") || command.equals("take")){
+		if(command.equals("g") || command.equals("take") || command.equals("grab")){
 			return Commands.commandTake();
 		}
 		if(command.equals("t") || command.equals("target")){
@@ -107,10 +114,10 @@ public class Commands {
 		if(command.equals("d") || command.equals("drop")){
 			return Commands.commandDrop();
 		}
-		if(command.equals("z")){
+		if(command.equals("x") || command.equals("exit")){
 			return Commands.commandExit();
 		}
-		if(command.equals("h") || command.equals("haggle")){
+		if(command.equals("$") || command.equals("haggle")){
 			return Commands.commandHaggle();	
 		}
 		if(command.equals("b") || command.equals("butcher")){
@@ -126,7 +133,7 @@ public class Commands {
 			FoodRecipe.listRecipes();
 			return 0;
 		}
-		if(command.equals("x") || command.equals("enchant")){
+		if(command.equals("e") || command.equals("enchant")){
 			return Commands.commandEnchant();
 		}
 		if(command.startsWith("!") && command.length() > 1 && Game.player.name.equals("debug")){
@@ -137,40 +144,86 @@ public class Commands {
 	}
 
 	private static double commandAttack(){
-		if(Game.zone.creatures.isEmpty()){
-			IO.println("There is nothing to attack");
+		ArrayList<Creature> a = new ArrayList<>();
+		double r = Game.player.equipped.reachBonus + 1;
+		for (int x = 0; x < Zone.TILE_COUNT; x++) {
+			for (int y = 0; y < Zone.TILE_COUNT; y++) {
+				Position p = new Position(x,y);
+				if(p.equals(Game.player.position)) {
+					continue;
+				}
+				if(Game.player.position.distSquared(p) <= r*r) {
+					if(Game.zone.getTile(p).creature != null) {
+						a.add(Game.zone.getTile(p).creature);
+					}
+				}
+			}
+		}
+		if(a.isEmpty()){
+			IO.println("There is nothing in range to attack");
 			return 0;
-		}else if(Game.zone.creatures.size() > Game.targetIndex){
-			Creature c = Game.zone.creatures.get(Game.targetIndex);
+		} else {
+			Text.listTargets(a);
+			int n = 0;
+			try {
+				n = IO.readInt(0, a.size(), "<red>There is no creature with that ID!<r>");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			if(n == -1) {
+				return 0;
+			}
+			Creature c = a.get(n);
 			AttackHandler.attack(Game.player, c);
 			return Game.player.equipped.swingTime;
-		}else{
-			IO.println("<red>There is no creature with that ID!<r>");
-			return 0;
 		}
 	}
 
 	private static double commandNorth(){
+		if(Game.player.position.y < Zone.TILE_COUNT -1){
+			Game.zone.getTile(Game.player.position).creature = null;
+			Game.player.position.y++;
+			if(Game.zone.getTile(Game.player.position).creature != null) {
+				Game.player.position.y--;
+				IO.println("<red>There is a creature here!<r>");
+			}
+			Game.zone.getTile(Game.player.position).creature = Game.player;
+			return Game.player.movementTime;
+		}
 		if(Game.canExitZone()){
 			if(Game.position < Level.LEVEL_SIZE * 100){
 				IO.println("<blue>You walk North<r>");
 				Game.position += 100;
+				Game.zone.getTile(Game.player.position).creature = null;
+				Game.player.position.y = 0;
 				Game.enterZone();
 			}else{
 				IO.println("<red>You cannot walk North<r>");
 			}
-			
-		}else{
+
+		}else {
 			IO.println("<red>There are still creatures in this zone<r>");
 		}
 		return 0;
 	}
 
 	private static double commandSouth(){
+		if(Game.player.position.y > 0){
+			Game.zone.getTile(Game.player.position).creature = null;
+			Game.player.position.y--;
+			if(Game.zone.getTile(Game.player.position).creature != null) {
+				Game.player.position.y++;
+				IO.println("<red>There is a creature here!<r>");
+			}
+			Game.zone.getTile(Game.player.position).creature = Game.player;
+			return Game.player.movementTime;
+		}
 		if(Game.canExitZone()){
 			if(Game.position >= 100){
 				IO.println("<blue>You walk South<r>");
 				Game.position -= 100;
+				Game.zone.getTile(Game.player.position).creature = null;
+				Game.player.position.y = Zone.TILE_COUNT-1;
 				Game.enterZone();
 			}else{
 				IO.println("<red>You cannot walk South<r>");
@@ -182,10 +235,22 @@ public class Commands {
 	}
 
 	private static double commandWest(){
+		if(Game.player.position.x > 0){
+			Game.zone.getTile(Game.player.position).creature = null;
+			Game.player.position.x--;
+			if(Game.zone.getTile(Game.player.position).creature != null) {
+				Game.player.position.x++;
+				IO.println("<red>There is a creature here!<r>");
+			}
+			Game.zone.getTile(Game.player.position).creature = Game.player;
+			return Game.player.movementTime;
+		}
 		if(Game.canExitZone()){
 			if(Game.position % 100 > 0){
 				IO.println("<blue>You walk West<r>");
 				Game.position -= 1;
+				Game.zone.getTile(Game.player.position).creature = null;
+				Game.player.position.x = Zone.TILE_COUNT-1;
 				Game.enterZone();
 			}else{
 				IO.println("<red>You cannot walk West<r>");
@@ -197,10 +262,22 @@ public class Commands {
 	}
 
 	private static double commandEast(){
+		if(Game.player.position.x < Zone.TILE_COUNT -1){
+			Game.zone.getTile(Game.player.position).creature = null;
+			Game.player.position.x++;
+			if(Game.zone.getTile(Game.player.position).creature != null) {
+				Game.player.position.x--;
+				IO.println("<red>There is a creature here!<r>");
+			}
+			Game.zone.getTile(Game.player.position).creature = Game.player;
+			return Game.player.movementTime;
+		}
 		if(Game.canExitZone()){
 			if(Game.position % 100 < Level.LEVEL_SIZE){
 				IO.println("<blue>You walk East<r>");
 				Game.position += 1;
+				Game.zone.removeCreature(Game.player);
+				Game.player.position.x = 0;
 				Game.enterZone();
 			}else{
 				IO.println("<red>You cannot walk East<r>");
@@ -221,6 +298,7 @@ public class Commands {
 				Game.level = Game.levels.get(Game.levelNum);
 				Game.level.shop.shop();
 				Game.position = 0;
+				Game.player.position = new Position(0,0);
 				Game.zone = Game.level.zones.get(0);
 				IO.println("You arrive in the next level.");
 				Game.level.printLevelDescription();
@@ -286,7 +364,7 @@ public class Commands {
 			IO.println("<red>There are no creatures in the zone to target.<r>");
 			return 0;
 		}
-		Text.listTargets();
+		Text.listTargets(Game.zone.creatures);
 		int n = IO.readInt(0, Game.zone.creatures.size(), "<red>There is no creature with that ID!<r>");
 		if(n != -1) {
 			Game.targetIndex = n;
@@ -338,7 +416,7 @@ public class Commands {
 			return 0;
 		}
 		Game.player.equip(n);
-		return 0.2;
+		return 1;
 	}
 
 	private static double commandTake() throws IOException{
@@ -351,17 +429,18 @@ public class Commands {
 		if(n == -1){
 			return 0;
 		}
-		IO.println("<blue>You took the " + Game.zone.items.get(n).getNameWithCount() + "<r>"); 
-		if(Game.zone.items.get(n).id.equals("money")){
-			Game.money += Game.zone.items.get(n).count;
+		Item i = Game.zone.items.get(n);
+		IO.println("<blue>You took the " + i.getNameWithCount() + "<r>");
+		if(i.id.equals("money")){
+			Game.money += i.count;
 			IO.println("<yellow>You now have " + Game.money + " gold<r>"); 
 		}else{
-			Game.player.addItem(Game.zone.items.get(n));
+			Game.player.addItem(i);
 		}
-		if(Game.zone.items.get(n).id.equals("egg")){
+		if(i.id.equals("egg")){
 			Game.triggerBirds();
 		}
-		Game.zone.items.remove(n);	
+		Game.zone.removeItem(i);
 		return 0;
 	}
 
@@ -456,10 +535,12 @@ public class Commands {
 
 	private static double commandButcher() throws IOException{
 		if(Game.zone.creatures.size() > Game.targetIndex){
-			if(!Game.zone.creatures.get(Game.targetIndex).isAlive()){
+			Creature c = Game.zone.creatures.get(Game.targetIndex);
+			if(!c.isAlive()){
 				IO.println("<blue>You butchered the " + Game.zone.creatures.get(Game.targetIndex).name + "<r>");
-				Game.zone.creatures.get(Game.targetIndex).dropButcherItems();
-				return 3;
+				c.dropButcherItems();
+				Game.zone.removeCreature(c);
+				return 10;
 			}else{
 				IO.println("<red>This creature is still alive!<r>");
 				return 0;

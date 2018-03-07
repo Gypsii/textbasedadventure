@@ -3,6 +3,7 @@ package creatures;
 import main.DamageInstance;
 import main.DamageType;
 import main.Game;
+import main.Tag;
 import util.IO;
 import util.Text;
 
@@ -14,7 +15,6 @@ public class Mouse extends Creature{
 		maxHp = 9;
 		hp = maxHp;
 		xp = 2;
-		setHostilityTowardsPlayer(false);
 		canBeBoss = false;
 		courage = (Math.random() * 2);
 		addTag("rodent");

@@ -4,6 +4,7 @@ import item.Item;
 import main.DamageInstance;
 import main.DamageType;
 import main.Game;
+import main.Tag;
 import util.IO;
 import util.Text;
 
@@ -22,7 +23,7 @@ public class Bird extends Creature{
 		maxHp = 15;
 		hp = maxHp;
 		xp = 3;
-		setHostilityTowardsPlayer(false);
+		movementTime = 0.25;
 		courage = 1 + Math.random();//between 1 and 2 (note that every attack the bird loses 0-1 courage due to subtrigger)
 		
 		naturalAttackPattern = new AttackPattern(new DamageInstance(4, DamageType.PIERCE), "pecked", 1);
@@ -52,7 +53,7 @@ public class Bird extends Creature{
 	}
 	
 	public void restingAction(){
-		if(Math.random() < 0.3){
+		if(Math.random() < 0.03){
 			IO.println("The " + name + " squawked");
 		}
 	}

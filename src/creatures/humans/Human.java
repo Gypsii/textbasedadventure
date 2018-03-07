@@ -4,6 +4,7 @@ import creatures.AttackPattern;
 import item.Item;
 import main.DamageInstance;
 import main.DamageType;
+import main.Tag;
 
 public class Human extends Humanoid{
 
@@ -16,7 +17,7 @@ public class Human extends Humanoid{
 		naturalAttackPattern = new AttackPattern(new DamageInstance(4, DamageType.BLUNT), "punched", 1);
 		xp = 0;		
 		courage = 1000 + (Math.random() * 5);//TODO
-		setHostilityTowardsPlayer(false);
+		removeTarget(Tag.tag("player"));
 		
 		setSpecifics();
 		setArmour();

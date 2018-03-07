@@ -4,6 +4,7 @@ import java.util.*;
 
 import main.*;
 import util.IO;
+import util.Position;
 
 public class Item {
 	public static TreeMap<String, Item> items = new TreeMap<String, Item>();
@@ -14,8 +15,11 @@ public class Item {
 	public int count = 1;
 	public DamageInstance dmg = new DamageInstance(0, DamageType.BLUNT);
 	public double swingTime = 1;
+	public double reachBonus = 0;
 	public String prefix = "a"; 
 	public double cost = -1;
+
+	public Position position;
 
 	public Set<Tag> tags = new HashSet<>();
 	public List<OnHit> onHits = new ArrayList<>();
@@ -93,6 +97,8 @@ public class Item {
 		i.onHits.addAll(this.onHits);
 		i.wornPassive.addAll(this.wornPassive);
 		i.heldPassive.addAll(this.heldPassive);
+		i.position = this.position;
+		i.reachBonus = this.reachBonus;
 		return i;
 	}
 	

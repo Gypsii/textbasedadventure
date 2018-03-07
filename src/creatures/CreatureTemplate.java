@@ -91,7 +91,9 @@ public class CreatureTemplate {
 		c.shopInv = (ArrayList<Item>) this.shopInv.clone();
 		c.prices = (HashMap<String, Integer>) this.prices.clone();
 
-		
+		if(hostile) {
+			c.addTarget(Tag.tag("player"), 120);
+		}
 		c.setHostilityTowardsPlayer(hostile);
 		c.hp = c.maxHp;
 		c.postInitialisation();

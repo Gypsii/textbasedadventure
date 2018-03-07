@@ -14,6 +14,7 @@ public class AttackPattern {
 	
 	public DamageInstance baseDamage = new DamageInstance(0, DamageType.BLUNT);
 	public double period = 1;
+	public int reach = 1;
 	public String verb = "damaged";
 	public boolean canCrit = true;
 	public List<OnHit> onHits = new ArrayList<>();

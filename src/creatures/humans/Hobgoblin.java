@@ -22,8 +22,7 @@ public class Hobgoblin extends Humanoid{
 		xp = 0;
 		baseCritChance = 0.25;
 		baseCritDmg = 1.5;
-		setHostilityTowardsPlayer(false);	
-		
+		addTarget(Tag.tag("player"), 60);
 		setSpecifics();
 		setArmour();
 		setWeapon();

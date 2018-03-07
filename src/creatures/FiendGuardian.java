@@ -22,7 +22,7 @@ public class FiendGuardian extends Creature{
 		baseResists[DamageType.BURN.number] = 50;
 
 		naturalAttackPattern = new AttackPattern(new DamageInstance(66, DamageType.PIERCE), "clawed", 0.666);
-
+		addTarget(Tag.tag("player"), 666);
 		addItem("lswordDemonEmpowered");
 		equip("lswordDemonEmpowered");
 		if(Math.random() < 0.75){
