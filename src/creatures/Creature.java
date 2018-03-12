@@ -1,5 +1,7 @@
 package creatures;
 
+import creatures.Buffs.Buff;
+import creatures.Buffs.Condition;
 import item.Item;
 
 import java.util.*;
@@ -30,12 +32,13 @@ public class Creature implements TimeObject{
 	public String articleIndef = "a";
 	public String articleDef = "the";
 	public String description = "";
+	public Zone zone;
 
-	public Set<Condition> conditions = new HashSet<>();
 	public Set<Tag> tags = new HashSet<>();
+	public Set<Condition> conditions = new HashSet<>();
+	public Set<Buff> buffs = new HashSet<>();
 
 	public double courage = 100000; // this needs fixing
-	public Zone zone;
 
 	public AttackPattern naturalAttackPattern;
 
@@ -335,31 +338,42 @@ public class Creature implements TimeObject{
 		}
 	}
 
+	public boolean canMoveInto(Position p) {
+		if (!Game.zone.inBounds(p)) {
+			return false;
+		}
+		Tile t = Game.zone.getTile(p);
+		return t.tileType.hasSpace() && t.creature == null;
+	}
+
 	private double move() {
 		Creature c = targetQueue.peek().creature;
-		double currDist = position.distSquared(c.position);
-		int x[] = {1, -1, 0, 0};
-		int y[] = {0, 0, 1, -1};
-		int move = (int)(Math.random() * 4);
-		for(int i = 0; i < 4; i++) {
-			int j = (move + i) % 4;
+		Position bestPosition = position;
+		int x[] = {1, 1, 1, 0, 0, -1, -1, -1};
+		int y[] = {1, 0, -1, 1, -1, 1, 0, -1};
+		int move = (int)(Math.random() * 8);
+		for(int i = 0; i < 8; i++) {
+			int j = (move + i) % 8;
 			Position p = new Position(x[j], y[j]).add(position);
-			if (Game.zone.inBounds(p) && p.distSquared(c.position) < currDist && Game.zone.getTile(p).creature == null) {
-				Game.zone.moveCreature(this, p);
-				return movementTime;
+			if (canMoveInto(p) && p.distSquared(c.position) < bestPosition.distSquared(c.position)) {
+				bestPosition = p;
 			}
+		}
+		if(bestPosition != position) {
+			Game.zone.moveCreature(this, bestPosition);
+			return movementTime;
 		}
 		return Math.min(movementTime, 0.2);
 	}
 
 	private double moveIdle() {
-		int x[] = {1, -1, 0, 0};
-		int y[] = {0, 0, 1, -1};
-		int move = (int)(Math.random() * 4);
-		for(int i = 0; i < 4; i++) {
-			int j = (move + i) % 4;
+		int x[] = {1, 1, 1, 0, 0, -1, -1, -1};
+		int y[] = {1, 0, -1, 1, -1, 1, 0, -1};
+		int move = (int)(Math.random() * 8);
+		for(int i = 0; i < 8; i++) {
+			int j = (move + i) % 8;
 			Position p = new Position(x[j], y[j]).add(position);
-			if (Game.zone.inBounds(p) && Game.zone.getTile(p).creature == null) {
+			if (canMoveInto(p)) {
 				Game.zone.moveCreature(this, p);
 				return movementTime;
 			}
@@ -743,7 +757,7 @@ public class Creature implements TimeObject{
 	 */
 	public int findItemLoc(Item i) {
 		for (int x = 0; x < inv.size(); x++) {
-			if (inv.get(x).name == i.name) {
+			if (inv.get(x).name == i.name) { // TODO this really isn't the best way to check if things are the same
 				return x;
 			}
 		}
@@ -949,6 +963,9 @@ public class Creature implements TimeObject{
 		}
 		for (PassiveEffect e : hat.wornPassive) {
 			e.apply(this);
+		}
+		for (Buff b : buffs) {
+			b.apply();
 		}
 	}
 

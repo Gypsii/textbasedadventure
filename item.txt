@@ -1,6 +1,7 @@
 ITEM:
 	NAME			string, the name of the item
 	DAMAGE			int, base damage dealt with this item - defaults to 0
+	REACH			How much bonus range this item gives - defaults to 0
 	SWINGSPEED		double, time taken between attacking with this item and the next action - defaults to 1
 	DAMAGETYPE		string, type of damage dealt (blunt, slash, pierce, burn, cold, magic)
 	ARMOURTYPE		string, armour slot (chest, ring, cloak, hat)- defaults to weapon
@@ -64,7 +65,7 @@ Weapons
 
 {[ITEM:butterKnife]
 	[NAME:Butter Knife]
-	[DAMAGE:10]
+	[DAMAGE:7]
 	[SWINGSPEED:0.6]
 	[DAMAGETYPE:slash]
 	[COST:28]
@@ -100,7 +101,7 @@ Weapons
 
 {[ITEM:glaiveCrude]
 	[NAME:Crude Glaive]
-	[DAMAGE:15]
+	[DAMAGE:10]
 	[REACH:3]
 	[SWINGSPEED:0.9]
 	[DAMAGETYPE:slash]
@@ -867,17 +868,26 @@ Weapons
 {[ITEM:clothCotton]
 	[NAME:Cotton Cloth]
 	[PREFIX:some]
+	[TAG:cloth]
 	[COST:13]
 }
 
 {[ITEM:clothLinen]
 	[NAME:Linen Cloth]
 	[PREFIX:some]
+	[TAG:cloth]
+}
+
+{[ITEM:clothSilk]
+	[NAME:Silk]
+	[PREFIX:some]
+	[TAG:cloth]
 }
 
 {[ITEM:clothWool]
 	[NAME:Wool]
 	[PREFIX:some]
+	[TAG:cloth]
 }
 
 {[ITEM:stickyString]

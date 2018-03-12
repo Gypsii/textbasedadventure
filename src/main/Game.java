@@ -1,6 +1,6 @@
 package main;
 
-import creatures.Condition;
+import creatures.Buffs.Condition;
 import gfx.Graphics;
 import item.Item;
 

@@ -105,40 +105,48 @@ public class MagicItem {
 			magicA.wornPassive.add(new PassiveCritDamage(level * 0.15));
 			magicA.name = magicA.name + "True Strikes";
 			break;
-		// TODO Re-enable
 		case  HIT_SHOCK:
+			magicA.onHits.clear(); // TODO only remove the relevant one
 			magicA.onHits.add(new DamageOnHit(new DamageInstance(level*2, DamageType.MAGIC)));
 			magicA.name = magicA.name + "Arcing";
 			break;
 		case  HIT_BURN:
+			magicA.onHits.clear();
 			magicA.onHits.add(new DamageOnHit(new DamageInstance(level*2, DamageType.BURN)));
 			magicA.name = magicA.name + "Burning";
 			break;
 		case  HIT_COLD:
+			magicA.onHits.clear();
 			magicA.onHits.add(new DamageOnHit(new DamageInstance(level*2, DamageType.COLD)));
 			magicA.name = magicA.name + "Freezing";
 			break;
 		case  HIT_SHRED_BLUNT:
+			magicA.onHits.clear();
 			magicA.onHits.add(new ShredOnHit(DamageType.BLUNT, level * 2, 2));
 			magicA.name = magicA.name + "Amplify Blunt";
 			break;
 		case  HIT_SHRED_SLASH:
+			magicA.onHits.clear();
 			magicA.onHits.add(new ShredOnHit(DamageType.SLASH, level * 2, 2));
 			magicA.name = magicA.name + "Amplify Slashing";
 			break;
 		case  HIT_SHRED_PIERCE:
+			magicA.onHits.clear();
 			magicA.onHits.add(new ShredOnHit(DamageType.PIERCE, level * 2, 2));
 			magicA.name = magicA.name + "Amplify Piercing";
 			break;
 		case  HIT_SHRED_BURN:
+			magicA.onHits.clear();
 			magicA.onHits.add(new ShredOnHit(DamageType.BURN, level * 2, 2));
 			magicA.name = magicA.name + "Amplify Burns";
 			break;
 		case  HIT_SHRED_COLD:
+			magicA.onHits.clear();
 			magicA.onHits.add(new ShredOnHit(DamageType.COLD, level * 2, 2));
 			magicA.name = magicA.name + "Amplify Cold";
 			break;
 		case  HIT_SHRED_MAGIC:
+			magicA.onHits.clear();
 			magicA.onHits.add(new ShredOnHit(DamageType.MAGIC, level * 2, 2));
 			magicA.name = magicA.name + "Amplify Magic";
 			break;

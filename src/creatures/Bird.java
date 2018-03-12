@@ -1,10 +1,10 @@
 package creatures;
 
+import creatures.Buffs.Condition;
 import item.Item;
 import main.DamageInstance;
 import main.DamageType;
 import main.Game;
-import main.Tag;
 import util.IO;
 import util.Text;
 

@@ -14,7 +14,9 @@ public class DamageOnHit extends OnHit{
 
 	@Override
 	public void apply(Creature attacker, Creature target){
-		AttackHandler.applyDamagePassively(attacker, target, damage, null);
+		DamageInstance d = damage.copy();
+		d.amount -= target.resists[d.type.number];
+		AttackHandler.applyDamagePassively(attacker, target, d, null);
 	}
 
 }

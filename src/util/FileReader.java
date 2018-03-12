@@ -1,6 +1,6 @@
 package util;
 
-import creatures.Condition;
+import creatures.Buffs.Condition;
 import item.Item;
 
 import java.io.*;
@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
 
 import main.DamageInstance;
 import main.DamageType;
-import main.Game;
 import crafting.Category;
 import crafting.Crafting;
 import crafting.FoodRecipe;

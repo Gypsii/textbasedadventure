@@ -139,7 +139,7 @@ public class Commands {
 		if(command.startsWith("!") && command.length() > 1 && Game.player.name.equals("debug")){
 			return TestEnvironment.debugCommands(commandRaw);
 		}
-		IO.print("<red>Invalid Command<r>");
+		IO.println("<red>Invalid Command<r>");
 		return 0;
 	}
 
@@ -181,14 +181,14 @@ public class Commands {
 
 	private static double commandNorth(){
 		if(Game.player.position.y < Zone.TILE_COUNT -1){
-			Game.zone.getTile(Game.player.position).creature = null;
-			Game.player.position.y++;
-			if(Game.zone.getTile(Game.player.position).creature != null) {
-				Game.player.position.y--;
-				IO.println("<red>There is a creature here!<r>");
+			if(Game.player.canMoveInto(Game.player.position.add(new Position(0,1)))) {
+				Game.zone.getTile(Game.player.position).creature = null;
+				Game.player.position.y++;
+				Game.zone.getTile(Game.player.position).creature = Game.player;
+				return Game.player.movementTime;
 			}
-			Game.zone.getTile(Game.player.position).creature = Game.player;
-			return Game.player.movementTime;
+			IO.println("<red>You cannot move there.<r>");
+			return 0;
 		}
 		if(Game.canExitZone()){
 			if(Game.position < Level.LEVEL_SIZE * 100){
@@ -209,14 +209,14 @@ public class Commands {
 
 	private static double commandSouth(){
 		if(Game.player.position.y > 0){
-			Game.zone.getTile(Game.player.position).creature = null;
-			Game.player.position.y--;
-			if(Game.zone.getTile(Game.player.position).creature != null) {
-				Game.player.position.y++;
-				IO.println("<red>There is a creature here!<r>");
+			if(Game.player.canMoveInto(Game.player.position.add(new Position(0,-1)))) {
+				Game.zone.getTile(Game.player.position).creature = null;
+				Game.player.position.y--;
+				Game.zone.getTile(Game.player.position).creature = Game.player;
+				return Game.player.movementTime;
 			}
-			Game.zone.getTile(Game.player.position).creature = Game.player;
-			return Game.player.movementTime;
+			IO.println("<red>You cannot move there.<r>");
+			return 0;
 		}
 		if(Game.canExitZone()){
 			if(Game.position >= 100){
@@ -236,14 +236,14 @@ public class Commands {
 
 	private static double commandWest(){
 		if(Game.player.position.x > 0){
-			Game.zone.getTile(Game.player.position).creature = null;
-			Game.player.position.x--;
-			if(Game.zone.getTile(Game.player.position).creature != null) {
-				Game.player.position.x++;
-				IO.println("<red>There is a creature here!<r>");
+			if(Game.player.canMoveInto(Game.player.position.add(new Position(-1,0)))) {
+				Game.zone.getTile(Game.player.position).creature = null;
+				Game.player.position.x--;
+				Game.zone.getTile(Game.player.position).creature = Game.player;
+				return Game.player.movementTime;
 			}
-			Game.zone.getTile(Game.player.position).creature = Game.player;
-			return Game.player.movementTime;
+			IO.println("<red>You cannot move there.<r>");
+			return 0;
 		}
 		if(Game.canExitZone()){
 			if(Game.position % 100 > 0){
@@ -263,14 +263,15 @@ public class Commands {
 
 	private static double commandEast(){
 		if(Game.player.position.x < Zone.TILE_COUNT -1){
-			Game.zone.getTile(Game.player.position).creature = null;
-			Game.player.position.x++;
-			if(Game.zone.getTile(Game.player.position).creature != null) {
-				Game.player.position.x--;
-				IO.println("<red>There is a creature here!<r>");
+			IO.println(""+Game.player.position.add(new Position(1,0)));
+			if(Game.player.canMoveInto(Game.player.position.add(new Position(1,0)))) {
+				Game.zone.getTile(Game.player.position).creature = null;
+				Game.player.position.x++;
+				Game.zone.getTile(Game.player.position).creature = Game.player;
+				return Game.player.movementTime;
 			}
-			Game.zone.getTile(Game.player.position).creature = Game.player;
-			return Game.player.movementTime;
+			IO.println("<red>You cannot move there.<r>");
+			return 0;
 		}
 		if(Game.canExitZone()){
 			if(Game.position % 100 < Level.LEVEL_SIZE){

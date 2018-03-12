@@ -1,13 +1,12 @@
 package main;
 
 import creatures.*;
+import creatures.Buffs.Condition;
 import item.Item;
 import item.MagicItem;
 import item.Scroll;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 import creatures.humans.Bandit;
@@ -45,6 +44,16 @@ public class Zone {
 		Random r = new Random();
 		temp += r.nextGaussian() * 2;
 		Zone zone = new Zone();
+//		for(int i = 5; i < 10; i++) {
+//			zone.getTile(new Position(5, i)).tileType = TileType.WALL;
+//		}
+//		for(int i = 6; i < 10; i++) {
+//			zone.getTile(new Position(i, 9)).tileType = TileType.WALL;
+//		}
+//		for(int i = 5; i < 10; i++) {
+//			zone.getTile(new Position(i, 4)).tileType = TileType.WATER;
+//		}
+
 
 		int d = (int)(1.5 * diff + Math.random() * diff);
 		int loot = (int)(Math.random() * diff + 0.5);
@@ -174,7 +183,6 @@ public class Zone {
 				if(Math.random() < 0.15){
 					if(d - value >= 2){
 						zone.addCreature("walrus");
-						//zone.addCreature(new Walrus());
 						value += 2;
 					}	
 				}
@@ -331,15 +339,15 @@ public class Zone {
 			zone.addItem("slimeFire");
 			break;
 		case 3:
-			zone.addItem("butterKnife");
-			zone.addItem("fork");
+			Position p = new Position((int)(Math.random() * (TILE_COUNT-2) +1), (int)(Math.random() * (TILE_COUNT-2) +1));
+			zone.addItem("butterKnife", p.add(new Position(-1, 0)));
+			zone.addItem("fork", p.add(new Position(-1, 0)));
 			Dingo bruce = new Dingo(Dingo.STANDARD);
 			bruce.hp = 0;
-			bruce.setHostilityTowardsPlayer(false);
 			bruce.conditions.add(Condition.DEAD);
 			bruce.name = "Roasted Dingo";
 			bruce.addBodyPart("meatRoast", 1);
-			zone.addCreature(bruce);
+			zone.addCreature(bruce, p);
 			break;
 		case 4:
 			zone.addCreature(new SpiceTrader());
@@ -390,7 +398,11 @@ public class Zone {
 			if(Math.random() < 0.4){zone.addItem("mushroomWhite");}
 			if(Math.random() < 0.4){zone.addItem("mushroom");}
 			if(Math.random() < 0.7){zone.addItem("leaf");}
-			if(Math.random() < 0.7){zone.addItem("flax");}
+			if(Math.random() < 0.5){zone.addItem("flax");}
+			if(Math.random() < 0.5){zone.addItem("flax");}
+			if(Math.random() < 0.5){zone.addItem("cotton");}
+			if(Math.random() < 0.5){zone.addItem("cotton");}
+			if(Math.random() < 0.7){zone.addItem("stick");}
 			break;
 		case 9:
 			zone.addCreature(new Human(){
@@ -421,6 +433,7 @@ public class Zone {
 						ring = MagicItem.enchant(ring, MagicItem.RES_COLD, (int)(Math.random() + 3.5));
 					}
 					addItem(ring);
+					sleep(true);
 				}
 				
 				public void deathTrigger(){
@@ -446,6 +459,7 @@ public class Zone {
 						ring = MagicItem.enchant(ring, MagicItem.RES_BURN, (int)(Math.random() + 3.5));
 					}
 					addItem(ring);
+					sleep(true);
 				}
 				
 				public void deathTrigger(){
@@ -553,7 +567,7 @@ public class Zone {
 				}
 				
 				public String getDescription(){
-					 return "Sells precious gemstones. Press H to haggle with the trader.";
+					 return "Sells precious gemstones. Press $ to haggle with the trader.";
 				}
 				
 			});
@@ -583,7 +597,7 @@ public class Zone {
 				}
 				
 				public String getDescription(){
-					 return "Sells mystical scrolls. Press H to haggle with the trader.";
+					 return "Sells mystical scrolls. Press $ to haggle with the trader.";
 				}
 			});
 			break;
@@ -601,7 +615,7 @@ public class Zone {
 	
 	public static Zone generateFinalZone(int diff, int temp, ArrayList<Integer> slimeTypes){
 		Zone zone = generateZone(diff + 1, temp, slimeTypes);
-		zone.descriptors.add("This is the final zone. Press z to leave the level. ");
+		zone.descriptors.add("This is the final zone. Press x to leave the level. ");
 		zone.isFinalZone = true;
 		return zone;
 	}
@@ -627,7 +641,7 @@ public class Zone {
 	}
 
 	public boolean inBounds(Position p) {
-		return p.x < TILE_COUNT && p.y < TILE_COUNT && p.x > 0 && p.y > 0;
+		return p.x < TILE_COUNT && p.y < TILE_COUNT && p.x >= 0 && p.y >= 0;
 	}
 
 	public int distanceTo(Position p1, Position p2) {
@@ -646,12 +660,11 @@ public class Zone {
 	}
 	
 	public void addCreature(Creature c){
-		int x, y;
+		Position p;
 		do {
-			x = (int)(Math.random() * TILE_COUNT);
-			y = (int)(Math.random() * TILE_COUNT);
-		} while(tiles[x][y].creature != null);
-		addCreature(c, new Position(x, y));
+			p = new Position((int)(Math.random() * TILE_COUNT), (int)(Math.random() * TILE_COUNT));
+		} while(!c.canMoveInto(p));
+		addCreature(c, p);
 	}
 
 	public void addCreature(Creature c, Position p) {
@@ -674,7 +687,7 @@ public class Zone {
 				do {
 					x = (int)(Math.random() * TILE_COUNT);
 					y = (int)(Math.random() * TILE_COUNT);
-				} while(tiles[x][y].creature != null);
+				} while(tiles[x][y].creature != null && tiles[x][y].tileType.hasSpace());
 				c.position = new Position(x, y);
 			}
 		}
@@ -699,6 +712,10 @@ public class Zone {
 		getTile(c.position).creature = null;
 		getTile(p).creature = c;
 		c.position = p;
+	}
+
+	public void addItem(String i, Position p){
+		addItem(Item.item(i), p);
 	}
 
 	public void addItem(Item i, Position p){

@@ -269,6 +269,11 @@ CRAFT:
 	[COMPONENT:cotton;4]
 }
 
+{[CRAFT:clothSilk]
+	[CATEGORY:cloth]
+	[COMPONENT:silk;4]
+}
+
 {[CRAFT:clothLinen]
 	[CATEGORY:cloth]
 	[COMPONENT:flax;4]
@@ -291,7 +296,7 @@ CRAFT:
 
 {[CRAFT:tunicSilk]
 	[CATEGORY:clothing]
-	[COMPONENT:silk;6]
+	[COMPONENT:clothSilk;3]
 }
 
 {[CRAFT:tunicCottonPadded]

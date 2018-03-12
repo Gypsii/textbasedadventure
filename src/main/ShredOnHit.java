@@ -1,5 +1,7 @@
 package main;
 
+import creatures.Buffs.Buff;
+import creatures.Buffs.ResistBuff;
 import creatures.Creature;
 import util.AttackHandler;
 
@@ -17,6 +19,8 @@ public class ShredOnHit extends OnHit{
 
 	@Override
 	public void apply(Creature attacker, Creature target){
+		Buff b = new ResistBuff(type, -amount);
+		b.addTo(target, attacker.getNextTriggerTime() + duration);
 	}
 
 }

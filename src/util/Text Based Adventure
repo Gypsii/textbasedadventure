@@ -2,27 +2,46 @@ Text Based Adventure
 
 -----General Theory-----
 
-The game is subdivided into levels, which are made up of a grid of zones, (currently 4x4 but subject to change). Gameplay occurs in one zone at a time. Each zone contains a set of creatures and items. The player starts in the lower left zone, 0,0, in every level. In the opposite corner, 3,3, is the final zone, which has increased difficulty (twice that of a standard zone). Once the player has killed all hostile creatures in a zone, he can progress to any adjacent zone following the four cardinal directions, or if in the final zone, to the next level.
+The game is subdivided into levels, which are made up of a grid of zones, (currently 4x4 but subject to change). Gameplay occurs in one
+zone at a time. Each zone contains a set of creatures and items. The player starts in the lower left zone, 0,0, in every level. In the
+opposite corner, 3,3, is the final zone, which has increased difficulty (twice that of a standard zone). Once the player has killed all
+hostile creatures in a zone, he can progress to any adjacent zone following the four cardinal directions, or if in the final zone, to
+the next level.
 
-In the to other corners of the level (0,3 and 3,0) are loot zones. Loot zones have a much lower risk and a far greater reward than standard zones, and are usually largely free of hostile creatures. Loot zones are generated from a list of several predetermined zones. In addition to the corners, there is a single loot zone that has a random location, falling somewhere in the centre of the level (not on the edges), ie in a 4x4 level it is located in the 2x2 space in the middle.
+In the to other corners of the level (0,3 and 3,0) are loot zones. Loot zones have a much lower risk and a far greater reward than
+standard zones, and are usually largely free of hostile creatures. Loot zones are generated from a list of several predetermined zones.
+ In addition to the corners, there is a single loot zone that has a random location, falling somewhere in the centre of the level (not
+ on the edges), ie in a 4x4 level it is located in the 2x2 space in the middle.
 
-Each zone contains a mixture of passive and hostile creatures, with a chance of randomly generated items. The number and strength of creatures generated increases as the player progresses through levels. Each level has characteristics that influence the type of creatures that generate. Currently, the only factor that has an effect is temperature. 
+Each zone contains a mixture of passive and hostile creatures, with a chance of randomly generated items. The number and strength of
+creatures generated increases as the player progresses through levels. Each level has characteristics that influence the type of
+creatures that generate. Currently, the only factor that has an effect is temperature.
 
 -----Combat Gameplay-----
 
-Each creature has a health value. The player starts the game with 100 health, basic creatures like rats and spiders have 30 and 20 health respectively, and harder creatures can have much larger health values. When a creature reaches zero health, it dies, and if the player dies the game is over. The player regenerates health at the end of every level, upon leveling up, and by using food or some magic items. Most creatures can not
-regain health, and it is generally difficult for the player to regain health during combat.
+Each creature has a health value. The player starts the game with 100 health, basic creatures like rats and spiders have 30 and 20
+health respectively, and harder creatures can have much larger health values. When a creature reaches zero health, it dies, and if the
+player dies the game is over. The player regenerates health at the end of every level, upon leveling up, and by using food or some
+magic items. Most creatures can not regain health, and it is generally difficult for the player to regain health during combat.
 
-While in a zone, the player and all of the zone's creatures can take actions. Each action takes a set length of time, and some actions are faster than others. The player is always the first to take an action, and then all
-other creatures take actions afterwards. The next creature to take an action will be the one that spent the least time taking its last action. This means that some creatures may get two attacks in before the player's second attack, or vice versa.
+While in a zone, the player and all of the zone's creatures can take actions. Each action takes a set length of time, and some actions
+are faster than others. The player is always the first to take an action, and then all other creatures take actions afterwards. The next
+creature to take an action will be the one that spent the least time taking its last action. This means that some creatures may get two
+attacks or moves in before the player's second, or vice versa.
 
-Some creatures are passive, so they will not attack the player, but many are hostile and will attack the player when they enter the zone. Attacking passive creatures will usually aggravate them. Once all currently aggressive creatures are dead, the player may leave the zone.
+Some creatures are passive, so they will not attack the player, but many are hostile and will attack the player when they enter the
+zone. Attacking passive creatures will usually aggravate them. Once all currently aggressive creatures are dead, the player may leave
+the zone.
 
 -----More Advanced Combat Mechanics-----
+There are a total of 7 damage types; bludgeoning, piercing, slashing, fire, cold, magic and explosive. In general, all regular attacks
+by the player and creatures are either bludgeoning, piercing or slashing, and these are resisted by most common armour. Some creatures
+and weapons also deal additional fire, cold or magic damage when they attack, and some creatures have resistance to these damage types.
+Explosive damage usually applies to all creatures in the zone, and cannot be resisted.
 
-There are a total of 7 damage types; budgeoning, piercing, slashing, fire, cold, magic and explosive. In general, all regular attacks by the player and creatures are either bludgeoning, piercing or slashing, and these are resisted by most common armour. Some creatures and weapons also deal additional fire, cold or magic damage when they attack, and some creatures have resistance to these damage types. Explosive damage usually applies to all creatures in the zone, and cannot be resisted.
-
-Equipping armour items may increase resistance to some or all damage types, and some creatures have resistances by default. This reduces all incoming damage of that type by an amount equal to the strength of the resistance. Some creatures have negative resistances, giving them vulnerabilities to those damage types, taking a flat amount of additional damage from that type.
+Equipping armour items may increase resistance to some or all damage types, and some creatures have resistances by default. This reduces
+all incoming damage of that type by an amount equal to the strength of the resistance. Some creatures have negative resistances, giving
+them vulnerabilities to those damage types, taking a flat amount of additional damage from that type.
 
 Weapons that deal bludgeoning damage:
 Maces, clubs, sticks, almost all non-weapon items
@@ -37,35 +56,48 @@ Shortswords, longswords, glaives, axes, knives, flint
 
 '?' shows the list of commands.
 
-'n', 's', 'e', or 'w' (North, South, East or West) will move the player to the zone in that cardinal direction. The player can only change zones when there are no hostile creatures in the current zone. The player can not leave the confines of the level (the 4x4 grid of zones).
+'h', 'j', 'k', or 'l' (West, South, North or East) will move the player in that cardinal direction. The player can only change zones
+    when there are no hostile creatures in the current zone. The player can not leave the confines of the level (the 4x4 grid of zones).
 
-'z' takes the player out of the current level and into the shop before entering the next level.
+'x' (eXit) takes the player out of the current level and into the shop before entering the next level.
 
-'q' (eQuip) shows the player's inventory, and then typing the number associated with that item (shown in the list) will equip it. Items that can be worn are automatically equipped as armour/clothing, otherwise the item will be wielded as a weapon. This takes a small length of time (1/5 of a standard attack).
+'q' (eQuip) shows the player's inventory, and then typing the number associated with that item (shown in the list) will equip it. Items
+    that can be worn are automatically equipped as armour/clothing, otherwise the item will be wielded as a weapon.
 
-'t' (Target) shows a list of the creatures in the zone, and then typing the number associated with that creature (shown in the list) will target it. This does not take any time.
+'t' (Target) shows a list of the creatures in the zone, and then typing the number associated with that creature (shown in the list)
+    will target it. Targeting is required to specify creatures for several other actions, such as butchering. This does not take any
+    time.
 
-'k' (taKe) shows a list of the items in the zone, and then typing the number associated with that item (shown in the list) will take it and put it in the player's inventory. This does not take any time.
+'g' (Grab) shows a list of the items in the zone, and then typing the number associated with that item (shown in the list) will take it
+    and put it in the player's inventory. This does not take any time.
 
-'d' (Drop) will bring up the player's inventory, and then typing the number associated with that item (shown in the list) will drop it into the zone. This does not take any time.
+'d' (Drop) will bring up the player's inventory, and then typing the number associated with that item (shown in the list) will drop it
+    into the zone. This does not take any time.
 
-'a' (Attack) will attack the targeted creature with the equipped weapon. This takes a variable amount of time, depending on the speed of the weapon.
+'a' (Attack) will attack the targeted creature with the equipped weapon. This takes a variable amount of time, depending on the speed
+    of the weapon.
 
-'u' (Use potion) allows the player to select a potion from their inventory and then apply it to either themselves or their target. This takes around 0.3 standard attack actions.
+'u' (Use potion) allows the player to select a potion from their inventory and then apply it to either themselves or their target.
+    This takes around 0.3 standard attack actions.
 
-'b' (Butcher) will butcher the targeted creature if it is dead, giving a chance to drop meat, hides, etc. This takes around the length of three standard attacks. Not all creatures can be butchered.
+'b' (Butcher) will butcher the targeted creature if it is dead, giving a chance to drop meat, hides, etc. This takes around the length
+    of three standard attacks. Not all creatures can be butchered.
 
-'h' (Haggle) will enter the buying menu of a targeted creature if it is a merchant.
+'$' (Buy) will enter the buying menu of a targeted creature if it is a merchant.
 
-'m' (Make) opens the crafting menu. Enter the number of a listed category to navigate to that category, or enter the number of a recipe to make that item. Recipes you can afford are coloured green (when colour is supported). To exit enter "-1".
+'m' (Make) opens the crafting menu. Enter the number of a listed category to navigate to that category, or enter the number of a recipe
+    to make that item. Recipes you can afford are coloured green (when colour is supported). To exit enter "-1".
 
-'c' (Cook) shows the player's inventory. Selecting an item will add it to the recipe if it is a food. Foods are coloured green (when colour is supported). To finish the recipe and create the product press the number for finish, to cancel the food creation enter "-1".
+'c' (Cook) shows the player's inventory. Selecting an item will add it to the recipe if it is a food. Foods are coloured green (when
+    colour is supported). To finish the recipe and create the product press the number for finish, to cancel the food creation enter
+    "-1".
 
-'p' (Potion) shows the player's inventory. Selecting an item will select it as the vessel to add the ingredient to. The next selected item will be added to the potion if it is an ingredient.
+'p' (Potion) shows the player's inventory. Selecting an item will select it as the vessel to add the ingredient to. The next selected
+    item will be added to the potion if it is an ingredient.
 
-'l' (List) lists the contents of the zone again.
+'i' (Inventory) lists the player's inventory. An item may be selected to view its properties.
 
-'i' (Information) gives information on the creature that is targeted (health, damage, etc).
+'i' (View) gives information on the creature that is targeted (health, damage, etc).
 
 '.' waits a specified length of time.
 

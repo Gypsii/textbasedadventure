@@ -10,6 +10,7 @@ public class Tile {
 
 	public Item item = null;
 	public Creature creature = null;
+	public TileType tileType = TileType.GRASS;
 
 	public Tile(Position p) {
 		pos = p;
@@ -43,6 +44,12 @@ public class Tile {
 				s = "<yellow>$<r>";
 			}
 			return s;
+		}
+		if (tileType == TileType.WATER) {
+			return "<blue>~<r>";
+		}
+		if (tileType == TileType.WALL) {
+			return "<bold>#<-bold>";
 		}
 		if (Game.level.temp >= 115) {
 			return "<lgreen>.<r>";
