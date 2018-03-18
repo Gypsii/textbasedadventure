@@ -1,8 +1,7 @@
-package creatures.Buffs;
+package effects.buffs;
 
 import creatures.Creature;
 import main.Game;
-import util.IO;
 import util.TimeObject;
 
 public abstract class Buff implements TimeObject{

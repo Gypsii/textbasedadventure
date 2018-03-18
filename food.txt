@@ -275,6 +275,7 @@ This food is the default food that comes up if no other recipes are valid.
 	[TAG:fruit]
 	[DESCRIPTION:Edible.]
 	[TAG:cookable]
+	[TAG:alchemical]
 }
 
 {[ITEM:plum]
@@ -293,6 +294,7 @@ This food is the default food that comes up if no other recipes are valid.
 	[TAG:egg]
 	[DESCRIPTION:You monster.]
 	[TAG:cookable]
+	[TAG:alchemical]
 }
 
 {[ITEM:mushroom]
@@ -302,6 +304,7 @@ This food is the default food that comes up if no other recipes are valid.
 	[TAG:mushroom]
 	[DESCRIPTION:Not a plant.]
 	[TAG:cookable]
+	[TAG:alchemical]
 }
 
 {[ITEM:mushroomWhite]
@@ -311,6 +314,18 @@ This food is the default food that comes up if no other recipes are valid.
 	[TAG:mushroom]
 	[DESCRIPTION:Probably not toxic?]
 	[TAG:cookable]
+	[TAG:alchemical]
+}
+
+{[ITEM:mushroomRed]
+	[NAME:Red Mushroom]
+	[HEALTH:-1]
+	[COST:2]
+	[TAG:mushroom]
+	[TAG:toxic]
+	[DESCRIPTION:Looks toxic.]
+	[TAG:cookable]
+	[TAG:alchemical]
 }
 
 {[ITEM:fungus]
@@ -321,6 +336,7 @@ This food is the default food that comes up if no other recipes are valid.
 	[TAG:toxic]
 	[DESCRIPTION:Fungal.]
 	[TAG:cookable]
+	[TAG:alchemical]
 }
 
 {[ITEM:sandwichEgg]
@@ -384,6 +400,7 @@ This food is the default food that comes up if no other recipes are valid.
 	[TAG:spice]
 	[DESCRIPTION:Spicy.]
 	[TAG:cookable]
+	[TAG:alchemical]
 }
 
 {[ITEM:cinnamon]
@@ -394,6 +411,7 @@ This food is the default food that comes up if no other recipes are valid.
 	[TAG:spice]
 	[TAG:cinnamon]
 	[TAG:cookable]
+	[TAG:alchemical]
 }
 
 {[ITEM:nutmeg]
@@ -403,6 +421,7 @@ This food is the default food that comes up if no other recipes are valid.
 	[HEALTH:1]
 	[TAG:spice]
 	[TAG:cookable]
+	[TAG:alchemical]
 }
 
 {[ITEM:ginger]
@@ -412,6 +431,7 @@ This food is the default food that comes up if no other recipes are valid.
 	[HEALTH:1]
 	[TAG:spice]
 	[TAG:cookable]
+	[TAG:alchemical]
 }
 
 {[ITEM:cumin]
@@ -421,6 +441,27 @@ This food is the default food that comes up if no other recipes are valid.
 	[HEALTH:1]
 	[TAG:spice]
 	[TAG:cookable]
+	[TAG:alchemical]
+}
+
+{[ITEM:vanilla]
+	[NAME:Vanilla]
+	[COST:50]
+	[PREFIX:some]
+	[HEALTH:2]
+	[TAG:spice]
+	[TAG:cookable]
+	[TAG:alchemical]
+}
+
+{[ITEM:saffron]
+	[NAME:Saffron]
+	[COST:200]
+	[PREFIX:some]
+	[HEALTH:2]
+	[TAG:spice]
+	[TAG:cookable]
+	[TAG:alchemical]
 }
 
 {[ITEM:cake]
@@ -489,6 +530,7 @@ This food is the default food that comes up if no other recipes are valid.
 	[TAG:sweetener]
 	[DESCRIPTION:Sweet.]
 	[TAG:cookable]
+	[TAG:alchemical]
 }
 
 {[ITEM:butterscotch]
@@ -522,6 +564,7 @@ This food is the default food that comes up if no other recipes are valid.
 	[HEALTH:1]
 	[DESCRIPTION:NaCl.]
 	[TAG:cookable]
+	[TAG:alchemical]
 }
 
 {[ITEM:bsPie]

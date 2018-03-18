@@ -1,5 +1,8 @@
 package main;
 
+import crafting.alchemy.Alchemical;
+import crafting.alchemy.Alchemy;
+import crafting.alchemy.Potion;
 import gfx.Graphics;
 import item.Item;
 import item.MagicItem;
@@ -17,8 +20,8 @@ import creatures.Creature;
 public class Commands {
 
 	private static double printHelp() {
-		//Free	nopsuwyz,+-;
-		//Used	abcdefghijklmqrtvx.?$
+		//Free	nosuwyz,+-;
+		//Used	abcdefghijklmpqrtvx.?$
 		IO.println("North: k");
 		IO.println("South: j");
 		IO.println("East: l");
@@ -29,6 +32,8 @@ public class Commands {
 		IO.println("Drop item: d");
 		IO.println("Equip weapon/armour: q");
 		IO.println("Make items: m");
+		IO.println("Use potion: z");
+		IO.println("Brew potion: p");
 		IO.println("Cook food: c");
 		IO.println("Eat food: f");
 		IO.println("View unlocked recipes: r");
@@ -128,6 +133,12 @@ public class Commands {
 		}
 		if(command.equals("f") || command.equals("eat") || command.equals("food")){
 			return Commands.commandEat();
+		}
+		if(command.equals("p") || command.equals("potion") || command.equals("quaff")){
+			return Commands.commandPotion();
+		}
+		if(command.equals("z") || command.equals("brew")){
+			return Commands.commandBrew();
 		}
 		if(command.equals("r")){
 			FoodRecipe.listRecipes();
@@ -643,6 +654,104 @@ public class Commands {
 			}else{
 				IO.println("<red>The selected item is not a Gem<r>");
 			}
+		}
+		return 0;
+	}
+
+	private static double commandPotion() throws IOException{
+		Text.listInvWithTag(Tag.tag("vessel"));
+		int n = IO.readInt(0, Game.player.inv.size(), "<red>There is no item with that ID!<r>");
+		if(n == -1){
+			return 0;
+		}
+		Item i = Game.player.inv.get(n);
+		if(i.potion == null) {
+			IO.println("<red>There selected item is not a potion!<r>");
+			return 0;
+		}
+		if(Game.player.equipped == i){
+			Game.player.equip(Item.unarmed);
+		}else if(Game.player.armourChest == i){
+			Game.player.equip("unarmoured");
+			Game.player.refreshArmour();
+		}else if(Game.player.ring == i){
+			Game.player.equip("unarmouredRing");
+			Game.player.refreshArmour();
+		}else if(Game.player.cloak == i){
+			Game.player.equip("unarmouredCloak");
+			Game.player.refreshArmour();
+		}else if(Game.player.hat == i){
+			Game.player.equip("unarmouredHat");
+			Game.player.refreshArmour();
+		}
+		i.potion.applyInternal(Game.player);
+		i.potion = null;
+		i.name = Item.item(i.id).name;
+		return 0.5;
+	}
+
+	private static double commandBrew() throws IOException{
+		ArrayList<Item> ingredients = new ArrayList<Item>();
+		Item vessel;
+		Boolean finishingRecipe;
+		for(;;){
+			Text.listInvWithTag(Tag.tag("vessel"));
+			int n = IO.readInt(0, Game.player.inv.size(), "<red>There is no item with that ID!<r>");
+			if(n == -1) {
+				return 0;
+			}
+			if(Game.player.inv.get(n).hasTag("vessel")){
+				vessel = Game.player.inv.get(n);
+				break;
+			}else{
+				IO.println("<red>This cannot be used as a potion vessel.<r>");
+			}
+		}
+		for(;;){
+			Text.listInvWithTag(Tag.tag("alchemical"));
+			IO.println(Game.player.inv.size() + ": Finish");
+			int n = IO.readInt(0, Game.player.inv.size()+1, "<red>There is no item with that ID!<r>");
+			if(n == -1) {
+				finishingRecipe = false;
+				Game.player.inv.addAll(ingredients);
+				break;
+			}
+			if(n == Game.player.inv.size()){
+				finishingRecipe = true;
+				for(int i = 0; i < ingredients.size(); i++){
+					ingredients.get(i).count--;
+					if(ingredients.get(i).count > 0){
+						Game.player.addItem(ingredients.get(i));
+					}
+				}
+				break;
+			}
+			if(Game.player.inv.get(n).hasTag("alchemical")){
+				ingredients.add(Game.player.inv.get(n));
+				Game.player.inv.remove(n);
+			}else{
+				IO.println("<red>This cannot be used as a potion ingredient.<r>");
+			}
+		}
+		if(finishingRecipe){
+			vessel.count--;
+			if(vessel.count <= 0){
+				Game.player.removeItem(vessel);
+			}
+			vessel = vessel.clone();
+			vessel.count = 1;
+			if (vessel.potion == null) {
+				vessel.potion = new Potion();
+			}
+			for(Item a : ingredients) {
+				vessel.potion.concentrations.put(Alchemy.effects.get(a.id), 1.0);
+			}
+			vessel.name = "Potion";
+			vessel.isStackable = false;
+			Game.player.addItem(vessel);
+//			IO.println("Potion: " + vessel.potion);
+			IO.println("<blue>You made a potion<r>");
+			return 10;
 		}
 		return 0;
 	}

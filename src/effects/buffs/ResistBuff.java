@@ -1,4 +1,4 @@
-package creatures.Buffs;
+package effects.buffs;
 
 import main.DamageType;
 

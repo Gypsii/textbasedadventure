@@ -1,4 +1,4 @@
-package creatures.Buffs;
+package effects;
 
 public enum Condition {
 	DEAD,

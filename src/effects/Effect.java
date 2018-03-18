@@ -1,9 +1,9 @@
-package main;
+package effects;
 
 import creatures.Creature;
 
-public abstract class PassiveEffect {
+public abstract class Effect {
 
 	public abstract void apply(Creature c);
-
+	
 }

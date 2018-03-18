@@ -45,16 +45,22 @@ public class SpiceTrader extends Human{
 		name = "Spice Trader";
 		hp = 150;
 		maxHp = 150;
-		addShopItem("pepper", 45);
-		if(Math.random() < 0.3){addShopItem("pepper", 40);}
-		if(Math.random() < 0.5){addShopItem("cinnamon", 38);}
-		if(Math.random() < 0.3){addShopItem("cinnamon", 35);}
-		if(Math.random() < 0.5){addShopItem("nutmeg", 38);}
-		if(Math.random() < 0.3){addShopItem("nutmeg", 35);}
-		if(Math.random() < 0.5){addShopItem("ginger", 34);}
-		if(Math.random() < 0.3){addShopItem("ginger", 30);}
+		addShopItem("pepper", 35 + (int)(Math.random() * 15));
+		if(Math.random() < 0.3){addShopItem("pepper", 35 + (int)(Math.random() * 10));}
+		if(Math.random() < 0.5){addShopItem("cinnamon", 28 + (int)(Math.random() * 15));}
+		if(Math.random() < 0.3){addShopItem("cinnamon", 24 + (int)(Math.random() * 15));}
+		if(Math.random() < 0.5){addShopItem("nutmeg", 25 + (int)(Math.random() * 10));}
+		if(Math.random() < 0.3){addShopItem("nutmeg", 22 + (int)(Math.random() * 10));}
+		if(Math.random() < 0.5){addShopItem("ginger", 29 + (int)(Math.random() * 10));}
+		if(Math.random() < 0.3){addShopItem("ginger", 25 + (int)(Math.random() * 10));}
+		if(Math.random() < 0.5){addShopItem("cumin", 29 + (int)(Math.random() * 10));}
+		if(Math.random() < 0.3){addShopItem("cumin", 25 + (int)(Math.random() * 10));}
+		if(Math.random() < 0.5){addShopItem("vanilla", 45 + (int)(Math.random() * 10));}
+		if(Math.random() < 0.3){addShopItem("vanilla", 37 + (int)(Math.random() * 10));}
+		if(Math.random() < 0.2){addShopItem("saffron", 150 + (int)(Math.random() * 100));}
+		if(Math.random() < 0.1){addShopItem("saffron", 140 + (int)(Math.random() * 100));}
 		
-		addItem("money", (int)(Math.random() * shopInv.size() * 15) + 15);
+		addItem("money", (int)(Math.random() * shopInv.size() * 20) + 15);
 	}
 	
 	public String getDescription(){

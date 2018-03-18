@@ -1,9 +1,9 @@
-package main;
+package effects.onhits;
 
 import creatures.Creature;
-import util.AttackHandler;
+import effects.HealEffect;
 
-public class SelfHealOnHit extends OnHit{
+public class SelfHealOnHit extends OnHit {
 
 	public int heal;
 	public double healProportion;
@@ -16,7 +16,7 @@ public class SelfHealOnHit extends OnHit{
 	@Override
 	public void apply(Creature attacker, Creature target){
 		int amount = Math.max(heal, (int)(attacker.getDamage().amount * healProportion));
-		AttackHandler.selfHeal(attacker, amount);
+		new HealEffect(amount).apply(attacker);
 	}
 
 }

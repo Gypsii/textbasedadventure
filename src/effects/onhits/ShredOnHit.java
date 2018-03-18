@@ -1,11 +1,10 @@
-package main;
+package effects.onhits;
 
-import creatures.Buffs.Buff;
-import creatures.Buffs.ResistBuff;
+import effects.ResistEffect;
 import creatures.Creature;
-import util.AttackHandler;
+import main.DamageType;
 
-public class ShredOnHit extends OnHit{
+public class ShredOnHit extends OnHit {
 
 	public DamageType type;
 	public int amount;
@@ -19,8 +18,7 @@ public class ShredOnHit extends OnHit{
 
 	@Override
 	public void apply(Creature attacker, Creature target){
-		Buff b = new ResistBuff(type, -amount);
-		b.addTo(target, attacker.getNextTriggerTime() + duration);
+		new ResistEffect(type, -amount, duration).apply(target);
 	}
 
 }

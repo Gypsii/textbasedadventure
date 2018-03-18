@@ -1,6 +1,6 @@
 package main;
 
-import creatures.Buffs.Condition;
+import effects.Condition;
 import gfx.Graphics;
 import item.Item;
 
@@ -34,6 +34,8 @@ public class Game{
 	public static Shop startingShop;
 	static Comparator<TimeObject> comparator = new TurnComparator();
 	public static PriorityQueue<TimeObject> toTakeTurn = new PriorityQueue<>(10, comparator);
+
+	private static double gameTime = 0;
 
 	public static void main(String[] args) throws IOException{
 		if(GRAPHICS_ENABLED){
@@ -96,6 +98,7 @@ public class Game{
 		startingShop.addItem("string", 8);
 		startingShop.addItem("stickyString", 3);
 		startingShop.addItem("clothCotton", 3);
+		startingShop.addItem("vial", 4);
 		startingShop.addItem("walrusTusk");
 		startingShop.addItem("butterKnife");
 		startingShop.addItem("glaiveBladeRusted");
@@ -119,12 +122,13 @@ public class Game{
 		toTakeTurn.add(player);
 		while(player.hp > 0){
 			TimeObject t = toTakeTurn.remove();
+			gameTime = t.getNextTriggerTime();
 			double time;
 			do {
 				time = t.resolve();
 			} while (time == 0);
 			if (time > 0) { // Use negative times to indicate that the TimeObject should be removed.
-				t.setNextTriggerTime(t.getNextTriggerTime() + time);
+				t.setNextTriggerTime(gameTime + time);
 				toTakeTurn.add(t);
 			}
 		}
@@ -150,6 +154,13 @@ public class Game{
 		}
 	}
 
+	public static double getTime() {
+		return gameTime;
+	}
+
+	/**
+	 * Puts t at the start of the turn order.
+	 */
 	public static void insertIntoTurnOrder(TimeObject t) {
 		double time;
 		if(toTakeTurn.isEmpty()) {
@@ -160,7 +171,6 @@ public class Game{
 		t.setNextTriggerTime(time - 0.0001);
 		toTakeTurn.add(t);
 	}
-
 	
 	/**
 	 * Executes things that happen upon entering a new zone.

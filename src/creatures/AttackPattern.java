@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
+import effects.onhits.OnHit;
 import main.*;
-import util.AttackHandler;
 import util.IO;
 
 public class AttackPattern {

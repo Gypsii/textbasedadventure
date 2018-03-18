@@ -2,6 +2,9 @@ package item;
 
 import java.util.*;
 
+import crafting.alchemy.Potion;
+import effects.onhits.OnHit;
+import effects.PassiveEffect;
 import main.*;
 import util.IO;
 import util.Position;
@@ -25,6 +28,7 @@ public class Item {
 	public List<OnHit> onHits = new ArrayList<>();
 	public List<PassiveEffect> wornPassive = new ArrayList<>();
 	public List<PassiveEffect> heldPassive = new ArrayList<>();
+	public Potion potion = null;
 
 	public boolean isStackable = true;
 	public int healthRestore = 0;
@@ -76,10 +80,11 @@ public class Item {
 	}
 	
 	public String getNameWithCount(){
+		String n = name;
 		if(count > 1){
 			return name + " (" + count + ")";
 		}
-		return name;
+		return n;
 	}
 	
 	public Item clone(){
@@ -99,6 +104,7 @@ public class Item {
 		i.heldPassive.addAll(this.heldPassive);
 		i.position = this.position;
 		i.reachBonus = this.reachBonus;
+		i.potion = this.potion == null ? null : this.potion.clone();
 		return i;
 	}
 	

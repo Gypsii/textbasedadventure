@@ -1,10 +1,11 @@
-package main;
+package effects.onhits;
 
 import creatures.Creature;
+import effects.DamageEffect;
+import main.DamageInstance;
 import util.AttackHandler;
-import util.IO;
 
-public class DamageOnHit extends OnHit{
+public class DamageOnHit extends OnHit {
 
 	public DamageInstance damage;
 
@@ -14,9 +15,7 @@ public class DamageOnHit extends OnHit{
 
 	@Override
 	public void apply(Creature attacker, Creature target){
-		DamageInstance d = damage.copy();
-		d.amount -= target.resists[d.type.number];
-		AttackHandler.applyDamagePassively(attacker, target, d, null);
+		new DamageEffect(damage).apply(target);
 	}
 
 }

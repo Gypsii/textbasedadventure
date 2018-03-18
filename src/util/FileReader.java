@@ -1,6 +1,7 @@
 package util;
 
-import creatures.Buffs.Condition;
+import crafting.alchemy.Alchemy;
+import effects.Condition;
 import item.Item;
 
 import java.io.*;
@@ -103,6 +104,9 @@ public class FileReader {
 				break;
 			case "TAG":
 				i.addTag(value);
+				if(value.equals("alchemical")) {
+					Alchemy.addEffectTo(id);
+				}
 				break;
 			case "DAMAGETYPE":
 				i.dmg.type = DamageType.get(value);

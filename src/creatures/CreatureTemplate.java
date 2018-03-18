@@ -1,6 +1,6 @@
 package creatures;
 
-import creatures.Buffs.Condition;
+import effects.Condition;
 import item.Item;
 
 import java.util.ArrayList;

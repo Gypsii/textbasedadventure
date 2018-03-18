@@ -1,5 +1,6 @@
 package util;
 
+import effects.onhits.OnHit;
 import main.*;
 import creatures.AttackPattern;
 import creatures.Creature;
@@ -13,15 +14,22 @@ public class AttackHandler {
 		DamageInstance damage;
 		double period;
 		String verb;
+		String name = "";
 
 		if(attackPattern == AttackPattern.weaponAttack){
 			damage = attacker.getDamage();
 			period = attacker.equipped.swingTime;
 			verb = damage.type.verb;
+			name = attacker.equipped.name;
 		}else{
 			damage = attackPattern.baseDamage.copy();
 			period = attackPattern.period;
 			verb = attackPattern.verb;
+		}
+
+		if(!checkAttackSuccess(attacker, target)) {
+			Text.missMessage(attacker, target, name);
+			return period;
 		}
 		
 		boolean crit = false;
@@ -55,6 +63,10 @@ public class AttackHandler {
 		target.aggravateTrigger(attacker);
 
 		return period;
+	}
+
+	public static boolean checkAttackSuccess(Creature attacker, Creature target) {
+		return Math.random() < 0.5;
 	}
 
 	public static void applyOnHits(Creature attacker, Creature target, AttackPattern attackPattern){

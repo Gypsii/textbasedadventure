@@ -1,7 +1,7 @@
 package main;
 
 import creatures.*;
-import creatures.Buffs.Condition;
+import effects.Condition;
 import item.Item;
 import item.MagicItem;
 import item.Scroll;
@@ -242,7 +242,12 @@ public class Zone {
 					zone.addItem("flint");
 					l += 1;
 				}
-			}else if(rand < 0.35){
+			}else if(rand < 0.33){
+				if(d - l >= 1){
+					zone.addItem("mushroomRed");
+					l += 1;
+				}
+			}else if(rand < 0.36){
 				if(d - l >= 1){
 					zone.addItem("mushroom");
 					l += 1;
@@ -283,7 +288,7 @@ public class Zone {
 			zone.addCreature(new Human(){
 				public void overwriteStats(){
 					maxHp = 140;
-					maxHp = 140;
+					hp = 140;
 					name = "Wandering Chef";
 					addTag("merchant");
 					for(int i = 0; i < 4; i++){
@@ -297,12 +302,22 @@ public class Zone {
 					if(Math.random() < 0.4){addShopItem("cake", 28);}
 					if(Math.random() < 0.7){addShopItem("soupFish", 17);}
 					if(Math.random() < 0.7){addShopItem("mealMeatMushroom", 24);}
+					if(Math.random() < 0.5){addShopItem("jamTart", 43);}
 					if(Math.random() < 0.5){
 						for(int i = 0; i < 3; i++){
 							addShopItem("syrup", 38);
 						}
 					}
-					if(Math.random() < 0.5){addShopItem("jamTart", 43);}
+					if(Math.random() < 0.5){
+						for(int i = 0; i < 3; i++){
+							addShopItem("sugar", 15);
+						}
+					}
+					if(Math.random() < 0.5){
+						for(int i = 0; i < 2; i++){
+							addShopItem("vanilla", 50);
+						}
+					}
 
 				}
 				
@@ -340,7 +355,7 @@ public class Zone {
 			break;
 		case 3:
 			Position p = new Position((int)(Math.random() * (TILE_COUNT-2) +1), (int)(Math.random() * (TILE_COUNT-2) +1));
-			zone.addItem("butterKnife", p.add(new Position(-1, 0)));
+			zone.addItem("butterKnife", p.add(new Position(1, 0)));
 			zone.addItem("fork", p.add(new Position(-1, 0)));
 			Dingo bruce = new Dingo(Dingo.STANDARD);
 			bruce.hp = 0;
@@ -354,6 +369,7 @@ public class Zone {
 			break;
 		case 5:
 			if(Math.random() < 0.5){zone.addItem("slimeSticky");}
+			if(Math.random() < 0.5){zone.addItem("rock");}
 			if(Math.random() < 0.4){zone.addItem("featherSnow");}
 			if(Math.random() < 0.4){zone.addItem("feather");}
 			if(Math.random() < 0.4){zone.addItem("featherWarm");}
@@ -382,9 +398,13 @@ public class Zone {
 			break;
 		case 7:
 			zone.addItem("clothCotton");
-			if(Math.random() < 0.3){zone.addItem("clothCotton");}
-			if(Math.random() < 0.3){zone.addItem("clothLinen");}
-			if(Math.random() < 0.3){zone.addItem("clothLinen");}
+			if(Math.random() < 0.5){zone.addItem("clothCotton");}
+			if(Math.random() < 0.5){zone.addItem("clothCotton");}
+			if(Math.random() < 0.5){zone.addItem("clothCotton");}
+			if(Math.random() < 0.5){zone.addItem("clothLinen");}
+			if(Math.random() < 0.5){zone.addItem("clothLinen");}
+			if(Math.random() < 0.5){zone.addItem("clothLinen");}
+			if(Math.random() < 0.5){zone.addItem("clothSilk");}
 			if(Math.random() < 0.3){zone.addItem("hidePBear");}
 			if(Math.random() < 0.5){zone.addItem("hideDingo");}
 			zone.descriptors.add("You see a pile of various cloths and pelts.");
@@ -397,6 +417,7 @@ public class Zone {
 			if(Math.random() < 0.4){zone.addItem("fungus");}
 			if(Math.random() < 0.4){zone.addItem("mushroomWhite");}
 			if(Math.random() < 0.4){zone.addItem("mushroom");}
+			if(Math.random() < 0.8){zone.addItem("mushroomRed");}
 			if(Math.random() < 0.7){zone.addItem("leaf");}
 			if(Math.random() < 0.5){zone.addItem("flax");}
 			if(Math.random() < 0.5){zone.addItem("flax");}
@@ -426,11 +447,11 @@ public class Zone {
 					double x = Math.random();
 					Item ring = Item.item("ringGold");	
 					if(x < 0.33){
-						ring = MagicItem.enchant(ring, MagicItem.HIT_COLD, (int)(Math.random() + 3.5));
+						ring = MagicItem.enchant(ring, MagicItem.HIT_COLD, (int)(Math.random() + 2.5));
 					}else if(x < 0.67){
-						ring = MagicItem.enchant(ring, MagicItem.HIT_SHRED_COLD, (int)(Math.random() + 3.5));
+						ring = MagicItem.enchant(ring, MagicItem.HIT_SHRED_COLD, (int)(Math.random() + 2.5));
 					}else{
-						ring = MagicItem.enchant(ring, MagicItem.RES_COLD, (int)(Math.random() + 3.5));
+						ring = MagicItem.enchant(ring, MagicItem.RES_COLD, (int)(Math.random() + 2.5));
 					}
 					addItem(ring);
 					sleep(true);
@@ -452,11 +473,11 @@ public class Zone {
 					double x = Math.random();
 					Item ring = Item.item("ringGold");	
 					if(x < 0.33){
-						ring = MagicItem.enchant(ring, MagicItem.HIT_BURN, (int)(Math.random() + 3.5));
+						ring = MagicItem.enchant(ring, MagicItem.HIT_BURN, (int)(Math.random() + 2.5));
 					}else if(x < 0.67){
-						ring = MagicItem.enchant(ring, MagicItem.HIT_SHRED_BURN, (int)(Math.random() + 3.5));
+						ring = MagicItem.enchant(ring, MagicItem.HIT_SHRED_BURN, (int)(Math.random() + 2.5));
 					}else{
-						ring = MagicItem.enchant(ring, MagicItem.RES_BURN, (int)(Math.random() + 3.5));
+						ring = MagicItem.enchant(ring, MagicItem.RES_BURN, (int)(Math.random() + 2.5));
 					}
 					addItem(ring);
 					sleep(true);
@@ -505,11 +526,14 @@ public class Zone {
 			break;
 		case 15:
 			zone.addItem("bread");
-			if(Math.random() < 0.4){zone.addItem("bread");}
-			if(Math.random() < 0.4){zone.addItem("cinnamonBun");}
+			if(Math.random() < 0.5){zone.addItem("bread");}
+			if(Math.random() < 0.5){zone.addItem("bread");}
+			if(Math.random() < 0.5){zone.addItem("bread");}
+			if(Math.random() < 0.5){zone.addItem("cinnamonBun");}
 			if(Math.random() < 0.2){zone.addItem("stroopwafel");}
 			if(Math.random() < 0.5){zone.addItem("pastry");}
 			if(Math.random() < 0.5){zone.addItem("jamTart");}
+			if(Math.random() < 0.5){zone.addItem("cake");}
 			zone.descriptors.add("You see a stash of baked goods.");
 			break;
 		case 16:

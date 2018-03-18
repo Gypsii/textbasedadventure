@@ -5,56 +5,56 @@ ATTACK:
 	DURATION 		double, the amount of time after this attack before the next action - defaults to 1.
 
 {[ATTACK:spider]
-	[DAMAGE:8]
+	[DAMAGE:16]
 	[DAMAGE_TYPE:pierce]
 	[VERB:bit]
 }
 
 {[ATTACK:spiderGiant]
-	[DAMAGE:18]
+	[DAMAGE:36]
 	[DAMAGE_TYPE:pierce]
 	[VERB:bit]
 }
 
 {[ATTACK:rat]
-	[DAMAGE:6]
+	[DAMAGE:12]
 	[DAMAGE_TYPE:pierce]
 	[VERB:bit]
 	[DURATION:0.7]
 }
 
 {[ATTACK:walrus]
-	[DAMAGE:9]
+	[DAMAGE:20]
 	[DAMAGE_TYPE:pierce]
 	[VERB:gored]
 	[DURATION:2.3]
 }
 
 {[ATTACK:seal]
-	[DAMAGE:4]
+	[DAMAGE:8]
 	[DAMAGE_TYPE:blunt]
 }
 
 {[ATTACK:snake]
-	[DAMAGE:12]
+	[DAMAGE:24]
 	[DAMAGE_TYPE:pierce]
 	[VERB:bit]
 }
 
 {[ATTACK:turtle]
-	[DAMAGE:14]
+	[DAMAGE:28]
 	[DAMAGE_TYPE:pierce]
 	[VERB:bit]
 }
 
 {[ATTACK:tiger]
-	[DAMAGE:22]
+	[DAMAGE:44]
 	[DAMAGE_TYPE:slash]
 	[DURATION:0.8]
 }
 
 {[ATTACK:polarBear]
-	[DAMAGE:22]
+	[DAMAGE:44]
 	[DAMAGE_TYPE:slash]
 	[DURATION:0.9]
 }

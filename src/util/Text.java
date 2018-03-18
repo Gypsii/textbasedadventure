@@ -5,6 +5,7 @@ import item.Scroll;
 import main.DamageInstance;
 import main.Game;
 import creatures.Creature;
+import main.Tag;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -99,6 +100,42 @@ public class Text {
 		s += " " + verb + " for " + damage + " damage";
 		IO.print(s);
 	}
+
+	public static void missMessage(Creature attacker, Creature attackee, String weaponName){//TODO better name? Also damage names
+		String s = "";
+		if(attacker == Game.player){
+			s += "<lblue>You";
+		}else{
+			s += capitalised(getDefName(attacker));
+		}
+		s += " missed ";
+		if(attackee == Game.player){
+			if(attacker == attackee){
+				s += "yourself";
+			}else{
+				s += "you";
+			}
+		}else{
+			if(attacker == attackee){
+				s += "itself";
+			}else{
+				s += getDefName(attackee);
+			}
+		}
+		if(weaponName != ""){
+			s += " with ";
+			if(attacker == Game.player){
+				s += "your ";
+			}else{
+				s += "its ";
+			}
+			s += weaponName;
+		}
+		if(attacker == Game.player){//player text is blue
+			s += "<r>";
+		}
+		IO.println(s);
+	}
 	
 	public static void healthRemainingMessage(Creature attacker, Creature attackee, boolean prekilled){//TODO better name? Also damage names
 		String s = "";
@@ -170,6 +207,20 @@ public class Text {
 		for(int i = 0; i < Game.player.inv.size(); i++){
 			IO.print(i + ": ");
 			if(Game.player.inv.get(i).hasTag("edible")){
+				IO.println("<green>" + Game.player.inv.get(i).getNameWithCount() + "<r>");
+			}else{
+				IO.println(Game.player.inv.get(i).getNameWithCount());
+			}
+		}
+	}
+
+	/**
+	 * Prints the player's inventory, highlighting food ingredients in green
+	 */
+	public static void listInvWithTag(Tag t){
+		for(int i = 0; i < Game.player.inv.size(); i++){
+			IO.print(i + ": ");
+			if(Game.player.inv.get(i).hasTag(t)){
 				IO.println("<green>" + Game.player.inv.get(i).getNameWithCount() + "<r>");
 			}else{
 				IO.println(Game.player.inv.get(i).getNameWithCount());

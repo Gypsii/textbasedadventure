@@ -1,5 +1,6 @@
 package creatures;
 
+import effects.onhits.DamageOnHit;
 import item.Item;
 
 import java.util.Random;

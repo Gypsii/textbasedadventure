@@ -1,7 +1,10 @@
 package creatures;
 
-import creatures.Buffs.Buff;
-import creatures.Buffs.Condition;
+import effects.buffs.Buff;
+import effects.Condition;
+import effects.onhits.DamageOnHit;
+import effects.PassiveEffect;
+import effects.onhits.SelfHealOnHit;
 import item.Item;
 
 import java.util.*;
@@ -493,18 +496,12 @@ public class Creature implements TimeObject{
 		return calculatedDamage.copy();
 	}
 
-	//TODO misses
-	public boolean checkAttackSuccess(Creature c) {//TODO attack hits/misses
-		return true;
-	}
-
 	/*
 	 * Targeting
 	 * 
 	 * WARNING
 	 * Targeting code is sinister dark magic. Be wary all those who attemt to decypher it
 	 */
-
 
 	/**
 	 * Informs this {@code Creature} that c is present in the zone for targeting purposes.
@@ -830,7 +827,7 @@ public class Creature implements TimeObject{
 			}//Doubled if under half hp
 			courage -= c;
 		}
-		damageSubtrigger();//Creature specific		
+		damageSubtrigger();//Creature specific	// Why not just override and use super.damageTrigger first?
 	}
 
 	public boolean isAlive() {
