@@ -36,6 +36,8 @@ public class Game{
 	public static PriorityQueue<TimeObject> toTakeTurn = new PriorityQueue<>(10, comparator);
 
 	private static double gameTime = 0;
+	public static boolean turnDebug = false;
+	public static boolean wordyDebug = false;
 
 	public static void main(String[] args) throws IOException{
 		if(GRAPHICS_ENABLED){
@@ -50,11 +52,12 @@ public class Game{
 			}
 		} else {
 			osName = System.getProperty("os.name");
-			if(osName.startsWith("Windows") && !osName.equals("Windows 10")){
+			if(osName.startsWith("Windows")/* && !osName.equals("Windows 10")*/) {
 				IO.ANSIEnabled = false;
-			}else if(osName.equals("Windows 10")){
-				IO.println("Windows 10 users may have to change console colours to black on white for best effect");
 			}
+//			}else if(osName.equals("Windows 10")){
+//				IO.println("Windows 10 users may have to change console colours to black on white for best effect");
+//			}
 		}
 		Crafting.categories.put("all", Crafting.all);
 
@@ -72,7 +75,7 @@ public class Game{
 	public static void loadGame() throws IOException{
 		IO.print("<black><fnormal>");//resets the colour to default
 
-		
+		toTakeTurn.clear();
 		player = new Player();
 		startingShop = new Shop();
 		levelDiff = 1;
@@ -125,6 +128,14 @@ public class Game{
 			gameTime = t.getNextTriggerTime();
 			double time;
 			do {
+				if(turnDebug) {
+					IO.println(t.getNextTriggerTime() + ": " + t + " (now)");
+					for(TimeObject t1 : toTakeTurn) {
+						IO.println(t1.getNextTriggerTime() + ": " + t1);
+					}
+					IO.println();
+				}
+
 				time = t.resolve();
 			} while (time == 0);
 			if (time > 0) { // Use negative times to indicate that the TimeObject should be removed.

@@ -657,7 +657,7 @@ public class Zone {
 		String s = "";
 		for (int y = TILE_COUNT-1; y >= 0; y--) {
 			for (int x = 0; x < TILE_COUNT; x++) {
-				s += tiles[x][y].getSymbol() + " ";
+				s += tiles[x][y].getSymbol();
 			}
 			s += "\n";
 		}

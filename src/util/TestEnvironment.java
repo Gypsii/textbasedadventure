@@ -60,6 +60,14 @@ public class TestEnvironment {
 			Game.zone.creatures.get(Game.targetIndex).name = commandArg;
 			IO.println("<cyan>Renamed target.<r>");
 			break;
+		case "!turn":
+			Game.turnDebug = !Game.turnDebug;
+			IO.println("<cyan>Turn debug = " + Game.turnDebug + "<r>");
+			break;
+		case "!wordy":
+			Game.wordyDebug = !Game.wordyDebug;
+			IO.println("<cyan>Wordy debug = " + Game.wordyDebug + "<r>");
+			break;
 		default:
 			IO.println("<red>Invalid debug command<r>");
 		}

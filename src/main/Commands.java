@@ -463,7 +463,7 @@ public class Commands {
 			return 0;
 		}
 		Item i = Game.player.inv.get(n);
-		Game.zone.items.add(i);
+		Game.zone.addItem(i);
 		IO.println("<blue>You dropped the " + i.getNameWithCount() + "<r>");
 		if(Game.player.equipped == i){
 			Game.player.equip(Item.unarmed);
@@ -546,10 +546,16 @@ public class Commands {
 	}
 
 	private static double commandButcher() throws IOException{
-		if(Game.zone.creatures.size() > Game.targetIndex){
+		if(Game.zone.creatures.size() == 0) {
+			IO.println("<red>There are no creatures in the zone to butcher.<r>");
+			return 0;
+		}
+		Text.listTargets(Game.zone.creatures);
+		int n = IO.readInt(0, Game.zone.creatures.size(), "<red>There is no creature with that ID!<r>");
+		if(n != -1) {
 			Creature c = Game.zone.creatures.get(Game.targetIndex);
 			if(!c.isAlive()){
-				IO.println("<blue>You butchered the " + Game.zone.creatures.get(Game.targetIndex).name + "<r>");
+				IO.println("<blue>You butchered the " + c.getName() + "<r>");
 				c.dropButcherItems();
 				Game.zone.removeCreature(c);
 				return 10;
@@ -557,10 +563,8 @@ public class Commands {
 				IO.println("<red>This creature is still alive!<r>");
 				return 0;
 			}
-		}else{
-			IO.println("<red>There is no creature with that ID!<r>");
-			return 0;
-		}	
+		}
+		return 0;
 	}
 
 	private static double commandEat() throws IOException{
@@ -748,6 +752,7 @@ public class Commands {
 			}
 			vessel.name = "Potion";
 			vessel.isStackable = false;
+			vessel.addTag("drink");
 			Game.player.addItem(vessel);
 //			IO.println("Potion: " + vessel.potion);
 			IO.println("<blue>You made a potion<r>");

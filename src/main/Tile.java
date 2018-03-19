@@ -12,51 +12,59 @@ public class Tile {
 	public Creature creature = null;
 	public TileType tileType = TileType.GRASS;
 
+	public double onFireUntil = -1;
+
 	public Tile(Position p) {
 		pos = p;
 	}
 
-	//String for formatting purposes, but only return one char
+	//String for formatting purposes, but only return two chars
 	public String getSymbol() {
+		String primary, secondary;
+		if (onFireUntil > Game.getTime()) {
+			secondary = "<orange>%<r>";
+		} else if (tileType == TileType.WATER) {
+			secondary = "<blue>~<r>";
+		} else if (tileType == TileType.WALL) {
+			secondary =  "<bold>#<-bold>";
+		} else {
+			if (Game.level.temp >= 115) {
+				secondary =  "<lgreen>.<r>";
+			} else if (Game.level.temp >= 95) {
+				secondary =  "<green>.<r>";
+			} else {
+				secondary = ".";
+			}
+		}
 
 		if (creature != null) {
 			if (creature == Game.player) {
-				return "<blue>@<r>";
-			}
-			String s = creature.name.toUpperCase().substring(0,1);
-			if(s.equals("<")) {
-				s = "!";
-			}
-			if (!creature.isAlive()) {
-				s = "<red>" + s + "<r>";
-			} else if (creature.hostileTowards(Game.player)) {
-				s = "<lred>" + s + "<r>";
-			}
-			return s;
-		} else if (item != null) {
-			String s = item.name.toLowerCase().substring(0,1);
-			if (item.enchantLvl > 0) {
-				if(s.equals("<")) {
-					s = "!";
+				primary = "<blue>@<r>";
+			} else {
+				primary = creature.name.toUpperCase().substring(0,1);
+				if(primary.equals("<")) {
+					primary = "!";
 				}
-				s = "<purple>" + s + "<r>";
-			} else if (item.id == "money") {
-				s = "<yellow>$<r>";
+				if (!creature.isAlive()) {
+					primary = "<red>" + primary + "<r>";
+				} else if (creature.hostileTowards(Game.player)) {
+					primary = "<lred>" + primary + "<r>";
+				}
 			}
-			return s;
+		} else if (item != null) {
+			primary = item.name.toLowerCase().substring(0,1);
+			if (item.enchantLvl > 0) {
+				if(primary.equals("<")) {
+					primary = "!";
+				}
+				primary = "<purple>" + primary + "<r>";
+			} else if (item.id == "money") {
+				primary = "<yellow>$<r>";
+			}
+		} else {
+			primary = secondary;
 		}
-		if (tileType == TileType.WATER) {
-			return "<blue>~<r>";
-		}
-		if (tileType == TileType.WALL) {
-			return "<bold>#<-bold>";
-		}
-		if (Game.level.temp >= 115) {
-			return "<lgreen>.<r>";
-		} else if (Game.level.temp >= 95) {
-			return "<green>.<r>";
-		}
-		return ".";
+		return primary + secondary;
 	}
 
 }

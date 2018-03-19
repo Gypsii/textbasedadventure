@@ -609,6 +609,53 @@ public class Creature implements TimeObject{
 		butcherInv.clear();
 	}
 
+	@Override
+	public String toString() {
+		if(!Game.wordyDebug) {
+			return getName() + ": t=" + getNextTriggerTime();
+		}
+		String s = "Creature {";
+		s += "	position=" + position + "\n";
+		s += "	maxHp=" + maxHp + "\n";
+		s += "	hp=" + hp + "\n";
+		s += "	movementTime=" + movementTime + "\n";
+		s += "	canBeBoss=" + canBeBoss + "\n";
+		s += "	bossType=" + bossType + "\n";
+		s += "	critDmg=" + critDmg + "\n";
+		s += "	baseCritDmg=" + baseCritDmg + "\n";
+		s += "	critChance=" + critChance + "\n";
+		s += "	baseCritChance=" + baseCritChance + "\n";
+		s += "	xp=" + xp + "\n";
+		s += "	resists=" + Arrays.toString(resists) + "\n";
+		s += "	baseResists=" + Arrays.toString(baseResists) + "\n";
+		s += "	nextTriggerTime=" + nextTriggerTime + "\n";
+		s += "	skills=" + skills + "\n";
+		s += "	name='" + name + '\'' + "\n";
+		s += "	articleIndef='" + articleIndef + '\'' + "\n";
+		s += "	articleDef='" + articleDef + '\'' + "\n";
+		s += "	description='" + description + '\'' + "\n";
+		s += "	zone=" + zone + "\n";
+		s += "	tags=" + tags + "\n";
+		s += "	conditions=" + conditions + "\n";
+		s += "	buffs=" + buffs + "\n";
+		s += "	courage=" + courage + "\n";
+		s += "	naturalAttackPattern=" + naturalAttackPattern + "\n";
+		s += "	inv=" + inv + "\n";
+		s += "	butcherInv=" + butcherInv + "\n";
+		s += "	butcherSuccess=" + butcherSuccess + "\n";
+		s += "	equipped=" + equipped + "\n";
+		s += "	armourChest=" + armourChest + "\n";
+		s += "	ring=" + ring + "\n";
+		s += "	cloak=" + cloak + "\n";
+		s += "	hat=" + hat + "\n";
+		s += "	shopInv=" + shopInv + "\n";
+		s += "	prices=" + prices + "\n";
+		s += "	damageDirty=" + damageDirty + "\n";
+		s += "	calculatedDamage=" + calculatedDamage + "\n";
+		s += '}';
+		return s;
+	}
+
 	/**
 	 * Adds the {@code Item i} to this {@code Creature}'s inventory. If a matching item is found, the items are
 	 * stacked instead of being added to a new index.
