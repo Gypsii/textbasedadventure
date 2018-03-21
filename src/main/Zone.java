@@ -668,15 +668,11 @@ public class Zone {
 		return p.x < TILE_COUNT && p.y < TILE_COUNT && p.x >= 0 && p.y >= 0;
 	}
 
-	public int distanceTo(Position p1, Position p2) {
-		return p1.manhattan(p2);
-	}
-
 	public int distanceTo(Creature c1, Creature c2) {
 		if(!((creatures.contains(c1) || c1 == Game.player) && (creatures.contains(c2) || c2 == Game.player))) {
 			throw new IllegalArgumentException("Compared creatures are not in the current zone");
 		}
-		return distanceTo(c1.position, c2.position);
+		return c1.position.manhattan(c2.position);
 	}
 	
 	public void addCreature(String id){
@@ -797,6 +793,18 @@ public class Zone {
     			return x;
     		}
     	}
+		return -1;
+	}
+
+	/**
+	 * @return Index of an item object in zone ArrayList or -1 if not present
+	 */
+	public int exactItemLoc(Item item){
+		for(int x = 0; x < items.size(); x++){
+			if(items.get(x) == item){
+				return x;
+			}
+		}
 		return -1;
 	}
 

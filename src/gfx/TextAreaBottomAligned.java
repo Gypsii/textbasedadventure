@@ -6,7 +6,6 @@ import javax.swing.event.*;
 
 public class TextAreaBottomAligned extends JPanel implements DocumentListener {
 	private JTextArea textArea;
-	public JScrollBar scrollBar;
 
 	public TextAreaBottomAligned(JTextArea textArea) {
 		this.textArea = textArea;
@@ -36,6 +35,5 @@ public class TextAreaBottomAligned extends JPanel implements DocumentListener {
 	public void adjustHeight() {
 		int rows = textArea.getLineCount();
 		textArea.setRows(rows);
-		//scrollBar.setValue(scrollBar.getMinimum());
 	}
 }

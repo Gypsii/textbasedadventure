@@ -1,5 +1,9 @@
 package gfx;
 
+import main.Commands;
+import util.CommandAction;
+import util.IO;
+
 import java.awt.event.ActionEvent;
 
 import javax.swing.*;
@@ -22,6 +26,7 @@ public class ConsoleWindow extends JPanel implements ActionListener {
 		super(new BorderLayout());
 		textArea = new JTextArea(40, 50);
 		textArea.setEditable(false);
+		textArea.setFont(new Font("Courier New", Font.PLAIN, 12));
 		DefaultCaret caret = (DefaultCaret)textArea.getCaret();
 		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
@@ -31,6 +36,7 @@ public class ConsoleWindow extends JPanel implements ActionListener {
 		taba = new TextAreaBottomAligned(textArea);
 		JScrollPane s = new JScrollPane(taba);
 		scroller = s.getVerticalScrollBar();
+		scroller.setUnitIncrement(16);
 
 		add(s);
 		add(textField, BorderLayout.SOUTH);
@@ -41,10 +47,21 @@ public class ConsoleWindow extends JPanel implements ActionListener {
 		String text = textField.getText();
 
 		Graphics.sendLine(text);
-		synchronized (cmdBuffer) {
-			cmdBuffer.add(text);
-			cmdBuffer.notify();
+		if (Commands.waiting) {
+			synchronized (Commands.actions) {
+				CommandAction a = new CommandAction();
+				a.cmd = text;
+				a.useString = true;
+				Commands.actions.add(a);
+				Commands.actions.notify();
+			}
+		} else {
+			synchronized (cmdBuffer) {
+				cmdBuffer.add(text);
+				cmdBuffer.notify();
+			}
 		}
+
 
 		textField.selectAll();
 

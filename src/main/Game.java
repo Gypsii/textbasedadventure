@@ -1,9 +1,11 @@
 package main;
 
 import effects.Condition;
+import gfx.ConsoleWindow;
 import gfx.Graphics;
 import item.Item;
 
+import java.io.Console;
 import java.io.IOException;
 import java.util.*;
 
@@ -15,7 +17,7 @@ import creatures.Creature;
 import creatures.Player;
 
 public class Game{
-	public static final boolean GRAPHICS_ENABLED = false;
+	public static final boolean GRAPHICS_ENABLED = true;
 
 	public static final int PASSIVE_CREATURE_CAP = 3;
 	public static final int START_GOLD = 50;
@@ -123,6 +125,8 @@ public class Game{
 	 */
 	public static void runGame() throws IOException{
 		toTakeTurn.add(player);
+		Commands.actions.clear();
+		ConsoleWindow.cmdBuffer.clear();
 		while(player.hp > 0){
 			TimeObject t = toTakeTurn.remove();
 			gameTime = t.getNextTriggerTime();

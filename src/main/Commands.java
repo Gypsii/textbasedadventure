@@ -9,7 +9,9 @@ import item.MagicItem;
 import item.Scroll;
 
 import java.io.IOException;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Queue;
 
 import util.*;
 import crafting.Category;
@@ -18,6 +20,9 @@ import crafting.FoodRecipe;
 import creatures.Creature;
 
 public class Commands {
+
+	public static Queue<CommandAction> actions = new ArrayDeque<>();
+	public static boolean waiting = false;
 
 	private static double printHelp() {
 		//Free	nosuwyz,+-;
@@ -67,12 +72,13 @@ public class Commands {
 		}
 		Text.viewZone();
 
-		String commandRaw = IO.read();
-		String command = commandRaw.toLowerCase();
-		if(command.equals("dingo stole my baby")){
-			Game.zone.addItem(Item.item("shanker"));
-			return 0;
+		CommandAction a = IO.getAction();
+		if(!a.useString) {
+			return a.act();
 		}
+
+		String commandRaw = a.cmd;
+		String command = commandRaw.toLowerCase();
 		if(command.equals("a") || command.equals("attack")){//TODO maybe lambdas in a map would be cleaner?
 			return Commands.commandAttack();
 		}
@@ -156,7 +162,7 @@ public class Commands {
 
 	private static double commandAttack(){
 		ArrayList<Creature> a = new ArrayList<>();
-		double r = Game.player.equipped.reachBonus + 1;
+		double r = Game.player.equipped.reachBonus + Game.player.naturalAttackPattern.reach;
 		for (int x = 0; x < Zone.TILE_COUNT; x++) {
 			for (int y = 0; y < Zone.TILE_COUNT; y++) {
 				Position p = new Position(x,y);
@@ -184,9 +190,7 @@ public class Commands {
 			if(n == -1) {
 				return 0;
 			}
-			Creature c = a.get(n);
-			AttackHandler.attack(Game.player, c);
-			return Game.player.equipped.swingTime;
+			return attack(a.get(n));
 		}
 	}
 
@@ -427,8 +431,7 @@ public class Commands {
 		if(n == -1){
 			return 0;
 		}
-		Game.player.equip(n);
-		return 1;
+		return equip(Game.player.inv.get(n));
 	}
 
 	private static double commandTake() throws IOException{
@@ -441,19 +444,7 @@ public class Commands {
 		if(n == -1){
 			return 0;
 		}
-		Item i = Game.zone.items.get(n);
-		IO.println("<blue>You took the " + i.getNameWithCount() + "<r>");
-		if(i.id.equals("money")){
-			Game.money += i.count;
-			IO.println("<yellow>You now have " + Game.money + " gold<r>"); 
-		}else{
-			Game.player.addItem(i);
-		}
-		if(i.id.equals("egg")){
-			Game.triggerBirds();
-		}
-		Game.zone.removeItem(i);
-		return 0;
+		return take(Game.zone.items.get(n));
 	}
 
 	private static double commandDrop() throws IOException{
@@ -462,26 +453,7 @@ public class Commands {
 		if(n == -1){
 			return 0;
 		}
-		Item i = Game.player.inv.get(n);
-		Game.zone.addItem(i);
-		IO.println("<blue>You dropped the " + i.getNameWithCount() + "<r>");
-		if(Game.player.equipped == i){
-			Game.player.equip(Item.unarmed);
-		}else if(Game.player.armourChest == i){
-			Game.player.equip("unarmoured");
-			Game.player.refreshArmour();
-		}else if(Game.player.ring == i){
-			Game.player.equip("unarmouredRing");
-			Game.player.refreshArmour();
-		}else if(Game.player.cloak == i){
-			Game.player.equip("unarmouredCloak");
-			Game.player.refreshArmour();
-		}else if(Game.player.hat == i){
-			Game.player.equip("unarmouredHat");
-			Game.player.refreshArmour();
-		}
-		Game.player.removeItem(n);	
-		return 0;
+		return drop(Game.player.inv.get(n));
 	}
 
 	private static double commandCraft() throws IOException{
@@ -546,25 +518,34 @@ public class Commands {
 	}
 
 	private static double commandButcher() throws IOException{
-		if(Game.zone.creatures.size() == 0) {
-			IO.println("<red>There are no creatures in the zone to butcher.<r>");
-			return 0;
-		}
-		Text.listTargets(Game.zone.creatures);
-		int n = IO.readInt(0, Game.zone.creatures.size(), "<red>There is no creature with that ID!<r>");
-		if(n != -1) {
-			Creature c = Game.zone.creatures.get(Game.targetIndex);
-			if(!c.isAlive()){
-				IO.println("<blue>You butchered the " + c.getName() + "<r>");
-				c.dropButcherItems();
-				Game.zone.removeCreature(c);
-				return 10;
-			}else{
-				IO.println("<red>This creature is still alive!<r>");
-				return 0;
+		ArrayList<Creature> a = new ArrayList<>();
+		for (int x = -1; x < Zone.TILE_COUNT; x++) {
+			for (int y = 0; y < Zone.TILE_COUNT; y++) {
+				Position p = new Position(x,y);
+				if(p.equals(Game.player.position) || Game.player.position.distSquared(p) > 2) {
+					continue;
+				}
+				if(Game.zone.getTile(p).creature != null && !Game.zone.getTile(p).creature.isAlive()) {
+					a.add(Game.zone.getTile(p).creature);
+				}
 			}
 		}
-		return 0;
+		if(a.isEmpty()){
+			IO.println("There is nothing in range to butcher");
+			return 0;
+		} else {
+			Text.listTargets(a);
+			int n = 0;
+			try {
+				n = IO.readInt(0, a.size(), "<red>There is no creature with that ID!<r>");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			if (n == -1) {
+				return 0;
+			}
+			return butcher(a.get(n));
+		}
 	}
 
 	private static double commandEat() throws IOException{
@@ -574,19 +555,7 @@ public class Commands {
 			return 0;
 		}
 		if(Game.player.inv.get(n).hasTag("edible")){
-			Item f = Game.player.inv.get(n);
-			IO.println("<blue>You ate the " + f.getNameWithCount() + ", restoring " + f.healthRestore + " health.<r>");
-			if(Game.player.equipped == f){//If there's ever edible armour that might need to go in here
-				Game.player.equipped = Item.unarmed;
-			}
-			Game.player.hp += f.healthRestore;
-			Game.player.hp = Math.min(Game.player.maxHp, Game.player.hp);
-			IO.println("You are now on " + Game.player.hp + " hp");
-			f.count--;
-			if(f.count <= 0){
-				Game.player.removeItem(n);
-			}
-			return 1;
+			return eat(Game.player.inv.get(n));
 		}else{
 			IO.println("<red>The selected item is not a food!<r>");
 		}
@@ -761,4 +730,73 @@ public class Commands {
 		return 0;
 	}
 
+
+	public static double take(Item i) {
+		IO.println("<blue>You took the " + i.getNameWithCount() + "<r>");
+		if(i.id.equals("money")){
+			Game.money += i.count;
+			IO.println("<yellow>You now have " + Game.money + " gold<r>");
+		}else{
+			Game.player.addItem(i);
+		}
+		if(i.id.equals("egg")){
+			Game.triggerBirds();
+		}
+		Game.zone.removeItem(i);
+		return 0;
+	}
+
+	public static double drop(Item i) {
+		Game.zone.addItem(i);
+		IO.println("<blue>You dropped the " + i.getNameWithCount() + "<r>");
+		if(Game.player.equipped == i){
+			Game.player.equip(Item.unarmed);
+		}else if(Game.player.armourChest == i){
+			Game.player.equip("unarmoured");
+			Game.player.refreshArmour();
+		}else if(Game.player.ring == i){
+			Game.player.equip("unarmouredRing");
+			Game.player.refreshArmour();
+		}else if(Game.player.cloak == i){
+			Game.player.equip("unarmouredCloak");
+			Game.player.refreshArmour();
+		}else if(Game.player.hat == i){
+			Game.player.equip("unarmouredHat");
+			Game.player.refreshArmour();
+		}
+		Game.player.removeItem(i);
+		return 0;
+	}
+
+	public static double eat(Item f) {
+		IO.println("<blue>You ate the " + f.getNameWithCount() + ", restoring " + f.healthRestore + " health.<r>");
+		if(Game.player.equipped == f){//If there's ever edible armour that might need to go in here
+			Game.player.equipped = Item.unarmed;
+		}
+		Game.player.hp += f.healthRestore;
+		Game.player.hp = Math.min(Game.player.maxHp, Game.player.hp);
+		IO.println("You are now on " + Game.player.hp + " hp");
+		f.count--;
+		if(f.count <= 0){
+			Game.player.removeItem(f);
+		}
+		return 1;
+	}
+
+	public static double equip(Item item) {
+		Game.player.equip(item);
+		return 1;
+	}
+
+	public static double attack(Creature c) {
+		AttackHandler.attack(Game.player, c);
+		return Game.player.equipped.swingTime;
+	}
+
+	public static double butcher(Creature c) {
+		IO.println("<blue>You butchered the " + c.getName() + "<r>");
+		c.dropButcherItems();
+		Game.zone.removeCreature(c);
+		return 10;
+	}
 }

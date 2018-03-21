@@ -1,10 +1,15 @@
 package gfx;
 
 import creatures.Creature;
+import main.Commands;
+import main.Game;
+import util.CommandAction;
 import util.Text;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class CreatureCard extends Card {
 
@@ -31,6 +36,57 @@ public class CreatureCard extends Card {
 		add(name, constraints);
 		constraints.gridy = 1;
 		add(hp, constraints);
+
+		// Dude I love callbacks
+		JMenuItem butcher = new JMenuItem("Butcher");
+		butcher.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Commands.actions.add(new CommandAction() {
+					public double act() {
+						return Commands.butcher(creature);
+					}
+				});
+				synchronized (Commands.actions) {
+					Commands.actions.notify();
+				}
+			}
+		});
+
+		JMenuItem attack = new JMenuItem("Attack");
+		attack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Commands.actions.add(new CommandAction() {
+					public double act() {
+						return Commands.attack(creature);
+					}
+				});
+				synchronized (Commands.actions) {
+					Commands.actions.notify();
+				}
+			}
+		});
+
+		JMenuItem info = new JMenuItem("Information");
+		info.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				creature.printInfo();
+			}
+		});
+
+		if (creature.isAlive()) {
+			menu.add(attack);
+			double r = Game.player.equipped.reachBonus + Game.player.naturalAttackPattern.reach;
+			if (creature.position.distSquared(Game.player.position) > r*r) {
+				attack.setEnabled(false);
+			}
+		} else {
+			menu.add(butcher);
+			if (creature.position.distSquared(Game.player.position) > 2) {
+				butcher.setEnabled(false);
+			}
+		}
+		menu.add(info);
 	}
+
 
 }

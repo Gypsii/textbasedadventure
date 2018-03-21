@@ -49,7 +49,7 @@ public class Text {
 	}
 
 	public static void selfHealMessage(Creature c, int health, String verb){//TODO better name? Also damage names
-		IO.print(getDefName(c) + " " + verb + " " + health + " hp, ");
+		IO.print(getDefName(c) + " " + verb + " " + health + " hp");
 	}
 	
 	public static void attackMessage(Creature attacker, Creature attackee, DamageInstance damage, String verb, String weaponName){//TODO better name? Also damage names

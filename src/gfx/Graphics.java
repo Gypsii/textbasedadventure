@@ -20,6 +20,7 @@ public class Graphics {
 	private static JScrollPane itemPanelScroll;
 	private static JScrollPane invPanelScroll;
 
+
 	public static Border border = BorderFactory.createLoweredBevelBorder();
 
 	/**
@@ -45,10 +46,15 @@ public class Graphics {
 		mainPane.add(console, c);
 
 		creaturePanel = new JPanel();
+		creaturePanel.setLayout(new WrapLayout());
 		creaturePanel.setBorder(BorderFactory.createTitledBorder(border, "Creatures"));
+
 		itemPanel = new JPanel();
+		itemPanel.setLayout(new WrapLayout());
 		itemPanel.setBorder(BorderFactory.createTitledBorder(border, "Items"));
+
 		invPanel = new JPanel();
+		invPanel.setLayout(new WrapLayout());
 		invPanel.setBorder(BorderFactory.createTitledBorder(border, "Inventory"));
 
 		creaturePanelScroll = new JScrollPane(
@@ -67,10 +73,15 @@ public class Graphics {
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
 		);
 
-
+		creaturePanel.setSize(new Dimension(200, 1));
+		itemPanel.setSize(new Dimension(200, 1));
+		invPanel.setSize(new Dimension(200, 1));
 		creaturePanelScroll.setPreferredSize(new Dimension(200, 200));
 		itemPanelScroll.setPreferredSize(new Dimension(200, 200));
 		invPanelScroll.setPreferredSize(new Dimension(200, 400));
+		creaturePanelScroll.getVerticalScrollBar().setUnitIncrement(16);
+		itemPanelScroll.getVerticalScrollBar().setUnitIncrement(16);
+		invPanelScroll.getVerticalScrollBar().setUnitIncrement(16);
 
 		c.gridx = 1;
 		c.gridy = 0;
@@ -140,9 +151,10 @@ public class Graphics {
 		for(Item i : Game.zone.items) {
 			itemPanel.add(new ItemCard(i));
 		}
+
 		creaturePanelScroll.validate();
+		creaturePanelScroll.repaint();
 		itemPanelScroll.validate();
-		creaturePanel.repaint();
 		itemPanelScroll.repaint();
 	}
 
@@ -155,7 +167,7 @@ public class Graphics {
 			invPanel.add(new ItemCard(i));
 		}
 		invPanelScroll.validate();
-		invPanel.repaint();
+		invPanelScroll.repaint();
 	}
 
 	public static void refresh() {

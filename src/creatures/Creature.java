@@ -808,6 +808,15 @@ public class Creature implements TimeObject{
 		return -1;
 	}
 
+	public int exactItemLoc(Item item){
+		for(int x = 0; x < inv.size(); x++){
+			if(inv.get(x) == item){
+				return x;
+			}
+		}
+		return -1;
+	}
+
 	/**
 	 * Finds the index of the given {@code Item} in this {@code Creature}'s {@code shopInv}, or -1 if not present.
 	 *
@@ -815,7 +824,7 @@ public class Creature implements TimeObject{
 	 */
 	public int findShopItemLoc(Item i) {
 		for (int x = 0; x < shopInv.size(); x++) {
-			if (shopInv.get(x).name == i.name) {
+			if (shopInv.get(x).name == i.name && shopInv.get(x).id == i.id) {
 				return x;
 			}
 		}
@@ -845,6 +854,14 @@ public class Creature implements TimeObject{
 			IO.println("Damage: " + getDamage() + ".");
 		}
 		IO.println("");
+		if (conditions.contains(Condition.DEAD)) {
+			IO.println("This creature is dead.");
+			IO.println("");
+		} else if (conditions.contains(Condition.SLEEPING)) {
+			IO.println("This creature is sleeping.");
+			IO.println("");
+		}
+
 		IO.println(getDescription());
 		IO.printHorizontalLine();
 	}

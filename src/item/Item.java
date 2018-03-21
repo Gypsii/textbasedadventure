@@ -140,11 +140,24 @@ public class Item {
 			IO.println(dmg.amount + " " + dmg.type.name + " damage.");
 			IO.println("Swing time: " + swingTime);
 		}
-		if(healthRestore > 0) {
-			IO.println("Restores <green>" + healthRestore +  "<r> hp when eaten.");
-		}else if(healthRestore < 0) {
-			IO.println("Deals <red>" + healthRestore +  "<r> damage when eaten.");
+		if (hasTag("edible")) {
+			IO.println("Edible.");
+			if(healthRestore > 0) {
+				IO.println("Restores <green>" + healthRestore +  "<r> hp when eaten.");
+			}else if(healthRestore < 0) {
+				IO.println("Deals <red>" + healthRestore +  "<r> damage when eaten.");
+			}
 		}
+		if (hasTag("vessel")) {
+			IO.println("Can be used as a potion container.");
+		}
+		if (hasTag("alchemical")) {
+			IO.println("Can be used as a potion ingredient.");
+		}
+		if (hasTag("alchemical")) {
+			IO.println("Can be used as a potion ingredient.");
+		}
+
 		if(!description.equals("")){
 			IO.println("");
 			IO.println(description);

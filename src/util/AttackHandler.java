@@ -28,7 +28,7 @@ public class AttackHandler {
 		}
 
 		if(!checkAttackSuccess(attacker, target)) {
-			Text.missMessage(attacker, target, name);
+			Text.missMessage(attacker, target, name == "unarmed" ? "" : name);
 			return period;
 		}
 		

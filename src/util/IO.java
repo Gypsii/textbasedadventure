@@ -1,6 +1,8 @@
 package util;
 
+import gfx.ConsoleWindow;
 import gfx.Graphics;
+import main.Commands;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -195,6 +197,29 @@ public class IO {
 			return Graphics.getLine();
 		}else{
 			return br.readLine();
+		}
+	}
+
+	public static CommandAction getAction() throws IOException{
+		if(!Commands.actions.isEmpty()) {
+			return Commands.actions.poll();
+		}
+		if(GRAPHICS_ENABLED){
+			synchronized (Commands.actions) {
+				try {
+					Commands.waiting = true;
+					Commands.actions.wait();
+					Commands.waiting = false;
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				return Commands.actions.poll();
+			}
+		}else{
+			CommandAction a = new CommandAction();
+			a.cmd = read();
+			a.useString = true;
+			return a;
 		}
 	}
 	
